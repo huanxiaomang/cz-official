@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client'
 import { hash } from 'argon2'
 import { Random } from 'mockjs'
 
-const random = (m, n) => Math.floor(Math.random() * (m - n + 1) + n)
 
 const prisma = new PrismaClient()
 async function run() {

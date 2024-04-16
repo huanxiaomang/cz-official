@@ -15,7 +15,7 @@ export function IsConfirm(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         async validate(value: string, args: ValidationArguments) {
-          return Boolean(value == args.object[`${args.property}_confirm`]);
+          return Boolean(value === args.object[`${args.property}_confirm`]);
         },
       },
     });

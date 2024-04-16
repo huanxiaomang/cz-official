@@ -18,9 +18,11 @@ tests/server/static/upload
 
 server/.local
 # local env files
-server/.env.local
-server/.env.*.local
-server/.eslintcache
+.env
+.env.local
+.env.*.local
+.eslintcache
+
 
 # Log files
 server/npm-debug.log*
@@ -42,4 +44,4 @@ server/pnpm-lock.yaml
 
 server/.history
 
-server/uploads
+uploads

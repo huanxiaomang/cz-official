@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/commo
 import { MessageService } from './message.service';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { CreateMessageDto } from './dto/create-message.dto';
-import { Auth, isCZMember } from '@/auth/decorators/auth.decorator';
+import { Auth } from '@/auth/decorators/auth.decorator';
 
 @Controller('message')
 export class MessageController {

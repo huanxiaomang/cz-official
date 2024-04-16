@@ -11,6 +11,6 @@ export class RoleGuard implements CanActivate {
     const user = context.switchToHttp().getRequest().user as user
 
     const roles = this.reflector.getAllAndMerge<Role[]>('roles', [context.getHandler(), context.getClass()])
-    return roles.length ? roles.some((role) => user.role == role) : true
+    return roles.length ? roles.some((role) => user.role === role) : true
   }
 }

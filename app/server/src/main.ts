@@ -12,6 +12,6 @@ async function bootstrap() {
   app.setGlobalPrefix('api')
   app.useStaticAssets('uploads', { prefix: '/uploads' })
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
-  await app.listen(process.env.PORT)
+  await app.listen(require('process').env.PORT)
 }
 bootstrap()
