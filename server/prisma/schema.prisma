@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  name        String    @unique
+  password    String
+  role        String?
+  email       String    @unique
+  avatar      String?
+  github      String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  projects    project[]
+  background  String?
+  description String?   @db.Text
+}
+
+model project {
+  id        Int      @id @default(autoincrement()) @db.UnsignedInt
+  title     String
+  content   String   @db.Text
+  stack     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      user?    @relation(fields: [userId], references: [id])
+  userId    Int?     @db.UnsignedInt
+}
+
+model message {
+  id        Int      @id @default(autoincrement()) @db.UnsignedInt
+  title     String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
