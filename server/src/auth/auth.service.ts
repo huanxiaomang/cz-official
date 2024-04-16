@@ -11,6 +11,15 @@ import UpdateUserDto from './dto/updateUser.dto'
 export class AuthService {
   constructor(private prisma: PrismaService, private jwt: JwtService) { }
 
+  async getCZMembers() {
+    const users = await this.prisma.user.findMany({
+      where: {
+        role: 'CZ_MEMBER'
+      }
+    })
+    return users
+  }
+
   async register(dto: RegisterDto) {
     const user = await this.prisma.user.create({
       data: {
@@ -25,9 +34,12 @@ export class AuthService {
   async login(dto: LoginDto) {
     const user = await this.prisma.user.findUnique({
       where: {
-        id: Number(dto.id),
+        email: dto.email,
       },
     })
+
+
+
 
     if (!(await verify(user.password, dto.password))) {
       throw new BadRequestException('密码输入错误')
@@ -35,20 +47,21 @@ export class AuthService {
     return this.token(user)
   }
 
-  async updateUser(dto: UpdateUserDto) {
+  async updateUser(dto: UpdateUserDto, token) {
+    const id = (await this.decodeToken(token) as any).sub;
+
     // 更新用户信息
     const user = await this.prisma.user.update({
       where: {
-        id: Number(dto.id),
+        id
       },
       data: {
         name: dto.name,
         avatar: dto.avatar,
         background: dto.background,
         description: dto.description,
-        email: dto.email,
         github: dto.github,
-        password: dto.password
+        password: await hash(dto.password)
       },
     })
     return this.token(user)
@@ -60,6 +73,16 @@ export class AuthService {
         name,
         sub: id,
       }),
+    }
+  }
+
+  async decodeToken(token: string): Promise<any> {
+    try {
+      const decoded = this.jwt.decode(token);
+      return decoded;
+    } catch (error) {
+      // 处理解密失败的情况
+      throw new BadRequestException('token 无效');
     }
   }
 }

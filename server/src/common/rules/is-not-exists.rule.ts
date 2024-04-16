@@ -19,11 +19,12 @@ export function IsNotExistsRule(
       options: validationOptions,
       validator: {
         async validate(value: string, args: ValidationArguments) {
-          console.log(34);
           const prisma = new PrismaClient();
           const res = await prisma[table].findFirst({
             where: {
-              [args.property]: value,
+              [args.property]: args.property === 'id' ? Number(value) : value,
+
+
             },
           });
           return !Boolean(res);

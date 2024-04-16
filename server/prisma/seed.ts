@@ -9,7 +9,7 @@ async function run() {
   await prisma.user.create({
     data: {
       name: 'admin11',
-      role: 'member',
+      role: 'CZ_MEMBER',
       password: await hash('admin888'),
       email: 'asdasd@123.com',
       avatar: 'https://i1.hdslb.com/bfs/face/6bc5d59334e3430ebc019d4fecd463e4df028e8c.jpg@240w_240h_1c_1s_!web-avatar-nav.avif',
@@ -20,8 +20,8 @@ async function run() {
   })
   await prisma.user.create({
     data: {
-      name: 'admin22',
-      role: 'tourist',
+      name: 'COMMON',
+      role: 'COMMON',
       password: await hash('123456'),
       email: 'as32323d@123.com',
       avatar: 'https://i1.hdslb.com/bfs/face/6bc5d59334e3430ebc019d4fecd463e4df028e8c.jpg@240w_240h_1c_1s_!web-avatar-nav.avif',
@@ -37,7 +37,7 @@ async function run() {
         title: Random.ctitle(3, 6),
         stack: 'v3+ts+vite',
         content: Random.cparagraph(30, 50),
-        userId: random(1, 2)
+        members: `1,2`
       },
     })
   }

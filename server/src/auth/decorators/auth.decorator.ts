@@ -4,5 +4,9 @@ import { Role } from '../enum'
 import { RoleGuard } from '../guards/role.guard'
 
 export function Auth(...roles: Role[]) {
+
+  return applyDecorators(SetMetadata('roles', roles), UseGuards(AuthGuard('jwt'), RoleGuard))
+}
+export function isCZMember(...roles: Role[]) {
   return applyDecorators(SetMetadata('roles', roles), UseGuards(AuthGuard('jwt'), RoleGuard))
 }

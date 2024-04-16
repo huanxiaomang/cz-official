@@ -8,18 +8,17 @@ datasource db {
 }
 
 model user {
-  id          Int       @id @default(autoincrement()) @db.UnsignedInt
-  name        String    @unique
+  id          Int      @id @default(autoincrement()) @db.UnsignedInt
+  name        String   @unique
   password    String
-  role        String?
-  email       String    @unique
+  role        String? // CZ_MEMBER 或者 COMMON
+  email       String   @unique
   avatar      String?
   github      String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  projects    project[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   background  String?
-  description String?   @db.Text
+  description String?  @db.Text
 }
 
 model project {
@@ -29,8 +28,7 @@ model project {
   stack     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      user?    @relation(fields: [userId], references: [id])
-  userId    Int?     @db.UnsignedInt
+  members   String // 项目成员，是一个用户id数组,格式形如1,2,3
 }
 
 model message {

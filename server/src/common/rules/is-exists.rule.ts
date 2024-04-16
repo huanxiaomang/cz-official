@@ -22,7 +22,7 @@ export function IsExistsRule(
           const prisma = new PrismaClient();
           const res = await prisma[table].findFirst({
             where: {
-              [args.property]: value,
+              [args.property]: args.property === 'id' ? Number(value) : value,
             },
           });
           return Boolean(res);

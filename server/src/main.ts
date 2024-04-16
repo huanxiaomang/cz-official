@@ -9,9 +9,9 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   app.useGlobalPipes(new Validate())
   app.useGlobalInterceptors(new TransformInterceptor())
-  // app.setGlobalPrefix('api')
+  app.setGlobalPrefix('api')
   app.useStaticAssets('uploads', { prefix: '/uploads' })
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
-  await app.listen(3000)
+  await app.listen(process.env.PORT)
 }
 bootstrap()
