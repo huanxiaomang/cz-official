@@ -22,7 +22,6 @@ export function loginApi(
   params: LoginParams,
   mode: ErrorMessageMode = "modal",
 ) {
-  console.log(params);
 
   return defHttp.post<LoginResultModel>(
     {

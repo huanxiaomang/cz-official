@@ -268,6 +268,16 @@ export class VAxios {
           if (axios.isAxiosError(e)) {
             // rewrite error message from axios in here
           }
+          if (Reflect.has(e, "response")) {
+            const msgs = e['response'].data.messages || e['response'].data.message;
+            if (typeof msgs === "object") {
+              const firstKey = Object.keys(msgs)[0];
+              e.message = `${firstKey}: ${msgs[firstKey]}`;
+            } else {
+              e.message = msgs;
+
+            }
+          }
           reject(e);
         });
     });
