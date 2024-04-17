@@ -11,6 +11,16 @@ import UpdateUserDto from './dto/updateUser.dto'
 export class AuthService {
   constructor(private prisma: PrismaService, private jwt: JwtService) { }
 
+  async getUserInfo(userId) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        userId:Number(userId)
+      }
+    })
+    return await this.serializeUser(user);
+  }
+
+
   async getCZMembers() {
     const users = await this.prisma.user.findMany({
       where: {

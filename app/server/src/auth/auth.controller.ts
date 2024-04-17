@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Headers } from '@nestjs/common';
+import { Body, Controller, Get, Post, Headers, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import LoginDto from './dto/login.dto';
 import RegisterDto from './dto/register.dto';
@@ -12,6 +12,10 @@ export class AuthController {
   @Get('cz')
   getCZMembers() {
     return this.auth.getCZMembers();
+  }
+  @Get('getUserInfo/:userId')
+  getUserInfo(@Param('userId') userId ) {
+    return this.auth.getUserInfo(userId);
   }
   @Post('register')
   register(@Body() dto: RegisterDto) {
