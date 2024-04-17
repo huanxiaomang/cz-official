@@ -9,40 +9,19 @@ import {
 export function createFakeUserList() {
   return [
     {
-      userId: "1",
-      username: "vben",
-      realName: "Vben Admin",
-      avatar: "",
-      desc: "manager",
+      id: "1",
+      name: "huanxiaomang",
+      email:"atri2022@163.com",
+      avatar: "https://i1.hdslb.com/bfs/face/6bc5d59334e3430ebc019d4fecd463e4df028e8c.jpg@240w_240h_1c_1s_!web-avatar-nav.avif",
+      description: "gegwgfr23rf3frewdv345refv456ytrgfv",
       password: "123456",
       token: "fakeToken1",
-      homePath: "/dashboard/analysis",
-      roles: [
-        {
-          roleName: "Super Admin",
-          value: "super",
-        },
-      ],
+      github: 'https://github.com/huanxiaomang',
+      role:"ADMIN"
     },
-    {
-      userId: "2",
-      username: "test",
-      password: "123456",
-      realName: "test user",
-      avatar: "",
-      desc: "tester",
-      token: "fakeToken2",
-      homePath: "/dashboard/workbench",
-      roles: [
-        {
-          roleName: "Tester",
-          value: "test",
-        },
-      ],
-    },
+
   ];
 }
-
 const fakeCodeList: any = {
   "1": ["1000", "3000", "5000"],
 
@@ -55,29 +34,15 @@ export default [
     timeout: 200,
     method: "post",
     response: ({ body }) => {
-      const { username, password } = body;
+      const { email, password } = body;
       const checkUser = createFakeUserList().find(
-        (item) => item.username === username && password === item.password,
+        (item) => item.email === email && password === item.password,
       );
       if (!checkUser) {
         return resultError("Incorrect account or password！");
       }
-      const {
-        userId,
-        username: _username,
-        token,
-        realName,
-        desc,
-        roles,
-      } = checkUser;
-      return resultSuccess({
-        roles,
-        userId,
-        username: _username,
-        token,
-        realName,
-        desc,
-      });
+
+      return resultSuccess(checkUser);
     },
   },
   {
@@ -110,7 +75,7 @@ export default [
       if (!checkUser) {
         return resultError("Invalid token!");
       }
-      const codeList = fakeCodeList[checkUser.userId];
+      const codeList = fakeCodeList[checkUser.id];
 
       return resultSuccess(codeList);
     },

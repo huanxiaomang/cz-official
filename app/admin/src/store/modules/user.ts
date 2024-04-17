@@ -124,19 +124,23 @@ export const useUserStore = defineStore({
         }
 
         goHome &&
-          (await router.replace(userInfo?.homePath || PageEnum.BASE_HOME));
+          (await router.replace(PageEnum.BASE_HOME));
       }
       return userInfo;
     },
     async getUserInfoAction(): Promise<UserInfo | null> {
       if (!this.getToken) return null;
       const userInfo = await getUserInfo();
-      const { roles = [] } = userInfo;
+      const roles = [
+        {
+          roleName: 'Super Admin',
+          value: 'super',
+        },
+      ];
       if (isArray(roles)) {
         const roleList = roles.map((item) => item.value) as RoleEnum[];
         this.setRoleList(roleList);
       } else {
-        userInfo.roles = [];
         this.setRoleList([]);
       }
       this.setUserInfo(userInfo);

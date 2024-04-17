@@ -17,7 +17,7 @@ export class AuthService {
         role: 'CZ_MEMBER'
       }
     })
-    return users
+    return await Promise.all(users.map(async (u) => await this.serializeUser(u)));
   }
 
   async register(dto: RegisterDto) {
@@ -28,7 +28,8 @@ export class AuthService {
         email: dto.email,
       },
     })
-    return this.token(user)
+    return await this.serializeUser(user)
+
   }
 
   async login(dto: LoginDto) {
@@ -44,7 +45,7 @@ export class AuthService {
     if (!(await verify(user.password, dto.password))) {
       throw new BadRequestException('密码输入错误')
     }
-    return this.token(user)
+    return await this.serializeUser(user)
   }
 
   async updateUser(dto: UpdateUserDto, token) {
@@ -68,12 +69,11 @@ export class AuthService {
   }
 
   private async token({ id, name }) {
-    return {
-      token: await this.jwt.signAsync({
+    return await this.jwt.signAsync({
         name,
         sub: id,
-      }),
-    }
+      })
+
   }
 
   async decodeToken(token: string): Promise<any> {
@@ -83,6 +83,20 @@ export class AuthService {
     } catch (error) {
       // 处理解密失败的情况
       throw new BadRequestException('token 无效');
+    }
+  }
+
+  async serializeUser(user) {
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      avatar: user.avatar,
+      github: user.github,
+      background: user.background,
+      description: user.description,
+      token: await this.token(user)
     }
   }
 }
