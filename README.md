@@ -10,7 +10,7 @@
 
 
 
-## Features
+## 功能
 
 - ⚡️ [Vue 3](https://github.com/vuejs/core), [Vite](https://github.com/vitejs/vite), [pnpm](https://pnpm.io/), [ESBuild](https://github.com/evanw/esbuild) - born with fastness
 
@@ -21,3 +21,14 @@
 - 😃 在线学习文档
 
 - 🎨 留言板
+
+
+## 结构
+
+- /src 主网站
+
+- /app/sever nest后台
+
+- /app/message-board 留言版（待开发）
+
+- /docs 学习文档（待移植）
