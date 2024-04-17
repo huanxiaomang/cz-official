@@ -14,7 +14,7 @@
 
         <div class="py-4 px-4 flex justify-between items-center">
           <CountTo
-            prefix="$"
+            prefix=""
             :startVal="1"
             :endVal="item.value"
             class="text-2xl"
@@ -24,7 +24,7 @@
 
         <div class="p-2 px-4 flex justify-between">
           <span>总{{ item.title }}</span>
-          <CountTo prefix="$" :startVal="1" :endVal="item.total" />
+          <CountTo prefix="" :startVal="1" :endVal="item.total" />
         </div>
       </Card>
     </template>

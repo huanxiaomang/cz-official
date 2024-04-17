@@ -97,6 +97,8 @@ export const useUserStore = defineStore({
 
         // save token
         this.setToken(token);
+        this.setUserInfo(data);
+
         return this.afterLoginAction(goHome);
       } catch (error) {
         return Promise.reject(error);
@@ -131,6 +133,8 @@ export const useUserStore = defineStore({
     async getUserInfoAction(): Promise<UserInfo | null> {
       if (!this.getToken) return null;
       const userInfo = await getUserInfo();
+
+
       const roles = [
         {
           roleName: 'Super Admin',
@@ -143,7 +147,6 @@ export const useUserStore = defineStore({
       } else {
         this.setRoleList([]);
       }
-      this.setUserInfo(userInfo);
       return userInfo;
     },
     /**

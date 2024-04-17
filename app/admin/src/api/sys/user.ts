@@ -42,6 +42,7 @@ export function loginApi(
 export function getUserInfo() {
   const userId = useUserStore().getUserInfo.userId;
 
+
   return defHttp.get<GetUserInfoModel>(
     { url: Api.GetUserInfo + `/${userId}`,  },
     { errorMessageMode: "none" },
