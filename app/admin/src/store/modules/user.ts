@@ -93,19 +93,19 @@ export const useUserStore = defineStore({
       try {
         const { goHome = true, mode, ...loginParams } = params;
         const data = await loginApi(loginParams, mode);
-        const { token,userId } = data;
+        const { token } = data;
 
         // save token
         this.setToken(token);
-        return this.afterLoginAction(Number(userId),goHome);
+        return this.afterLoginAction(goHome);
       } catch (error) {
         return Promise.reject(error);
       }
     },
-    async afterLoginAction(userId:number,goHome?: boolean): Promise<GetUserInfoModel | null> {
+    async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
       if (!this.getToken) return null;
       // get user info
-      const userInfo = await this.getUserInfoAction(userId);
+      const userInfo = await this.getUserInfoAction();
 
       const sessionTimeout = this.sessionTimeout;
       if (sessionTimeout) {
@@ -128,9 +128,9 @@ export const useUserStore = defineStore({
       }
       return userInfo;
     },
-    async getUserInfoAction(userId:number): Promise<UserInfo | null> {
+    async getUserInfoAction(): Promise<UserInfo | null> {
       if (!this.getToken) return null;
-      const userInfo = await getUserInfo(userId);
+      const userInfo = await getUserInfo();
       const roles = [
         {
           roleName: 'Super Admin',

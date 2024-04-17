@@ -6,6 +6,7 @@ import {
 } from "./model/userModel";
 
 import { ErrorMessageMode } from "#/axios";
+import { useUserStore } from "@/store/modules/user";
 
 enum Api {
   Login = "/login",
@@ -38,11 +39,11 @@ export function loginApi(
 /**
  * @description: getUserInfo
  */
-export function getUserInfo(userId: number) {
-  console.log(userId);
+export function getUserInfo() {
+  const userId = useUserStore().getUserInfo.userId;
 
   return defHttp.get<GetUserInfoModel>(
-    { url: Api.GetUserInfo+`/${userId}`,  },
+    { url: Api.GetUserInfo + `/${userId}`,  },
     { errorMessageMode: "none" },
   );
 }
