@@ -1,6 +1,6 @@
-import { Ref } from 'vue';
-import { IAnyObject } from './base-type';
-import { IFormConfig, IVFormComponent } from './v-form-component';
+import { Ref } from "vue";
+import { IAnyObject } from "./base-type";
+import { IFormConfig, IVFormComponent } from "./v-form-component";
 
 export interface IToolbarMethods {
   showModal: (jsonData: IAnyObject) => void;

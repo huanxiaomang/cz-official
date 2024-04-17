@@ -1,6 +1,10 @@
 // import { VueConstructor } from 'vue';
-import { IVFormComponent, IFormConfig, IValidationRule } from '../typings/v-form-component';
-import { cloneDeep, isArray, isFunction, isNumber, uniqueId } from 'lodash-es';
+import {
+  IVFormComponent,
+  IFormConfig,
+  IValidationRule,
+} from "../typings/v-form-component";
+import { cloneDeep, isArray, isFunction, isNumber, uniqueId } from "lodash-es";
 // import { del } from '@vue/composition-api';
 // import { withInstall } from '@/utils';
 
@@ -29,7 +33,7 @@ export function generateKey(formItem?: IVFormComponent): string | boolean {
 
     return true;
   }
-  return uniqueId('key_');
+  return uniqueId("key_");
 }
 
 /**
@@ -79,7 +83,7 @@ export function randomUUID(): string {
  * @param str
  */
 export function toLine(str: string) {
-  return str.replace(/([A-Z])/g, '_$1').toLowerCase();
+  return str.replace(/([A-Z])/g, "_$1").toLowerCase();
 }
 
 /**
@@ -87,11 +91,14 @@ export function toLine(str: string) {
  * @param array
  * @param cb
  */
-export function formItemsForEach(array: IVFormComponent[], cb: (item: IVFormComponent) => void) {
+export function formItemsForEach(
+  array: IVFormComponent[],
+  cb: (item: IVFormComponent) => void,
+) {
   if (!isArray(array)) return;
   const traverse = (schemas: IVFormComponent[]) => {
     schemas.forEach((formItem: IVFormComponent) => {
-      if (['Grid'].includes(formItem.component)) {
+      if (["Grid"].includes(formItem.component)) {
         // 栅格布局
         formItem.columns?.forEach((item) => traverse(item.children));
       } else {
@@ -114,7 +121,7 @@ export const findFormItem: (
     return schemas.some((formItem: IVFormComponent) => {
       const { component: type } = formItem;
       // 处理栅格
-      if (['Grid'].includes(type)) {
+      if (["Grid"].includes(type)) {
         return formItem.columns?.some((item) => traverse(item.children));
       }
       if (cb(formItem)) res = formItem;
@@ -164,11 +171,11 @@ export const handleAsyncOptions = async (
  */
 export const formatRules = (schemas: IVFormComponent[]) => {
   formItemsForEach(schemas, (item) => {
-    if ('required' in item) {
+    if ("required" in item) {
       !isArray(item.rules) && (item.rules = []);
       item.rules.push({ required: true, message: item.message });
-      delete item['required'];
-      delete item['message'];
+      delete item["required"];
+      delete item["message"];
     }
   });
 };

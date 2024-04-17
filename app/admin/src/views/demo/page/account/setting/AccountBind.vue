@@ -5,11 +5,21 @@
         <ListItem>
           <ListItemMeta>
             <template #avatar>
-              <Icon v-if="item.avatar" class="avatar" :icon="item.avatar" :color="item.color" />
+              <Icon
+                v-if="item.avatar"
+                class="avatar"
+                :icon="item.avatar"
+                :color="item.color"
+              />
             </template>
             <template #title>
               {{ item.title }}
-              <a-button type="link" size="small" v-if="item.extra" class="extra">
+              <a-button
+                type="link"
+                size="small"
+                v-if="item.extra"
+                class="extra"
+              >
                 {{ item.extra }}
               </a-button>
             </template>
@@ -23,24 +33,24 @@
   </CollapseContainer>
 </template>
 <script lang="ts" setup>
-  import { CollapseContainer } from '@/components/Container';
-  import Icon from '@/components/Icon/Icon.vue';
-  import { List } from 'ant-design-vue';
+import { CollapseContainer } from "@/components/Container";
+import Icon from "@/components/Icon/Icon.vue";
+import { List } from "ant-design-vue";
 
-  import { accountBindList } from './data';
+import { accountBindList } from "./data";
 
-  const ListItem = List.Item;
-  const ListItemMeta = List.Item.Meta;
+const ListItem = List.Item;
+const ListItemMeta = List.Item.Meta;
 </script>
 <style lang="less" scoped>
-  .avatar {
-    font-size: 40px !important;
-  }
+.avatar {
+  font-size: 40px !important;
+}
 
-  .extra {
-    margin-top: 10px;
-    margin-right: 30px;
-    float: right;
-    cursor: pointer;
-  }
+.extra {
+  margin-top: 10px;
+  margin-right: 30px;
+  float: right;
+  cursor: pointer;
+}
 </style>

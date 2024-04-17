@@ -42,7 +42,10 @@
                 </li>
               </ul>
             </ScrollContainer>
-            <div class="flex py-2 items-center justify-center" v-if="getTotal >= pageSize">
+            <div
+              class="flex py-2 items-center justify-center"
+              v-if="getTotal >= pageSize"
+            >
               <Pagination
                 showLessItems
                 size="small"
@@ -53,7 +56,7 @@
             </div>
           </div>
           <template v-else>
-            <div class="p-5"><Empty /> </div>
+            <div class="p-5"><Empty /></div>
           </template>
         </template>
 
@@ -75,135 +78,135 @@
   </Input>
 </template>
 <script lang="ts" setup>
-  import { ref, watchEffect, watch } from 'vue';
-  import { useDesign } from '@/hooks/web/useDesign';
-  import { ScrollContainer } from '@/components/Container';
-  import { Input, Popover, Pagination, Empty } from 'ant-design-vue';
-  import Icon from '../Icon.vue';
-  import SvgIcon from './SvgIcon.vue';
+import { ref, watchEffect, watch } from "vue";
+import { useDesign } from "@/hooks/web/useDesign";
+import { ScrollContainer } from "@/components/Container";
+import { Input, Popover, Pagination, Empty } from "ant-design-vue";
+import Icon from "../Icon.vue";
+import SvgIcon from "./SvgIcon.vue";
 
-  import iconsData from '../data/icons.data';
-  import { usePagination } from '@/hooks/web/usePagination';
-  import { useDebounceFn } from '@vueuse/core';
-  import { useI18n } from '@/hooks/web/useI18n';
-  import svgIcons from 'virtual:svg-icons-names';
-  import { copyText } from '@/utils/copyTextToClipboard';
+import iconsData from "../data/icons.data";
+import { usePagination } from "@/hooks/web/usePagination";
+import { useDebounceFn } from "@vueuse/core";
+import { useI18n } from "@/hooks/web/useI18n";
+import svgIcons from "virtual:svg-icons-names";
+import { copyText } from "@/utils/copyTextToClipboard";
 
-  function getIcons() {
-    const prefix = iconsData.prefix;
-    return iconsData.icons.map((icon) => `${prefix}:${icon}`);
+function getIcons() {
+  const prefix = iconsData.prefix;
+  return iconsData.icons.map((icon) => `${prefix}:${icon}`);
+}
+
+function getSvgIcons() {
+  return svgIcons.map((icon: string) => icon.replace("icon-", ""));
+}
+
+export interface Props {
+  value?: string;
+  width?: string;
+  pageSize?: number;
+  copy?: boolean;
+  mode?: "svg" | "iconify";
+  allowClear?: boolean;
+  readonly?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  value: "",
+  width: "100%",
+  pageSize: 140,
+  copy: false,
+  mode: "iconify",
+  allowClear: true,
+  readonly: false,
+});
+
+// Don't inherit FormItem disabled、placeholder...
+defineOptions({
+  inheritAttrs: false,
+});
+
+const emit = defineEmits(["change", "update:value"]);
+
+const isSvgMode = props.mode === "svg";
+const icons = isSvgMode ? getSvgIcons() : getIcons();
+
+const currentSelect = ref("");
+const visible = ref(false);
+const currentList = ref(icons);
+const trigger = ref<HTMLDivElement>();
+
+const triggerPopover = () => {
+  if (trigger.value) {
+    trigger.value.click();
   }
+};
 
-  function getSvgIcons() {
-    return svgIcons.map((icon: string) => icon.replace('icon-', ''));
+const { t } = useI18n();
+const { prefixCls } = useDesign("icon-picker");
+
+const debounceHandleSearchChange = useDebounceFn(handleSearchChange, 100);
+
+const { getPaginationList, getTotal, setCurrentPage } = usePagination(
+  currentList,
+  props.pageSize,
+);
+
+watchEffect(() => {
+  currentSelect.value = props.value;
+});
+
+watch(
+  () => currentSelect.value,
+  (v) => {
+    emit("update:value", v);
+    emit("change", v);
+  },
+);
+function handlePageChange(page: number) {
+  setCurrentPage(page);
+}
+
+function handleClick(icon: string) {
+  currentSelect.value = icon;
+  if (props.copy) {
+    copyText(icon, t("component.icon.copy"));
   }
+}
 
-  export interface Props {
-    value?: string;
-    width?: string;
-    pageSize?: number;
-    copy?: boolean;
-    mode?: 'svg' | 'iconify';
-    allowClear?: boolean;
-    readonly?: boolean;
+function handleSearchChange(e: Event) {
+  const value = (e.target as HTMLInputElement).value;
+
+  if (!value) {
+    setCurrentPage(1);
+    currentList.value = icons;
+    return;
   }
-
-  const props = withDefaults(defineProps<Props>(), {
-    value: '',
-    width: '100%',
-    pageSize: 140,
-    copy: false,
-    mode: 'iconify',
-    allowClear: true,
-    readonly: false,
-  });
-
-  // Don't inherit FormItem disabled、placeholder...
-  defineOptions({
-    inheritAttrs: false,
-  });
-
-  const emit = defineEmits(['change', 'update:value']);
-
-  const isSvgMode = props.mode === 'svg';
-  const icons = isSvgMode ? getSvgIcons() : getIcons();
-
-  const currentSelect = ref('');
-  const visible = ref(false);
-  const currentList = ref(icons);
-  const trigger = ref<HTMLDivElement>();
-
-  const triggerPopover = () => {
-    if (trigger.value) {
-      trigger.value.click();
-    }
-  };
-
-  const { t } = useI18n();
-  const { prefixCls } = useDesign('icon-picker');
-
-  const debounceHandleSearchChange = useDebounceFn(handleSearchChange, 100);
-
-  const { getPaginationList, getTotal, setCurrentPage } = usePagination(
-    currentList,
-    props.pageSize,
-  );
-
-  watchEffect(() => {
-    currentSelect.value = props.value;
-  });
-
-  watch(
-    () => currentSelect.value,
-    (v) => {
-      emit('update:value', v);
-      emit('change', v);
-    },
-  );
-  function handlePageChange(page: number) {
-    setCurrentPage(page);
-  }
-
-  function handleClick(icon: string) {
-    currentSelect.value = icon;
-    if (props.copy) {
-      copyText(icon, t('component.icon.copy'));
-    }
-  }
-
-  function handleSearchChange(e: Event) {
-    const value = (e.target as HTMLInputElement).value;
-
-    if (!value) {
-      setCurrentPage(1);
-      currentList.value = icons;
-      return;
-    }
-    currentList.value = icons.filter((item) => item.includes(value));
-  }
+  currentList.value = icons.filter((item) => item.includes(value));
+}
 </script>
 <style lang="less">
-  @prefix-cls: ~'@{namespace}-icon-picker';
+@prefix-cls: ~"@{namespace}-icon-picker";
 
-  .@{prefix-cls} {
-    .ant-input-group-addon {
+.@{prefix-cls} {
+  .ant-input-group-addon {
+    padding: 0;
+  }
+
+  .ant-input {
+    cursor: pointer;
+  }
+
+  &-popover {
+    width: 300px;
+
+    .ant-popover-inner-content {
       padding: 0;
     }
 
-    .ant-input {
-      cursor: pointer;
-    }
-
-    &-popover {
-      width: 300px;
-
-      .ant-popover-inner-content {
-        padding: 0;
-      }
-
-      .scrollbar {
-        height: 220px;
-      }
+    .scrollbar {
+      height: 220px;
     }
   }
+}
 </style>

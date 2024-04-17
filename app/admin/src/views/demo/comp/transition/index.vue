@@ -15,64 +15,64 @@
   </PageWrapper>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
-  import { Select } from 'ant-design-vue';
-  import { PageWrapper } from '@/components/Page';
-  import {
-    FadeTransition,
-    ScaleTransition,
-    SlideYTransition,
-    ScrollYTransition,
-    SlideYReverseTransition,
-    ScrollYReverseTransition,
-    SlideXTransition,
-    ScrollXTransition,
-    SlideXReverseTransition,
-    ScrollXReverseTransition,
-    ScaleRotateTransition,
-    ExpandXTransition,
-    ExpandTransition,
-  } from '@/components/Transition';
+import { ref } from "vue";
+import { Select } from "ant-design-vue";
+import { PageWrapper } from "@/components/Page";
+import {
+  FadeTransition,
+  ScaleTransition,
+  SlideYTransition,
+  ScrollYTransition,
+  SlideYReverseTransition,
+  ScrollYReverseTransition,
+  SlideXTransition,
+  ScrollXTransition,
+  SlideXReverseTransition,
+  ScrollXReverseTransition,
+  ScaleRotateTransition,
+  ExpandXTransition,
+  ExpandTransition,
+} from "@/components/Transition";
 
-  const TransitionItem = {
-    FadeTransition,
-    ScaleTransition,
-    SlideYTransition,
-    ScrollYTransition,
-    SlideYReverseTransition,
-    ScrollYReverseTransition,
-    SlideXTransition,
-    ScrollXTransition,
-    SlideXReverseTransition,
-    ScrollXReverseTransition,
-    ScaleRotateTransition,
-    ExpandXTransition,
-    ExpandTransition,
+const TransitionItem = {
+  FadeTransition,
+  ScaleTransition,
+  SlideYTransition,
+  ScrollYTransition,
+  SlideYReverseTransition,
+  ScrollYReverseTransition,
+  SlideXTransition,
+  ScrollXTransition,
+  SlideXReverseTransition,
+  ScrollXReverseTransition,
+  ScaleRotateTransition,
+  ExpandXTransition,
+  ExpandTransition,
+};
+
+const options = Object.keys(TransitionItem).map((item) => {
+  const label = item.replace("Transition", "");
+  return {
+    label,
+    value: item,
+    key: item,
   };
+});
 
-  const options = Object.keys(TransitionItem).map((item) => {
-    const label = item.replace('Transition', '');
-    return {
-      label,
-      value: item,
-      key: item,
-    };
-  });
-
-  const value = ref('FadeTransition');
-  const show = ref(true);
-  function start() {
-    show.value = false;
-    setTimeout(() => {
-      show.value = true;
-    }, 300);
-  }
+const value = ref("FadeTransition");
+const show = ref(true);
+function start() {
+  show.value = false;
+  setTimeout(() => {
+    show.value = true;
+  }, 300);
+}
 </script>
 <style lang="less" scoped>
-  .box {
-    width: 150px;
-    height: 150px;
-    margin-top: 20px;
-    background-color: rgb(126 170 236);
-  }
+.box {
+  width: 150px;
+  height: 150px;
+  margin-top: 20px;
+  background-color: rgb(126 170 236);
+}
 </style>

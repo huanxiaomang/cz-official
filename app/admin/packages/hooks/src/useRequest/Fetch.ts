@@ -1,8 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { reactive } from 'vue';
+import { reactive } from "vue";
 
-import type { FetchState, PluginReturn, Service, Subscribe, UseRequestOptions } from './types';
-import { isFunction } from './utils/isFunction';
+import type {
+  FetchState,
+  PluginReturn,
+  Service,
+  Subscribe,
+  UseRequestOptions,
+} from "./types";
+import { isFunction } from "./utils/isFunction";
 
 export default class Fetch<TData, TParams extends any[]> {
   pluginImpls: PluginReturn<TData, TParams>[] = [];
@@ -44,7 +50,7 @@ export default class Fetch<TData, TParams extends any[]> {
       stopNow = false,
       returnNow = false,
       ...state
-    } = this.runPluginHandler('onBefore', params);
+    } = this.runPluginHandler("onBefore", params);
 
     // stop request
     if (stopNow) {
@@ -66,7 +72,11 @@ export default class Fetch<TData, TParams extends any[]> {
 
     try {
       // replace service
-      let { servicePromise } = this.runPluginHandler('onRequest', this.serviceRef, params);
+      let { servicePromise } = this.runPluginHandler(
+        "onRequest",
+        this.serviceRef,
+        params,
+      );
 
       if (!servicePromise) {
         servicePromise = this.serviceRef(...params);
@@ -84,12 +94,12 @@ export default class Fetch<TData, TParams extends any[]> {
       this.setState({ data: res, error: undefined, loading: false });
 
       this.options.onSuccess?.(res, params);
-      this.runPluginHandler('onSuccess', res, params);
+      this.runPluginHandler("onSuccess", res, params);
 
       this.options.onFinally?.(params, res, undefined);
 
       if (currentCount === this.count) {
-        this.runPluginHandler('onFinally', params, res, undefined);
+        this.runPluginHandler("onFinally", params, res, undefined);
       }
 
       return res;
@@ -102,12 +112,12 @@ export default class Fetch<TData, TParams extends any[]> {
       this.setState({ error, loading: false });
 
       this.options.onError?.(error, params);
-      this.runPluginHandler('onError', error, params);
+      this.runPluginHandler("onError", error, params);
 
       this.options.onFinally?.(params, undefined, error);
 
       if (currentCount === this.count) {
-        this.runPluginHandler('onFinally', params, undefined, error);
+        this.runPluginHandler("onFinally", params, undefined, error);
       }
 
       throw error;
@@ -126,7 +136,7 @@ export default class Fetch<TData, TParams extends any[]> {
     this.count += 1;
     this.setState({ loading: false });
 
-    this.runPluginHandler('onCancel');
+    this.runPluginHandler("onCancel");
   }
 
   refresh() {
@@ -141,7 +151,7 @@ export default class Fetch<TData, TParams extends any[]> {
 
   mutate(data?: TData | ((oldData?: TData) => TData | undefined)) {
     const targetData = isFunction(data) ? data(this.state.data) : data;
-    this.runPluginHandler('onMutate', targetData);
+    this.runPluginHandler("onMutate", targetData);
     this.setState({ data: targetData });
   }
 }

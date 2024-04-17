@@ -1,8 +1,14 @@
-import { IAnyObject } from '../typings/base-type';
-import { Ref, SetupContext, getCurrentInstance, toRaw, type EmitsOptions } from 'vue';
-import { cloneDeep, forOwn, isFunction } from 'lodash-es';
-import { AForm, IVFormComponent } from '../typings/v-form-component';
-import { Form } from 'ant-design-vue';
+import { IAnyObject } from "../typings/base-type";
+import {
+  Ref,
+  SetupContext,
+  getCurrentInstance,
+  toRaw,
+  type EmitsOptions,
+} from "vue";
+import { cloneDeep, forOwn, isFunction } from "lodash-es";
+import { AForm, IVFormComponent } from "../typings/v-form-component";
+import { Form } from "ant-design-vue";
 
 export function useFormInstanceMethods<E extends EmitsOptions = EmitsOptions>(
   props: IAnyObject,
@@ -39,13 +45,16 @@ export function useFormInstanceMethods<E extends EmitsOptions = EmitsOptions>(
 
   const useForm = Form.useForm;
 
-  const { resetFields, validate, clearValidate, validateField } = useForm(formdata, []);
+  const { resetFields, validate, clearValidate, validateField } = useForm(
+    formdata,
+    [],
+  );
 
   const submit = async () => {
     //const _result = await validate();
 
     const data = cloneDeep(toRaw(formdata.value));
-    emit?.('submit', data);
+    emit?.("submit", data);
     props.formConfig.submit?.(data);
     return data;
   };

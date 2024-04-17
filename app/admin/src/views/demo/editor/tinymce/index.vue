@@ -4,12 +4,12 @@
   </PageWrapper>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
-  import { Tinymce } from '@/components/Tinymce';
-  import { PageWrapper } from '@/components/Page';
+import { ref } from "vue";
+import { Tinymce } from "@/components/Tinymce";
+import { PageWrapper } from "@/components/Page";
 
-  const value = ref('hello world!');
-  function handleChange(value: string) {
-    console.log(value);
-  }
+const value = ref("hello world!");
+function handleChange(value: string) {
+  console.log(value);
+}
 </script>

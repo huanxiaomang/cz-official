@@ -16,12 +16,13 @@ declare type LabelValueOptions = {
 
 declare type EmitType = ReturnType<typeof defineEmits>;
 
-declare type TargetContext = '_self' | '_blank';
+declare type TargetContext = "_self" | "_blank";
 
 declare interface ComponentElRef<T extends HTMLElement = HTMLDivElement> {
   $el: T;
 }
 
-declare type ComponentRef<T extends HTMLElement = HTMLDivElement> = ComponentElRef<T> | null;
+declare type ComponentRef<T extends HTMLElement = HTMLDivElement> =
+  ComponentElRef<T> | null;
 
 declare type ElRef<T extends HTMLElement = HTMLDivElement> = Nullable<T>;

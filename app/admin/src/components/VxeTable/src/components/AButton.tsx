@@ -1,13 +1,13 @@
-import { h } from 'vue';
+import { h } from "vue";
 import {
   FormItemContentRenderParams,
   FormItemRenderOptions,
   VxeGlobalRendererHandles,
-} from 'vxe-table';
-import XEUtils from 'xe-utils';
-import { cellText, createEvents, createProps, getComponent } from './common';
+} from "vxe-table";
+import XEUtils from "xe-utils";
+import { cellText, createEvents, createProps, getComponent } from "./common";
 
-const COMPONENT_NAME = 'AButton';
+const COMPONENT_NAME = "AButton";
 
 export function createEditRender() {
   return function (
@@ -50,7 +50,10 @@ export function createDefaultRender() {
 }
 
 export function createFormItemRender() {
-  return function (renderOpts: FormItemRenderOptions, params: FormItemContentRenderParams) {
+  return function (
+    renderOpts: FormItemRenderOptions,
+    params: FormItemContentRenderParams,
+  ) {
     const { attrs, content } = renderOpts;
     const { property, $form, data } = params;
     const props = createProps(renderOpts, null);

@@ -1,12 +1,15 @@
-import type { MenuSetting } from '#/config';
+import type { MenuSetting } from "#/config";
 
-import { computed, unref, ref } from 'vue';
+import { computed, unref, ref } from "vue";
 
-import { useAppStore } from '@/store/modules/app';
+import { useAppStore } from "@/store/modules/app";
 
-import { SIDE_BAR_MINI_WIDTH, SIDE_BAR_SHOW_TIT_MINI_WIDTH } from '@/enums/appEnum';
-import { MenuModeEnum, MenuTypeEnum, TriggerEnum } from '@/enums/menuEnum';
-import { useFullContent } from '@/hooks/web/useFullContent';
+import {
+  SIDE_BAR_MINI_WIDTH,
+  SIDE_BAR_SHOW_TIT_MINI_WIDTH,
+} from "@/enums/appEnum";
+import { MenuModeEnum, MenuTypeEnum, TriggerEnum } from "@/enums/menuEnum";
+import { useFullContent } from "@/hooks/web/useFullContent";
 
 const mixSideHasChildren = ref(false);
 
@@ -17,7 +20,9 @@ export function useMenuSetting() {
   const getShowSidebar = computed(() => {
     return (
       unref(getSplit) ||
-      (unref(getShowMenu) && unref(getMenuMode) !== MenuModeEnum.HORIZONTAL && !unref(fullContent))
+      (unref(getShowMenu) &&
+        unref(getMenuMode) !== MenuModeEnum.HORIZONTAL &&
+        !unref(fullContent))
     );
   });
 
@@ -43,7 +48,9 @@ export function useMenuSetting() {
 
   const getMenuBgColor = computed(() => appStore.getMenuSetting.bgColor);
 
-  const getMixSideTrigger = computed(() => appStore.getMenuSetting.mixSideTrigger);
+  const getMixSideTrigger = computed(
+    () => appStore.getMenuSetting.mixSideTrigger,
+  );
 
   const getCanDrag = computed(() => appStore.getMenuSetting.canDrag);
 
@@ -57,11 +64,17 @@ export function useMenuSetting() {
     () => appStore.getMenuSetting.closeMixSidebarOnChange,
   );
 
-  const getIsSidebarType = computed(() => unref(getMenuType) === MenuTypeEnum.SIDEBAR);
+  const getIsSidebarType = computed(
+    () => unref(getMenuType) === MenuTypeEnum.SIDEBAR,
+  );
 
-  const getIsTopMenu = computed(() => unref(getMenuType) === MenuTypeEnum.TOP_MENU);
+  const getIsTopMenu = computed(
+    () => unref(getMenuType) === MenuTypeEnum.TOP_MENU,
+  );
 
-  const getCollapsedShowTitle = computed(() => appStore.getMenuSetting.collapsedShowTitle);
+  const getCollapsedShowTitle = computed(
+    () => appStore.getMenuSetting.collapsedShowTitle,
+  );
 
   const getShowTopMenu = computed(() => {
     return unref(getMenuMode) === MenuModeEnum.HORIZONTAL || unref(getSplit);
@@ -88,7 +101,10 @@ export function useMenuSetting() {
   });
 
   const getIsMixMode = computed(() => {
-    return unref(getMenuMode) === MenuModeEnum.INLINE && unref(getMenuType) === MenuTypeEnum.MIX;
+    return (
+      unref(getMenuMode) === MenuModeEnum.INLINE &&
+      unref(getMenuType) === MenuTypeEnum.MIX
+    );
   });
 
   const getRealWidth = computed(() => {
@@ -97,7 +113,9 @@ export function useMenuSetting() {
         ? unref(getMiniWidthNumber)
         : unref(getMenuWidth);
     }
-    return unref(getCollapsed) ? unref(getMiniWidthNumber) : unref(getMenuWidth);
+    return unref(getCollapsed)
+      ? unref(getMiniWidthNumber)
+      : unref(getMenuWidth);
   });
 
   const getMiniWidthNumber = computed(() => {
@@ -111,11 +129,17 @@ export function useMenuSetting() {
 
   const getCalcContentWidth = computed(() => {
     const width =
-      unref(getIsTopMenu) || !unref(getShowMenu) || (unref(getSplit) && unref(getMenuHidden))
+      unref(getIsTopMenu) ||
+      !unref(getShowMenu) ||
+      (unref(getSplit) && unref(getMenuHidden))
         ? 0
         : unref(getIsMixSidebar)
-          ? (unref(getCollapsed) ? SIDE_BAR_MINI_WIDTH : SIDE_BAR_SHOW_TIT_MINI_WIDTH) +
-            (unref(getMixSideFixed) && unref(mixSideHasChildren) ? unref(getRealWidth) : 0)
+          ? (unref(getCollapsed)
+              ? SIDE_BAR_MINI_WIDTH
+              : SIDE_BAR_SHOW_TIT_MINI_WIDTH) +
+            (unref(getMixSideFixed) && unref(mixSideHasChildren)
+              ? unref(getRealWidth)
+              : 0)
           : unref(getRealWidth);
 
     return `calc(100% - ${unref(width)}px)`;

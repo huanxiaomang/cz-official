@@ -1,5 +1,5 @@
-import { MockMethod } from 'vite-plugin-mock';
-import { resultSuccess } from '../_util';
+import { MockMethod } from "vite-plugin-mock";
+import { resultSuccess } from "../_util";
 
 const demoTreeList = (keyword) => {
   const result = {
@@ -9,13 +9,13 @@ const demoTreeList = (keyword) => {
     const children: Recordable[] = [];
     for (let j = 0; j < 3; j++) {
       children.push({
-        title: `${keyword ?? ''}选项${index}-${j}`,
+        title: `${keyword ?? ""}选项${index}-${j}`,
         value: `${index}-${j}`,
         key: `${index}-${j}`,
       });
     }
     result.list.push({
-      title: `${keyword ?? ''}选项${index}`,
+      title: `${keyword ?? ""}选项${index}`,
       value: `${index}`,
       key: `${index}`,
       children,
@@ -26,9 +26,9 @@ const demoTreeList = (keyword) => {
 
 export default [
   {
-    url: '/basic-api/tree/getDemoOptions',
+    url: "/basic-api/tree/getDemoOptions",
     timeout: 1000,
-    method: 'get',
+    method: "get",
     response: ({ query }) => {
       const { keyword } = query;
       console.log(keyword);

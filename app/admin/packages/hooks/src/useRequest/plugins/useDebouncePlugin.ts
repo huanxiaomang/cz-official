@@ -1,8 +1,8 @@
-import type { DebouncedFunc, DebounceSettings } from 'lodash-es';
-import { debounce } from 'lodash-es';
-import { computed, ref, watchEffect } from 'vue';
+import type { DebouncedFunc, DebounceSettings } from "lodash-es";
+import { debounce } from "lodash-es";
+import { computed, ref, watchEffect } from "vue";
 
-import type { UseRequestPlugin } from '../types';
+import type { UseRequestPlugin } from "../types";
 
 const useDebouncePlugin: UseRequestPlugin<any, any[]> = (
   fetchInstance,

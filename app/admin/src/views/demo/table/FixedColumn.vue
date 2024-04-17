@@ -27,59 +27,64 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { BasicTable, useTable, BasicColumn, TableAction } from '@/components/Table';
+import {
+  BasicTable,
+  useTable,
+  BasicColumn,
+  TableAction,
+} from "@/components/Table";
 
-  import { demoListApi } from '@/api/demo/table';
+import { demoListApi } from "@/api/demo/table";
 
-  const columns: BasicColumn[] = [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      fixed: 'left',
-      width: 280,
-    },
-    {
-      title: '姓名',
-      dataIndex: 'name',
-      width: 260,
-    },
-    {
-      title: '地址',
-      dataIndex: 'address',
-    },
-    {
-      title: '编号',
-      dataIndex: 'no',
-      width: 300,
-    },
-    {
-      title: '开始时间',
-      width: 200,
-      dataIndex: 'beginTime',
-    },
-    {
-      title: '结束时间',
-      dataIndex: 'endTime',
-      width: 200,
-    },
-  ];
+const columns: BasicColumn[] = [
+  {
+    title: "ID",
+    dataIndex: "id",
+    fixed: "left",
+    width: 280,
+  },
+  {
+    title: "姓名",
+    dataIndex: "name",
+    width: 260,
+  },
+  {
+    title: "地址",
+    dataIndex: "address",
+  },
+  {
+    title: "编号",
+    dataIndex: "no",
+    width: 300,
+  },
+  {
+    title: "开始时间",
+    width: 200,
+    dataIndex: "beginTime",
+  },
+  {
+    title: "结束时间",
+    dataIndex: "endTime",
+    width: 200,
+  },
+];
 
-  const [registerTable] = useTable({
-    title: 'TableAction组件及固定列示例',
-    api: demoListApi,
-    columns: columns,
-    rowSelection: { type: 'radio' },
-    bordered: true,
-    actionColumn: {
-      width: 160,
-      title: 'Action',
-      dataIndex: 'action',
-    },
-  });
-  function handleDelete(record: Recordable) {
-    console.log('点击了删除', record);
-  }
-  function handleOpen(record: Recordable) {
-    console.log('点击了启用', record);
-  }
+const [registerTable] = useTable({
+  title: "TableAction组件及固定列示例",
+  api: demoListApi,
+  columns: columns,
+  rowSelection: { type: "radio" },
+  bordered: true,
+  actionColumn: {
+    width: 160,
+    title: "Action",
+    dataIndex: "action",
+  },
+});
+function handleDelete(record: Recordable) {
+  console.log("点击了删除", record);
+}
+function handleOpen(record: Recordable) {
+  console.log("点击了启用", record);
+}
 </script>

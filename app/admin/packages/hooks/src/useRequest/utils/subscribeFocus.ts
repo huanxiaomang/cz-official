@@ -1,6 +1,6 @@
-import { isBrowser } from './isBrowser';
-import { isDocumentVisible } from './isDocumentVisible';
-import { isOnline } from './isOnline';
+import { isBrowser } from "./isBrowser";
+import { isDocumentVisible } from "./isDocumentVisible";
+import { isOnline } from "./isOnline";
 
 type Listener = () => void;
 
@@ -14,8 +14,8 @@ if (isBrowser) {
       listener();
     }
   };
-  window.addEventListener('visibilitychange', revalidate, false);
-  window.addEventListener('focus', revalidate, false);
+  window.addEventListener("visibilitychange", revalidate, false);
+  window.addEventListener("focus", revalidate, false);
 }
 
 export default function subscribe(listener: Listener) {

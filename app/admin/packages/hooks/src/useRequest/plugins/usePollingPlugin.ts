@@ -1,8 +1,8 @@
-import { ref, watch } from 'vue';
+import { ref, watch } from "vue";
 
-import type { UseRequestPlugin, UseRequestTimeout } from '../types';
-import { isDocumentVisible } from '../utils/isDocumentVisible';
-import subscribeReVisible from '../utils/subscribeReVisible';
+import type { UseRequestPlugin, UseRequestTimeout } from "../types";
+import { isDocumentVisible } from "../utils/isDocumentVisible";
+import subscribeReVisible from "../utils/subscribeReVisible";
 
 const usePollingPlugin: UseRequestPlugin<any, any[]> = (
   fetchInstance,
@@ -46,7 +46,8 @@ const usePollingPlugin: UseRequestPlugin<any, any[]> = (
       if (
         pollingErrorRetryCount === -1 ||
         // When an error occurs, the request is not repeated after pollingErrorRetryCount retries
-        (pollingErrorRetryCount !== -1 && countRef.value <= pollingErrorRetryCount)
+        (pollingErrorRetryCount !== -1 &&
+          countRef.value <= pollingErrorRetryCount)
       ) {
         timerRef.value = setTimeout(() => {
           // if pollingWhenHidden = false && document is hidden, then stop polling and subscribe revisible

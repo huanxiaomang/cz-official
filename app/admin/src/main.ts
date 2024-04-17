@@ -1,22 +1,22 @@
-import 'uno.css';
-import '@/design/index.less';
-import '@/components/VxeTable/src/css/index.scss';
-import 'ant-design-vue/dist/reset.css';
+import "uno.css";
+import "@/design/index.less";
+import "@/components/VxeTable/src/css/index.scss";
+import "ant-design-vue/dist/reset.css";
 // Register icon sprite
-import 'virtual:svg-icons-register';
+import "virtual:svg-icons-register";
 
-import { createApp } from 'vue';
+import { createApp } from "vue";
 
-import { registerGlobComp } from '@/components/registerGlobComp';
-import { setupGlobDirectives } from '@/directives';
-import { setupI18n } from '@/locales/setupI18n';
-import { setupErrorHandle } from '@/logics/error-handle';
-import { initAppConfigStore } from '@/logics/initAppConfig';
-import { router, setupRouter } from '@/router';
-import { setupRouterGuard } from '@/router/guard';
-import { setupStore } from '@/store';
+import { registerGlobComp } from "@/components/registerGlobComp";
+import { setupGlobDirectives } from "@/directives";
+import { setupI18n } from "@/locales/setupI18n";
+import { setupErrorHandle } from "@/logics/error-handle";
+import { initAppConfigStore } from "@/logics/initAppConfig";
+import { router, setupRouter } from "@/router";
+import { setupRouterGuard } from "@/router/guard";
+import { setupStore } from "@/store";
 
-import App from './App.vue';
+import App from "./App.vue";
 
 async function bootstrap() {
   const app = createApp(App);
@@ -58,7 +58,7 @@ async function bootstrap() {
   // https://next.router.vuejs.org/api/#isready
   // await router.isReady();
 
-  app.mount('#app');
+  app.mount("#app");
 }
 
 bootstrap();

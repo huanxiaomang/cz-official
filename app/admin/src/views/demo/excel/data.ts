@@ -1,37 +1,37 @@
-import { BasicColumn } from '@/components/Table';
+import { BasicColumn } from "@/components/Table";
 
 export const columns: BasicColumn[] = [
   {
-    title: 'ID',
-    dataIndex: 'id',
+    title: "ID",
+    dataIndex: "id",
     width: 80,
   },
   {
-    title: '姓名',
-    dataIndex: 'name',
+    title: "姓名",
+    dataIndex: "name",
     width: 120,
   },
   {
-    title: '年龄',
-    dataIndex: 'age',
+    title: "年龄",
+    dataIndex: "age",
     width: 80,
   },
   {
-    title: '编号',
-    dataIndex: 'no',
+    title: "编号",
+    dataIndex: "no",
     width: 80,
   },
   {
-    title: '地址',
-    dataIndex: 'address',
+    title: "地址",
+    dataIndex: "address",
   },
   {
-    title: '开始时间',
-    dataIndex: 'beginTime',
+    title: "开始时间",
+    dataIndex: "beginTime",
   },
   {
-    title: '结束时间',
-    dataIndex: 'endTime',
+    title: "结束时间",
+    dataIndex: "endTime",
   },
 ];
 
@@ -43,7 +43,7 @@ export const data: any[] = (() => {
       name: `${index} John Brown`,
       age: `${index + 10}`,
       no: `${index}98678`,
-      address: 'New York No. 1 Lake ParkNew York No. 1 Lake Park',
+      address: "New York No. 1 Lake ParkNew York No. 1 Lake Park",
       beginTime: new Date().toLocaleString(),
       endTime: new Date().toLocaleString(),
     });

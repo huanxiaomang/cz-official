@@ -7,28 +7,28 @@
   </BasicTable>
 </template>
 <script lang="ts" setup>
-  import { BasicTable, useTable } from '@/components/Table';
-  import { getBasicColumns, getFormConfig } from './tableData';
+import { BasicTable, useTable } from "@/components/Table";
+import { getBasicColumns, getFormConfig } from "./tableData";
 
-  import { demoListApi } from '@/api/demo/table';
+import { demoListApi } from "@/api/demo/table";
 
-  const [registerTable, { getForm }] = useTable({
-    title: '开启搜索区域',
-    api: demoListApi,
-    columns: getBasicColumns(),
-    useSearchForm: true,
-    formConfig: getFormConfig(),
-    showTableSetting: true,
-    tableSetting: { fullScreen: true },
-    showIndexColumn: false,
-    rowKey: 'id',
-    rowSelection: {
-      type: 'checkbox',
-    },
-    showSelectionBar: true, // 显示多选状态栏
-  });
+const [registerTable, { getForm }] = useTable({
+  title: "开启搜索区域",
+  api: demoListApi,
+  columns: getBasicColumns(),
+  useSearchForm: true,
+  formConfig: getFormConfig(),
+  showTableSetting: true,
+  tableSetting: { fullScreen: true },
+  showIndexColumn: false,
+  rowKey: "id",
+  rowSelection: {
+    type: "checkbox",
+  },
+  showSelectionBar: true, // 显示多选状态栏
+});
 
-  function getFormValues() {
-    console.log(getForm().getFieldsValue());
-  }
+function getFormValues() {
+  console.log(getForm().getFieldsValue());
+}
 </script>

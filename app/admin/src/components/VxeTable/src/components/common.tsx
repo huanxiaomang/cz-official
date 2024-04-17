@@ -1,13 +1,13 @@
-import { ComponentOptions, h } from 'vue';
+import { ComponentOptions, h } from "vue";
 import {
   FormItemContentRenderParams,
   FormItemRenderOptions,
   VxeGlobalRendererHandles,
-} from 'vxe-table';
-import XEUtils from 'xe-utils';
-import { componentMap } from '../componentMap';
-import { ComponentType } from '../componentType';
-import { createPlaceholderMessage, sanitizeInputWhitespace } from '../helper';
+} from "vxe-table";
+import XEUtils from "xe-utils";
+import { componentMap } from "../componentMap";
+import { ComponentType } from "../componentType";
+import { createPlaceholderMessage, sanitizeInputWhitespace } from "../helper";
 
 /**
  * @description: 获取组件
@@ -19,11 +19,11 @@ export function getComponent(componentName) {
 }
 
 export function isEmptyValue(cellValue: any) {
-  return cellValue === null || cellValue === undefined || cellValue === '';
+  return cellValue === null || cellValue === undefined || cellValue === "";
 }
 
 export function formatText(cellValue: any) {
-  return '' + (isEmptyValue(cellValue) ? '' : cellValue);
+  return "" + (isEmptyValue(cellValue) ? "" : cellValue);
 }
 
 export function cellText(cellValue: any): string[] {
@@ -34,17 +34,17 @@ export function cellText(cellValue: any): string[] {
  * @description: 方法名转换
  */
 export function getOnName(type: string) {
-  return 'on' + type.substring(0, 1).toLocaleUpperCase() + type.substring(1);
+  return "on" + type.substring(0, 1).toLocaleUpperCase() + type.substring(1);
 }
 
 /**
  * @description: 获取组件传值所接受的属性
  */
 function getModelKey(renderOpts: VxeGlobalRendererHandles.RenderOptions) {
-  let prop = 'value';
+  let prop = "value";
   switch (renderOpts.name) {
-    case 'ASwitch':
-      prop = 'checked';
+    case "ASwitch":
+      prop = "checked";
       break;
   }
   return prop;
@@ -54,10 +54,10 @@ function getModelKey(renderOpts: VxeGlobalRendererHandles.RenderOptions) {
  * @description: 回去双向更新的方法
  */
 function getModelEvent(renderOpts: VxeGlobalRendererHandles.RenderOptions) {
-  let type = 'update:value';
+  let type = "update:value";
   switch (renderOpts.name) {
-    case 'ASwitch':
-      type = 'update:checked';
+    case "ASwitch":
+      type = "update:checked";
       break;
   }
   return type;
@@ -70,11 +70,11 @@ function getModelEvent(renderOpts: VxeGlobalRendererHandles.RenderOptions) {
  * @author: *
  */
 function getChangeEvent() {
-  return 'change';
+  return "change";
 }
 
 function getClickEvent() {
-  return 'click';
+  return "click";
 }
 /**
  * @description: 获取方法
@@ -246,9 +246,9 @@ export function createFilterRender(
     const Component = getComponent(name);
     return [
       h(
-        'div',
+        "div",
         {
-          class: 'vxe-table--filter-antd-wrapper',
+          class: "vxe-table--filter-antd-wrapper",
         },
         column.filters.map((option, oIndex) => {
           const optionValue = option.data;
@@ -305,7 +305,10 @@ export function createFormItemRender(
     params: FormItemContentRenderParams,
   ) => Record<string, any>,
 ) {
-  return function (renderOpts: FormItemRenderOptions, params: FormItemContentRenderParams) {
+  return function (
+    renderOpts: FormItemRenderOptions,
+    params: FormItemContentRenderParams,
+  ) {
     const args = (callBack && callBack(renderOpts, params)) ?? {};
     const { data, property, $form } = params;
     const { name } = renderOpts;
@@ -323,7 +326,11 @@ export function createFormItemRender(
           params,
           (value: any) => {
             // 处理 model 值双向绑定
-            XEUtils.set(data, property, sanitizeInputWhitespace(name as ComponentType, value));
+            XEUtils.set(
+              data,
+              property,
+              sanitizeInputWhitespace(name as ComponentType, value),
+            );
           },
           () => {
             // 处理 change 事件相关逻辑
@@ -353,21 +360,22 @@ export function createCellRender(
     params: VxeGlobalRendererHandles.RenderCellParams,
   ) {
     const args = (callBack && callBack(renderOpts, params)) ?? [];
-    const cellLabel = getSelectCellValue && getSelectCellValue(renderOpts, params, ...args);
+    const cellLabel =
+      getSelectCellValue && getSelectCellValue(renderOpts, params, ...args);
     const { placeholder } = renderOpts;
 
     return [
       h(
-        'span',
+        "span",
         {
-          class: 'vxe-cell--label',
+          class: "vxe-cell--label",
         },
         placeholder && isEmptyValue(cellLabel)
           ? [
               h(
-                'span',
+                "span",
                 {
-                  class: 'vxe-cell--placeholder',
+                  class: "vxe-cell--placeholder",
                 },
                 formatText(placeholder),
               ),
@@ -386,14 +394,20 @@ export function createCellRender(
  */
 export function createExportMethod(
   getExportCellValue: Function,
-  callBack?: (params: VxeGlobalRendererHandles.ExportMethodParams) => Array<any>,
+  callBack?: (
+    params: VxeGlobalRendererHandles.ExportMethodParams,
+  ) => Array<any>,
 ) {
   return function (params: VxeGlobalRendererHandles.ExportMethodParams) {
     const { row, column, options } = params;
     const args = (callBack && callBack(params)) ?? [];
     return options && options.original
       ? XEUtils.get(row, column.field as string)
-      : getExportCellValue(column.editRender || column.cellRender, params, ...args);
+      : getExportCellValue(
+          column.editRender || column.cellRender,
+          params,
+          ...args,
+        );
   };
 }
 

@@ -1,14 +1,21 @@
-import { defineComponent, ref, unref } from 'vue';
-import { Card, Typography, Button, Input, Space, message } from 'ant-design-vue';
-import { getArticle } from './mock-api';
-import { useRequest, clearCache } from '@vben/hooks';
-import { PageWrapper } from '@/components/Page';
+import { defineComponent, ref, unref } from "vue";
+import {
+  Card,
+  Typography,
+  Button,
+  Input,
+  Space,
+  message,
+} from "ant-design-vue";
+import { getArticle } from "./mock-api";
+import { useRequest, clearCache } from "@vben/hooks";
+import { PageWrapper } from "@/components/Page";
 
 const Article1 = defineComponent({
   props: {
     cacheKey: {
       type: String,
-      default: 'cacheKey-demo',
+      default: "cacheKey-demo",
     },
   },
   setup(props) {
@@ -18,7 +25,7 @@ const Article1 = defineComponent({
 
     return () => (
       <>
-        <p>Background loading: {loading.value ? 'true' : 'false'}</p>
+        <p>Background loading: {loading.value ? "true" : "false"}</p>
         <p>Latest request time: {unref(data)?.time}</p>
         <p>{unref(data)?.data}</p>
       </>
@@ -46,7 +53,7 @@ const Demo1 = defineComponent({
         {/* SWR */}
         <div class="mt-4">
           <Button type="primary" onClick={() => toggle()}>
-            {state.value ? 'hidden' : 'show'}
+            {state.value ? "hidden" : "show"}
           </Button>
           {state.value && <Article1 />}
         </div>
@@ -58,13 +65,13 @@ const Demo1 = defineComponent({
 const Article2 = defineComponent({
   setup() {
     const { loading, data } = useRequest(getArticle, {
-      cacheKey: 'staleTime-demo',
+      cacheKey: "staleTime-demo",
       staleTime: 5000,
     });
 
     return () => (
       <>
-        <p>Background loading: {loading.value ? 'true' : 'false'}</p>
+        <p>Background loading: {loading.value ? "true" : "false"}</p>
         <p>Latest request time: {unref(data)?.time}</p>
         <p>{unref(data)?.data}</p>
       </>
@@ -85,15 +92,15 @@ const Demo2 = defineComponent({
           <Typography.Paragraph>
             通过设置
             <Typography.Text type="danger"> staleTime </Typography.Text>
-            ，我们可以指定数据新鲜时间，在这个时间内，不会重新发起请求。下面的示例设置了 5s
-            的新鲜时间，你可以通过点击按钮来体验效果
+            ，我们可以指定数据新鲜时间，在这个时间内，不会重新发起请求。下面的示例设置了
+            5s 的新鲜时间，你可以通过点击按钮来体验效果
           </Typography.Paragraph>
         </Typography>
 
         {/* 数据保持新鲜 */}
         <div class="mt-4">
           <Button type="primary" onClick={() => toggle()}>
-            {state.value ? 'hidden' : 'show'}
+            {state.value ? "hidden" : "show"}
           </Button>
           {state.value && <Article2 />}
         </div>
@@ -105,12 +112,12 @@ const Demo2 = defineComponent({
 const Article3 = defineComponent({
   setup() {
     const { loading, data, refresh } = useRequest(getArticle, {
-      cacheKey: 'cacheKey-share',
+      cacheKey: "cacheKey-share",
     });
 
     return () => (
       <>
-        <p>Background loading: {loading.value ? 'true' : 'false'}</p>
+        <p>Background loading: {loading.value ? "true" : "false"}</p>
         <Button type="primary" onClick={refresh}>
           更新
         </Button>
@@ -134,11 +141,13 @@ const Demo3 = defineComponent({
           <Typography.Paragraph>
             <ul>
               <li>
-                请求 Promise 共享，相同的<Typography.Text type="danger"> cacheKey </Typography.Text>
+                请求 Promise 共享，相同的
+                <Typography.Text type="danger"> cacheKey </Typography.Text>
                 同时只会有一个在发起请求，后发起的会共用同一个请求 Promise
               </li>
               <li>
-                数据同步，任何时候，当我们改变其中某个 cacheKey 的内容时，其它相同
+                数据同步，任何时候，当我们改变其中某个 cacheKey
+                的内容时，其它相同
                 <Typography.Text type="danger"> cacheKey </Typography.Text>
                 的内容均会同步
               </li>
@@ -161,18 +170,18 @@ const Demo3 = defineComponent({
 const Article4 = defineComponent({
   setup() {
     const { loading, data, params, run } = useRequest(getArticle, {
-      cacheKey: 'cacheKey-share4',
+      cacheKey: "cacheKey-share4",
     });
 
-    const keyword = ref(params.value?.[0] || '');
+    const keyword = ref(params.value?.[0] || "");
 
     return () => (
       <>
         <Space>
-          <Input v-model={[keyword.value, 'value']} />
+          <Input v-model={[keyword.value, "value"]} />
           <Button onClick={() => run(keyword.value)}>Get</Button>
         </Space>
-        <p>Background loading: {loading.value ? 'true' : 'false'}</p>
+        <p>Background loading: {loading.value ? "true" : "false"}</p>
         <p>Latest request time: {unref(data)?.time}</p>
         <p>Latest request data: {unref(data)?.data}</p>
         <p>keyword: {keyword.value}</p>
@@ -200,7 +209,7 @@ const Demo4 = defineComponent({
         {/* 参数缓存 */}
         <div class="mt-4">
           <Button type="primary" onClick={() => toggle()}>
-            {state.value ? 'hidden' : 'show'}
+            {state.value ? "hidden" : "show"}
           </Button>
           <div class="mt-2">{state.value && <Article4 />}</div>
         </div>
@@ -218,15 +227,16 @@ const Demo5 = defineComponent({
 
     const clear = (cacheKey?: string | string[]) => {
       clearCache(cacheKey);
-      const tips = Array.isArray(cacheKey) ? cacheKey.join('、') : cacheKey;
-      message.success(`Clear ${tips ?? 'All'} finished`);
+      const tips = Array.isArray(cacheKey) ? cacheKey.join("、") : cacheKey;
+      message.success(`Clear ${tips ?? "All"} finished`);
     };
 
     return () => (
       <Card title="删除缓存" class="mt-2">
         <Typography>
           <Typography.Paragraph>
-            useRequest 提供了一个 clearCache 方法，可以清除指定 cacheKey 的缓存数据。
+            useRequest 提供了一个 clearCache 方法，可以清除指定 cacheKey
+            的缓存数据。
           </Typography.Paragraph>
         </Typography>
 
@@ -234,11 +244,11 @@ const Demo5 = defineComponent({
         <div class="mt-4">
           <Space>
             <Button type="primary" onClick={() => toggle()}>
-              {state.value ? 'hidden' : 'show'}
+              {state.value ? "hidden" : "show"}
             </Button>
-            <Button onClick={() => clear('Article1')}>Clear Article1</Button>
-            <Button onClick={() => clear('Article2')}>Clear Article2</Button>
-            <Button onClick={() => clear(['Article2', 'Article3'])}>
+            <Button onClick={() => clear("Article1")}>Clear Article1</Button>
+            <Button onClick={() => clear("Article2")}>Clear Article2</Button>
+            <Button onClick={() => clear(["Article2", "Article3"])}>
               Clear Article2 and Article3
             </Button>
             <Button onClick={() => clear()}>Clear All</Button>
@@ -257,16 +267,16 @@ const Demo5 = defineComponent({
 
 const Article6 = defineComponent({
   setup() {
-    const cacheKey = 'setCache-demo6';
+    const cacheKey = "setCache-demo6";
     const { loading, data } = useRequest(getArticle, {
       cacheKey,
       setCache: (data) => localStorage.setItem(cacheKey, JSON.stringify(data)),
-      getCache: () => JSON.parse(localStorage.getItem(cacheKey) || '{}'),
+      getCache: () => JSON.parse(localStorage.getItem(cacheKey) || "{}"),
     });
 
     return () => (
       <>
-        <p>Background loading: {loading.value ? 'true' : 'false'}</p>
+        <p>Background loading: {loading.value ? "true" : "false"}</p>
         <p>Latest request time: {unref(data)?.time}</p>
         <p>{unref(data)?.data}</p>
       </>
@@ -285,7 +295,8 @@ const Demo6 = defineComponent({
       <Card title="自定义缓存" class="mt-2">
         <Typography>
           <Typography.Paragraph>
-            通过配置 setCache 和 getCache，可以自定义数据缓存，比如可以将数据存储到
+            通过配置 setCache 和
+            getCache，可以自定义数据缓存，比如可以将数据存储到
             localStorage、IndexDB 等。
           </Typography.Paragraph>
         </Typography>
@@ -293,7 +304,7 @@ const Demo6 = defineComponent({
         {/* 自定义缓存 */}
         <div class="mt-4">
           <Button type="primary" onClick={() => toggle()}>
-            {state.value ? 'hidden' : 'show'}
+            {state.value ? "hidden" : "show"}
           </Button>
           <div class="mt-2">{state.value && <Article6 />}</div>
         </div>

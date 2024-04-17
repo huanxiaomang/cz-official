@@ -1,13 +1,13 @@
-import { useI18n } from '@/hooks/web/useI18n';
-import { useGo } from '@/hooks/web/usePage';
-import { getMenus } from '@/router/menus';
-import { type Menu } from '@/router/types';
-import { filter, forEach } from '@/utils/helper/treeHelper';
-import { useScrollTo } from '@vben/hooks';
-import { type AnyFunction } from '@vben/types';
-import { onKeyStroke, useDebounceFn } from '@vueuse/core';
-import { cloneDeep } from 'lodash-es';
-import { Ref, nextTick, onBeforeMount, ref, unref } from 'vue';
+import { useI18n } from "@/hooks/web/useI18n";
+import { useGo } from "@/hooks/web/usePage";
+import { getMenus } from "@/router/menus";
+import { type Menu } from "@/router/types";
+import { filter, forEach } from "@/utils/helper/treeHelper";
+import { useScrollTo } from "@vben/hooks";
+import { type AnyFunction } from "@vben/types";
+import { onKeyStroke, useDebounceFn } from "@vueuse/core";
+import { cloneDeep } from "lodash-es";
+import { Ref, nextTick, onBeforeMount, ref, unref } from "vue";
 
 export interface SearchResult {
   name: string;
@@ -17,19 +17,38 @@ export interface SearchResult {
 
 // Translate special characters
 function transform(c: string) {
-  const code: string[] = ['$', '(', ')', '*', '+', '.', '[', ']', '?', '\\', '^', '{', '}', '|'];
+  const code: string[] = [
+    "$",
+    "(",
+    ")",
+    "*",
+    "+",
+    ".",
+    "[",
+    "]",
+    "?",
+    "\\",
+    "^",
+    "{",
+    "}",
+    "|",
+  ];
   return code.includes(c) ? `\\${c}` : c;
 }
 
 function createSearchReg(key: string) {
   const keys = [...key].map((item) => transform(item));
-  const str = ['', ...keys, ''].join('.*');
+  const str = ["", ...keys, ""].join(".*");
   return new RegExp(str);
 }
 
-export function useMenuSearch(refs: Ref<HTMLElement[]>, scrollWrap: Ref, emit: AnyFunction) {
+export function useMenuSearch(
+  refs: Ref<HTMLElement[]>,
+  scrollWrap: Ref,
+  emit: AnyFunction,
+) {
   const searchResult = ref<SearchResult[]>([]);
-  const keyword = ref('');
+  const keyword = ref("");
   const activeIndex = ref(-1);
 
   let menuList: Menu[] = [];
@@ -66,14 +85,22 @@ export function useMenuSearch(refs: Ref<HTMLElement[]>, scrollWrap: Ref, emit: A
     const ret: SearchResult[] = [];
     filterMenu.forEach((item) => {
       const { name, path, icon, children, hideMenu, meta } = item;
-      if (!hideMenu && reg.test(name) && (!children?.length || meta?.hideChildrenInMenu)) {
+      if (
+        !hideMenu &&
+        reg.test(name) &&
+        (!children?.length || meta?.hideChildrenInMenu)
+      ) {
         ret.push({
           name: parent?.name ? `${parent.name} > ${name}` : name,
           path,
           icon,
         });
       }
-      if (!meta?.hideChildrenInMenu && Array.isArray(children) && children.length) {
+      if (
+        !meta?.hideChildrenInMenu &&
+        Array.isArray(children) &&
+        children.length
+      ) {
         ret.push(...handlerSearchResult(children, reg, item));
       }
     });
@@ -110,7 +137,12 @@ export function useMenuSearch(refs: Ref<HTMLElement[]>, scrollWrap: Ref, emit: A
   // the scroll bar needs to scroll automatically
   function handleScroll() {
     const refList = unref(refs);
-    if (!refList || !Array.isArray(refList) || refList.length === 0 || !unref(scrollWrap)) {
+    if (
+      !refList ||
+      !Array.isArray(refList) ||
+      refList.length === 0 ||
+      !unref(scrollWrap)
+    ) {
       return;
     }
 
@@ -152,16 +184,23 @@ export function useMenuSearch(refs: Ref<HTMLElement[]>, scrollWrap: Ref, emit: A
   // close search modal
   function handleClose() {
     searchResult.value = [];
-    emit('close');
+    emit("close");
   }
 
   // enter search
-  onKeyStroke('Enter', handleEnter);
+  onKeyStroke("Enter", handleEnter);
   // Monitor keyboard arrow keys
-  onKeyStroke('ArrowUp', handleUp);
-  onKeyStroke('ArrowDown', handleDown);
+  onKeyStroke("ArrowUp", handleUp);
+  onKeyStroke("ArrowDown", handleDown);
   // esc close
-  onKeyStroke('Escape', handleClose);
+  onKeyStroke("Escape", handleClose);
 
-  return { handleSearch, searchResult, keyword, activeIndex, handleMouseenter, handleEnter };
+  return {
+    handleSearch,
+    searchResult,
+    keyword,
+    activeIndex,
+    handleMouseenter,
+    handleEnter,
+  };
 }

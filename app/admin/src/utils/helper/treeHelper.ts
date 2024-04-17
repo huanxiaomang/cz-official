@@ -6,17 +6,21 @@ interface TreeHelperConfig {
 
 // 默认配置
 const DEFAULT_CONFIG: TreeHelperConfig = {
-  id: 'id',
-  children: 'children',
-  pid: 'pid',
+  id: "id",
+  children: "children",
+  pid: "pid",
 };
 
 // 获取配置。  Object.assign 从一个或多个源对象复制到目标对象
-const getConfig = (config: Partial<TreeHelperConfig>) => Object.assign({}, DEFAULT_CONFIG, config);
+const getConfig = (config: Partial<TreeHelperConfig>) =>
+  Object.assign({}, DEFAULT_CONFIG, config);
 
 // tree from list
 // 列表中的树
-export function listToTree<T = any>(list: any[], config: Partial<TreeHelperConfig> = {}): T[] {
+export function listToTree<T = any>(
+  list: any[],
+  config: Partial<TreeHelperConfig> = {},
+): T[] {
   const conf = getConfig(config) as TreeHelperConfig;
   const nodeMap = new Map();
   const result: T[] = [];
@@ -33,7 +37,10 @@ export function listToTree<T = any>(list: any[], config: Partial<TreeHelperConfi
   return result;
 }
 
-export function treeToList<T = any>(tree: any, config: Partial<TreeHelperConfig> = {}): T {
+export function treeToList<T = any>(
+  tree: any,
+  config: Partial<TreeHelperConfig> = {},
+): T {
   config = getConfig(config);
   const { children } = config;
   const result: any = [...tree];
@@ -102,7 +109,11 @@ export function findPath<T = any>(
   return null;
 }
 
-export function findPathAll(tree: any, func: Fn, config: Partial<TreeHelperConfig> = {}) {
+export function findPathAll(
+  tree: any,
+  func: Fn,
+  config: Partial<TreeHelperConfig> = {},
+) {
   config = getConfig(config);
   const path: any[] = [];
   const list = [...tree];
@@ -161,7 +172,9 @@ export function forEach<T = any>(
     if (func(list[i])) {
       return;
     }
-    children && list[i][children] && list.splice(i + 1, 0, ...list[i][children]);
+    children &&
+      list[i][children] &&
+      list.splice(i + 1, 0, ...list[i][children]);
   }
 }
 
@@ -169,7 +182,10 @@ export function forEach<T = any>(
  * @description: Extract tree specified structure
  * @description: 提取树指定结构
  */
-export function treeMap<T = any>(treeData: T[], opt: { children?: string; conversion: Fn }): T[] {
+export function treeMap<T = any>(
+  treeData: T[],
+  opt: { children?: string; conversion: Fn },
+): T[] {
   return treeData.map((item) => treeMapEach(item, opt));
 }
 
@@ -179,9 +195,10 @@ export function treeMap<T = any>(treeData: T[], opt: { children?: string; conver
  */
 export function treeMapEach(
   data: any,
-  { children = 'children', conversion }: { children?: string; conversion: Fn },
+  { children = "children", conversion }: { children?: string; conversion: Fn },
 ) {
-  const haveChildren = Array.isArray(data[children]) && data[children].length > 0;
+  const haveChildren =
+    Array.isArray(data[children]) && data[children].length > 0;
   const conversionData = conversion(data) || {};
   if (haveChildren) {
     return {

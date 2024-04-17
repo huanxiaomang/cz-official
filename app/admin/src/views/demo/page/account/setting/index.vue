@@ -13,38 +13,38 @@
 </template>
 
 <script lang="ts" setup>
-  import { Tabs } from 'ant-design-vue';
-  import { ScrollContainer } from '@/components/Container';
-  import { settingList } from './data';
-  import BaseSetting from './BaseSetting.vue';
-  import SecureSetting from './SecureSetting.vue';
-  import AccountBind from './AccountBind.vue';
-  import MsgNotify from './MsgNotify.vue';
+import { Tabs } from "ant-design-vue";
+import { ScrollContainer } from "@/components/Container";
+import { settingList } from "./data";
+import BaseSetting from "./BaseSetting.vue";
+import SecureSetting from "./SecureSetting.vue";
+import AccountBind from "./AccountBind.vue";
+import MsgNotify from "./MsgNotify.vue";
 
-  const TabPane = Tabs.TabPane;
-  const tabs = {
-    BaseSetting,
-    SecureSetting,
-    AccountBind,
-    MsgNotify,
-  };
+const TabPane = Tabs.TabPane;
+const tabs = {
+  BaseSetting,
+  SecureSetting,
+  AccountBind,
+  MsgNotify,
+};
 
-  const prefixCls = 'account-setting';
-  const tabBarStyle = {
-    width: '220px',
-  };
+const prefixCls = "account-setting";
+const tabBarStyle = {
+  width: "220px",
+};
 </script>
 <style lang="less">
-  .account-setting {
-    margin: 12px;
-    background-color: @component-background;
+.account-setting {
+  margin: 12px;
+  background-color: @component-background;
 
-    .base-title {
-      padding-left: 0;
-    }
-
-    .ant-tabs-tab-active {
-      background-color: @item-active-bg;
-    }
+  .base-title {
+    padding-left: 0;
   }
+
+  .ant-tabs-tab-active {
+    background-color: @item-active-bg;
+  }
+}
 </style>

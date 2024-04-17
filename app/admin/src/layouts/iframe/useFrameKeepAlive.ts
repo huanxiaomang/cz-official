@@ -1,14 +1,14 @@
-import type { AppRouteRecordRaw } from '@/router/types';
+import type { AppRouteRecordRaw } from "@/router/types";
 
-import { computed, toRaw, unref } from 'vue';
+import { computed, toRaw, unref } from "vue";
 
-import { useMultipleTabStore } from '@/store/modules/multipleTab';
+import { useMultipleTabStore } from "@/store/modules/multipleTab";
 
-import { uniqBy } from 'lodash-es';
+import { uniqBy } from "lodash-es";
 
-import { useMultipleTabSetting } from '@/hooks/setting/useMultipleTabSetting';
+import { useMultipleTabSetting } from "@/hooks/setting/useMultipleTabSetting";
 
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 
 export function useFrameKeepAlive() {
   const router = useRouter();
@@ -16,13 +16,16 @@ export function useFrameKeepAlive() {
   const { getShowMultipleTab } = useMultipleTabSetting();
   const tabStore = useMultipleTabStore();
   const getFramePages = computed(() => {
-    const ret = getAllFramePages(toRaw(router.getRoutes()) as unknown as AppRouteRecordRaw[]) || [];
+    const ret =
+      getAllFramePages(
+        toRaw(router.getRoutes()) as unknown as AppRouteRecordRaw[],
+      ) || [];
     return ret;
   });
 
   const getOpenTabList = computed((): string[] => {
     return tabStore.getTabList.reduce((prev: string[], next) => {
-      if (next.meta && Reflect.has(next.meta, 'frameSrc')) {
+      if (next.meta && Reflect.has(next.meta, "frameSrc")) {
         prev.push(next.name as string);
       }
       return prev;
@@ -40,7 +43,7 @@ export function useFrameKeepAlive() {
         res.push(...getAllFramePages(children));
       }
     }
-    res = uniqBy(res, 'name');
+    res = uniqBy(res, "name");
     return res;
   }
 

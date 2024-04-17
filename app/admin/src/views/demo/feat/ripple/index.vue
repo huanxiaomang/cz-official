@@ -9,8 +9,8 @@
   </PageWrapper>
 </template>
 <script lang="ts" setup>
-  import RippleDirective from '@/directives/ripple';
-  import { PageWrapper } from '@/components/Page';
+import RippleDirective from "@/directives/ripple";
+import { PageWrapper } from "@/components/Page";
 
-  const vRipple = RippleDirective;
+const vRipple = RippleDirective;
 </script>

@@ -1,10 +1,18 @@
-import type { ColEx } from '../types';
-import type { AdvanceState } from '../types/hooks';
-import { ComputedRef, getCurrentInstance, Ref, shallowReactive, computed, unref, watch } from 'vue';
-import type { FormProps, FormSchemaInner as FormSchema } from '../types/form';
-import { isBoolean, isFunction, isNumber, isObject } from '@/utils/is';
-import { useBreakpoint } from '@/hooks/event/useBreakpoint';
-import { useDebounceFn } from '@vueuse/core';
+import type { ColEx } from "../types";
+import type { AdvanceState } from "../types/hooks";
+import {
+  ComputedRef,
+  getCurrentInstance,
+  Ref,
+  shallowReactive,
+  computed,
+  unref,
+  watch,
+} from "vue";
+import type { FormProps, FormSchemaInner as FormSchema } from "../types/form";
+import { isBoolean, isFunction, isNumber, isObject } from "@/utils/is";
+import { useBreakpoint } from "@/hooks/event/useBreakpoint";
+import { useDebounceFn } from "@vueuse/core";
 
 const BASIC_COL_LEN = 24;
 
@@ -52,7 +60,11 @@ export default function ({
   const debounceUpdateAdvanced = useDebounceFn(updateAdvanced, 30);
 
   watch(
-    [() => unref(getSchema), () => advanceState.isAdvanced, () => unref(realWidthRef)],
+    [
+      () => unref(getSchema),
+      () => advanceState.isAdvanced,
+      () => unref(realWidthRef),
+    ],
     () => {
       const { showAdvancedButton } = unref(getProps);
       if (showAdvancedButton) {
@@ -62,7 +74,11 @@ export default function ({
     { immediate: true },
   );
 
-  function getAdvanced(itemCol: Partial<ColEx>, itemColSum = 0, isLastAction = false) {
+  function getAdvanced(
+    itemCol: Partial<ColEx>,
+    itemColSum = 0,
+    isLastAction = false,
+  ) {
     const width = unref(realWidthRef);
 
     const mdWidth =
@@ -156,11 +172,16 @@ export default function ({
     // 确保页面发送更新
     vm?.proxy?.$forceUpdate();
 
-    advanceState.actionSpan = (realItemColSum % BASIC_COL_LEN) + unref(getEmptySpan);
+    advanceState.actionSpan =
+      (realItemColSum % BASIC_COL_LEN) + unref(getEmptySpan);
 
-    getAdvanced(unref(getProps).actionColOptions || { span: BASIC_COL_LEN }, itemColSum, true);
+    getAdvanced(
+      unref(getProps).actionColOptions || { span: BASIC_COL_LEN },
+      itemColSum,
+      true,
+    );
 
-    emit('advanced-change');
+    emit("advanced-change");
   }
 
   function handleToggleAdvanced() {

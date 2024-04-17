@@ -1,11 +1,11 @@
-const validColors = ['primary', 'error', 'warning', 'success', ''] as const;
+const validColors = ["primary", "error", "warning", "success", ""] as const;
 type ButtonColorType = (typeof validColors)[number];
 
 export const buttonProps = {
   color: {
     type: String as PropType<ButtonColorType>,
     validator: (v) => validColors.includes(v),
-    default: '',
+    default: "",
   },
   loading: { type: Boolean },
   disabled: { type: Boolean },
@@ -22,6 +22,9 @@ export const buttonProps = {
    * @default: 14
    */
   iconSize: { type: Number, default: 14 },
-  onClick: { type: [Function, Array] as PropType<(() => any) | (() => any)[]>, default: null },
+  onClick: {
+    type: [Function, Array] as PropType<(() => any) | (() => any)[]>,
+    default: null,
+  },
   text: { type: String },
 };

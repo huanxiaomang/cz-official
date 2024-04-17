@@ -1,9 +1,9 @@
-import type { defineComponent } from 'vue';
-import type { ComponentType } from '../../types/componentType';
-import { componentMap } from '@/components/Table/src/componentMap';
+import type { defineComponent } from "vue";
+import type { ComponentType } from "../../types/componentType";
+import { componentMap } from "@/components/Table/src/componentMap";
 
-import { Popover } from 'ant-design-vue';
-import { h } from 'vue';
+import { Popover } from "ant-design-vue";
+import { h } from "vue";
 
 export interface ComponentProps {
   component: ComponentType;
@@ -15,7 +15,7 @@ export interface ComponentProps {
 
 export const CellComponent = (
   {
-    component = 'Input',
+    component = "Input",
     rule = true,
     ruleMessage,
     popoverVisible,
@@ -32,7 +32,7 @@ export const CellComponent = (
   return h(
     Popover,
     {
-      overlayClassName: 'edit-cell-rule-popover',
+      overlayClassName: "edit-cell-rule-popover",
       open: !!popoverVisible,
       ...(getPopupContainer ? { getPopupContainer } : {}),
     },

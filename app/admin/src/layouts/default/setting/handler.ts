@@ -1,14 +1,17 @@
-import { MenuTypeEnum } from '@/enums/menuEnum';
-import { HandlerEnum } from './enum';
-import { updateHeaderBgColor, updateSidebarBgColor } from '@/logics/theme/updateBackground';
-import { updateColorWeak } from '@/logics/theme/updateColorWeak';
-import { updateGrayMode } from '@/logics/theme/updateGrayMode';
+import { MenuTypeEnum } from "@/enums/menuEnum";
+import { HandlerEnum } from "./enum";
+import {
+  updateHeaderBgColor,
+  updateSidebarBgColor,
+} from "@/logics/theme/updateBackground";
+import { updateColorWeak } from "@/logics/theme/updateColorWeak";
+import { updateGrayMode } from "@/logics/theme/updateGrayMode";
 
-import { useAppStore } from '@/store/modules/app';
-import { ProjectConfig } from '#/config';
-import { updateDarkTheme } from '@/logics/theme/dark';
-import { useRootSetting } from '@/hooks/setting/useRootSetting';
-import projectSetting from '@/settings/projectSetting';
+import { useAppStore } from "@/store/modules/app";
+import { ProjectConfig } from "#/config";
+import { updateDarkTheme } from "@/logics/theme/dark";
+import { useRootSetting } from "@/hooks/setting/useRootSetting";
+import projectSetting from "@/settings/projectSetting";
 
 export function baseHandler(event: HandlerEnum, value: any) {
   const appStore = useAppStore();
@@ -20,7 +23,10 @@ export function baseHandler(event: HandlerEnum, value: any) {
   }
 }
 
-export function handler(event: HandlerEnum, value: any): DeepPartial<ProjectConfig> {
+export function handler(
+  event: HandlerEnum,
+  value: any,
+): DeepPartial<ProjectConfig> {
   const appStore = useAppStore();
 
   const { getThemeColor, getDarkMode } = useRootSetting();
@@ -30,7 +36,9 @@ export function handler(event: HandlerEnum, value: any): DeepPartial<ProjectConf
       const { mode, type, split } = value;
       const isMixSidebar = type === MenuTypeEnum.MIX;
       const mixSideSplitOpt =
-        menuSetting.type === MenuTypeEnum.MIX ? { split: menuSetting.split } : { split };
+        menuSetting.type === MenuTypeEnum.MIX
+          ? { split: menuSetting.split }
+          : { split };
       const otherSplitOpt = { split: false };
       const splitOpt = isMixSidebar ? mixSideSplitOpt : otherSplitOpt;
 

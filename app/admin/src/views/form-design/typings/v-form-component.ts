@@ -1,16 +1,16 @@
-import { IAnyObject } from './base-type';
+import { IAnyObject } from "./base-type";
 // import { ComponentOptions } from 'vue/types/options';
-import { ComponentOptions } from 'vue';
-import { IVFormMethods } from '../hooks/useVFormMethods';
-import { ColEx } from '@/components/Form/src/types';
+import { ComponentOptions } from "vue";
+import { IVFormMethods } from "../hooks/useVFormMethods";
+import { ColEx } from "@/components/Form/src/types";
 
-import { SelectValue } from 'ant-design-vue/lib/select';
-import { validateOptions } from 'ant-design-vue/lib/form/useForm';
-import { RuleError } from 'ant-design-vue/lib/form/interface';
-import { FormItem } from '@/components/Form';
-import { FormLayout, FormProps } from 'ant-design-vue/lib/form/Form';
+import { SelectValue } from "ant-design-vue/lib/select";
+import { validateOptions } from "ant-design-vue/lib/form/useForm";
+import { RuleError } from "ant-design-vue/lib/form/interface";
+import { FormItem } from "@/components/Form";
+import { FormLayout, FormProps } from "ant-design-vue/lib/form/Form";
 
-type labelLayout = 'flex' | 'Grid';
+type labelLayout = "flex" | "Grid";
 export type PropsTabKey = 1 | 2 | 3;
 type ColSpanType = number | string;
 
@@ -77,14 +77,14 @@ declare type namesType = string | string[];
  */
 export type PickAntFormConfig = Pick<
   FormProps,
-  | 'layout'
-  | 'size'
-  | 'colon'
-  | 'labelAlign'
-  | 'disabled'
-  | 'labelCol'
-  | 'wrapperCol'
-  | 'hideRequiredMark'
+  | "layout"
+  | "size"
+  | "colon"
+  | "labelAlign"
+  | "disabled"
+  | "labelCol"
+  | "wrapperCol"
+  | "hideRequiredMark"
 >;
 
 // 使用extends 而不使用 &联结 是为了避免 type:check指令类型重载错误
@@ -135,7 +135,7 @@ export interface AForm {
    * @type 'left' | 'right'
    * @default 'left'
    */
-  labelAlign: 'left' | 'right';
+  labelAlign: "left" | "right";
 
   /**
    * data of form component
@@ -168,7 +168,10 @@ export interface AForm {
    * and an object containing all fields that fail the validation. Returns a promise if callback is omitted
    * @type Function
    */
-  validate: <T = any>(names?: namesType, option?: validateOptions) => Promise<T>;
+  validate: <T = any>(
+    names?: namesType,
+    option?: validateOptions,
+  ) => Promise<T>;
 
   /**
    * validate one or several form items
@@ -275,7 +278,7 @@ interface IACol {
 }
 
 export interface IValidationRule {
-  trigger?: 'change' | 'blur' | ['change', 'blur'];
+  trigger?: "change" | "blur" | ["change", "blur"];
   /**
    * validation error message
    * @type string | Function

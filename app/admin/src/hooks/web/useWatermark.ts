@@ -1,9 +1,16 @@
-import { getCurrentInstance, onBeforeUnmount, ref, Ref, shallowRef, unref } from 'vue';
-import { useRafThrottle } from '@/utils/domUtils';
-import { addResizeListener, removeResizeListener } from '@/utils/event';
-import { isDef } from '@/utils/is';
+import {
+  getCurrentInstance,
+  onBeforeUnmount,
+  ref,
+  Ref,
+  shallowRef,
+  unref,
+} from "vue";
+import { useRafThrottle } from "@/utils/domUtils";
+import { addResizeListener, removeResizeListener } from "@/utils/event";
+import { isDef } from "@/utils/is";
 
-const watermarkSymbol = 'watermark-dom';
+const watermarkSymbol = "watermark-dom";
 const updateWatermarkText = ref<string | null>(null);
 
 type UseWatermarkRes = {
@@ -31,25 +38,27 @@ type waterMarkOptionsType = {
   rotate?: number;
 };
 
-const sourceMap = new Map<Symbol, Omit<UseWatermarkRes, 'clearAll'>>();
+const sourceMap = new Map<Symbol, Omit<UseWatermarkRes, "clearAll">>();
 
 function findTargetNode(el) {
-  return Array.from(sourceMap.values()).find((item) => item.targetElement === el);
+  return Array.from(sourceMap.values()).find(
+    (item) => item.targetElement === el,
+  );
 }
 
 function createBase64(str: string, waterMarkOptions: waterMarkOptionsType) {
-  const can = document.createElement('canvas');
+  const can = document.createElement("canvas");
   const width = 300;
   const height = 240;
   Object.assign(can, { width, height });
 
-  const cans = can.getContext('2d');
+  const cans = can.getContext("2d");
   if (cans) {
-    const fontFamily = waterMarkOptions?.fontFamily || 'Vedana';
+    const fontFamily = waterMarkOptions?.fontFamily || "Vedana";
     const fontSize = waterMarkOptions?.fontSize || 15;
-    const fontColor = waterMarkOptions?.fontColor || 'rgba(0, 0, 0, 0.15)';
-    const textAlign = waterMarkOptions?.textAlign || 'left';
-    const textBaseline = waterMarkOptions?.textBaseline || 'middle';
+    const fontColor = waterMarkOptions?.fontColor || "rgba(0, 0, 0, 0.15)";
+    const textAlign = waterMarkOptions?.textAlign || "left";
+    const textBaseline = waterMarkOptions?.textBaseline || "middle";
     const rotate = waterMarkOptions?.rotate || 20;
     cans.rotate((-rotate * Math.PI) / 180);
     cans.font = `${fontSize}px ${fontFamily}`;
@@ -58,23 +67,23 @@ function createBase64(str: string, waterMarkOptions: waterMarkOptionsType) {
     cans.textBaseline = textBaseline;
     cans.fillText(str, width / 20, height);
   }
-  return can.toDataURL('image/png');
+  return can.toDataURL("image/png");
 }
 const resetWatermarkStyle = (
   element: HTMLElement,
   watermarkText: string,
   waterMarkOptions: waterMarkOptionsType,
 ) => {
-  element.className = '__' + watermarkSymbol;
-  element.style.pointerEvents = 'none';
-  element.style.display = 'block';
-  element.style.visibility = 'visible';
-  element.style.top = '0px';
-  element.style.left = '0px';
-  element.style.position = 'absolute';
-  element.style.zIndex = '100000';
-  element.style.height = '100%';
-  element.style.width = '100%';
+  element.className = "__" + watermarkSymbol;
+  element.style.pointerEvents = "none";
+  element.style.display = "block";
+  element.style.visibility = "visible";
+  element.style.top = "0px";
+  element.style.left = "0px";
+  element.style.position = "absolute";
+  element.style.zIndex = "100000";
+  element.style.height = "100%";
+  element.style.width = "100%";
   element.style.background = `url(${createBase64(
     unref(updateWatermarkText) || watermarkText,
     waterMarkOptions,
@@ -93,14 +102,14 @@ const obFn = () => {
           target?.parentElement?.appendChild(node as HTMLElement);
         }
       }
-      if (mutation.attributeName === 'style' && mutation.target) {
+      if (mutation.attributeName === "style" && mutation.target) {
         const _target = mutation.target as HTMLElement;
         const target = findTargetNode(_target);
         if (target) {
           const { waterMarkOptions = {} } = target;
           resetWatermarkStyle(
             _target as HTMLElement,
-            _target?.['data-watermark-text'],
+            _target?.["data-watermark-text"],
             waterMarkOptions,
           );
         }
@@ -131,7 +140,8 @@ export function useWatermark(
     const domId = unref(watermarkEl);
     watermarkEl.value = undefined;
     const el = unref(appendEl);
-    sourceMap.has(domSymbol) && sourceMap.get(domSymbol)?.obInstance?.disconnect();
+    sourceMap.has(domSymbol) &&
+      sourceMap.get(domSymbol)?.obInstance?.disconnect();
     sourceMap.delete(domSymbol);
     if (!el) return;
     domId && el.removeChild(domId);
@@ -164,8 +174,8 @@ export function useWatermark(
       updateWatermark({ str });
       return;
     }
-    const div = document.createElement('div');
-    div['data-watermark-text'] = str; //自定义属性 用于恢复水印
+    const div = document.createElement("div");
+    div["data-watermark-text"] = str; //自定义属性 用于恢复水印
     updateWatermarkText.value = str;
     watermarkEl.value = div;
     resetWatermarkStyle(div, str, waterMarkOptions);

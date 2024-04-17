@@ -6,8 +6,16 @@ export interface Options {
   defaultWidth?: number;
   maskClosable?: boolean;
   rememberState?: boolean;
-  onImgLoad?: (params: { index: number; url: string; dom: HTMLImageElement }) => void;
-  onImgError?: (params: { index: number; url: string; dom: HTMLImageElement }) => void;
+  onImgLoad?: (params: {
+    index: number;
+    url: string;
+    dom: HTMLImageElement;
+  }) => void;
+  onImgError?: (params: {
+    index: number;
+    url: string;
+    dom: HTMLImageElement;
+  }) => void;
 }
 
 export interface Props {

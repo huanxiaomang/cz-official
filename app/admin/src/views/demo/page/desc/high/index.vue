@@ -21,8 +21,12 @@
         <Descriptions.Item label="关联单据">
           <a>12421</a>
         </Descriptions.Item>
-        <Descriptions.Item label="生效日期"> 2017-07-07 ~ 2017-08-08 </Descriptions.Item>
-        <Descriptions.Item label="备注"> 请于两个工作日内确认 </Descriptions.Item>
+        <Descriptions.Item label="生效日期">
+          2017-07-07 ~ 2017-08-08
+        </Descriptions.Item>
+        <Descriptions.Item label="备注">
+          请于两个工作日内确认
+        </Descriptions.Item>
       </Descriptions>
       <Card title="流程进度" :bordered="false">
         <Steps :current="1" progress-dot size="small">
@@ -45,8 +49,12 @@
       <Card title="用户信息" :bordered="false" class="mt-5">
         <Descriptions :column="3">
           <Descriptions.Item label="用户姓名"> 付小小 </Descriptions.Item>
-          <Descriptions.Item label="会员卡号"> XX 32943898021309809423 </Descriptions.Item>
-          <Descriptions.Item label="身份证"> 3321944288191034921 </Descriptions.Item>
+          <Descriptions.Item label="会员卡号">
+            XX 32943898021309809423
+          </Descriptions.Item>
+          <Descriptions.Item label="身份证">
+            3321944288191034921
+          </Descriptions.Item>
           <Descriptions.Item label="联系方式"> 18112345678 </Descriptions.Item>
           <Descriptions.Item label="联系地址" :span="2">
             曲丽丽 18100000000 浙江省杭州市西湖区黄姑山路工专路交叉路口
@@ -55,9 +63,13 @@
 
         <Descriptions title="信息组" :column="3">
           <Descriptions.Item label="某某数据"> 111 </Descriptions.Item>
-          <Descriptions.Item label="该数据更新时间"> 2017-08-08 </Descriptions.Item>
+          <Descriptions.Item label="该数据更新时间">
+            2017-08-08
+          </Descriptions.Item>
           <Descriptions.Item label="某某数据"> 725 </Descriptions.Item>
-          <Descriptions.Item label="该数据更新时间"> 2017-08-08 </Descriptions.Item>
+          <Descriptions.Item label="该数据更新时间">
+            2017-08-08
+          </Descriptions.Item>
         </Descriptions>
 
         <h4>信息组</h4>
@@ -65,7 +77,9 @@
           <Descriptions title="组名称" :column="3">
             <Descriptions.Item label="负责人"> 林东东 </Descriptions.Item>
             <Descriptions.Item label="角色码"> 1234567 </Descriptions.Item>
-            <Descriptions.Item label="所属部门"> XX公司 - YY部 </Descriptions.Item>
+            <Descriptions.Item label="所属部门">
+              XX公司 - YY部
+            </Descriptions.Item>
             <Descriptions.Item label="过期时间"> 2017-08-08 </Descriptions.Item>
             <Descriptions.Item label="描述" :span="2">
               这段描述很长很长很长很长很长很长很长很长很长很长很长很长很长很长...
@@ -93,18 +107,25 @@
   </PageWrapper>
 </template>
 <script lang="ts" setup>
-  import { BasicTable, useTable } from '@/components/Table';
-  import { PageWrapper } from '@/components/Page';
-  import { Divider, Card, Empty, Descriptions, Steps, Tabs } from 'ant-design-vue';
+import { BasicTable, useTable } from "@/components/Table";
+import { PageWrapper } from "@/components/Page";
+import {
+  Divider,
+  Card,
+  Empty,
+  Descriptions,
+  Steps,
+  Tabs,
+} from "ant-design-vue";
 
-  import { refundTimeTableSchema, refundTimeTableData } from './data';
+import { refundTimeTableSchema, refundTimeTableData } from "./data";
 
-  const [registerTimeTable] = useTable({
-    title: '退货进度',
-    columns: refundTimeTableSchema,
-    pagination: false,
-    dataSource: refundTimeTableData,
-    showIndexColumn: false,
-    scroll: { y: 300 },
-  });
+const [registerTimeTable] = useTable({
+  title: "退货进度",
+  columns: refundTimeTableSchema,
+  pagination: false,
+  dataSource: refundTimeTableData,
+  showIndexColumn: false,
+  scroll: { y: 300 },
+});
 </script>

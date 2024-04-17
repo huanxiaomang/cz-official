@@ -1,8 +1,8 @@
-import { defineComponent } from 'vue';
-import { Card, Typography, Spin } from 'ant-design-vue';
-import { imitateApi } from './mock-api';
-import { useRequest } from '@vben/hooks';
-import { PageWrapper } from '@/components/Page';
+import { defineComponent } from "vue";
+import { Card, Typography, Spin } from "ant-design-vue";
+import { imitateApi } from "./mock-api";
+import { useRequest } from "@vben/hooks";
+import { PageWrapper } from "@/components/Page";
 
 const Demo1 = defineComponent({
   setup() {
@@ -14,7 +14,11 @@ const Demo1 = defineComponent({
       <Card title="屏幕聚焦重新请求">
         <Typography>
           <Typography.Paragraph>
-            通过设置<Typography.Text type="danger"> options.refreshOnWindowFocus </Typography.Text>
+            通过设置
+            <Typography.Text type="danger">
+              {" "}
+              options.refreshOnWindowFocus{" "}
+            </Typography.Text>
             ，在浏览器窗口 refocus 和 revisible 时, 会重新发起请求。
           </Typography.Paragraph>
 

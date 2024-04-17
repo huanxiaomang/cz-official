@@ -1,22 +1,32 @@
-import type { BasicColumn, BasicTableProps, CellFormat, GetColumnsParams } from '../types/table';
-import type { PaginationProps } from '../types/pagination';
-import type { ComputedRef } from 'vue';
-import { computed, Ref, ref, reactive, toRaw, unref, watch } from 'vue';
-import { renderEditCell } from '../components/editable';
-import { usePermission } from '@/hooks/web/usePermission';
-import { useI18n } from '@/hooks/web/useI18n';
-import { isArray, isBoolean, isFunction, isMap, isString } from '@/utils/is';
-import { cloneDeep, isEqual } from 'lodash-es';
-import { formatToDate } from '@/utils/dateUtil';
-import { ACTION_COLUMN_FLAG, DEFAULT_ALIGN, INDEX_COLUMN_FLAG, PAGE_SIZE } from '../const';
-import { ColumnType } from 'ant-design-vue/es/table';
+import type {
+  BasicColumn,
+  BasicTableProps,
+  CellFormat,
+  GetColumnsParams,
+} from "../types/table";
+import type { PaginationProps } from "../types/pagination";
+import type { ComputedRef } from "vue";
+import { computed, Ref, ref, reactive, toRaw, unref, watch } from "vue";
+import { renderEditCell } from "../components/editable";
+import { usePermission } from "@/hooks/web/usePermission";
+import { useI18n } from "@/hooks/web/useI18n";
+import { isArray, isBoolean, isFunction, isMap, isString } from "@/utils/is";
+import { cloneDeep, isEqual } from "lodash-es";
+import { formatToDate } from "@/utils/dateUtil";
+import {
+  ACTION_COLUMN_FLAG,
+  DEFAULT_ALIGN,
+  INDEX_COLUMN_FLAG,
+  PAGE_SIZE,
+} from "../const";
+import { ColumnType } from "ant-design-vue/es/table";
 
 function handleItem(item: BasicColumn, ellipsis: boolean) {
   const { key, dataIndex, children } = item;
   item.align = item.align || DEFAULT_ALIGN;
   if (ellipsis) {
     if (!key) {
-      item.key = typeof dataIndex == 'object' ? dataIndex.join('-') : dataIndex;
+      item.key = typeof dataIndex == "object" ? dataIndex.join("-") : dataIndex;
     }
     if (!isBoolean(item.ellipsis)) {
       Object.assign(item, {
@@ -29,7 +39,10 @@ function handleItem(item: BasicColumn, ellipsis: boolean) {
   }
 }
 
-function handleChildren(children: BasicColumn[] | undefined, ellipsis: boolean) {
+function handleChildren(
+  children: BasicColumn[] | undefined,
+  ellipsis: boolean,
+) {
   if (!children) return;
   children.forEach((item) => {
     const { children } = item;
@@ -52,7 +65,9 @@ function handleIndexColumn(
     return;
   }
   columns.forEach(() => {
-    const indIndex = columns.findIndex((column) => column.flag === INDEX_COLUMN_FLAG);
+    const indIndex = columns.findIndex(
+      (column) => column.flag === INDEX_COLUMN_FLAG,
+    );
     if (showIndexColumn) {
       pushIndexColumns = indIndex === -1;
     } else if (!showIndexColumn && indIndex !== -1) {
@@ -62,13 +77,13 @@ function handleIndexColumn(
 
   if (!pushIndexColumns) return;
 
-  const isFixedLeft = columns.some((item) => item.fixed === 'left');
+  const isFixedLeft = columns.some((item) => item.fixed === "left");
 
   columns.unshift({
     flag: INDEX_COLUMN_FLAG,
     width: 60,
-    title: t('component.table.index'),
-    align: 'center',
+    title: t("component.table.index"),
+    align: "center",
     customRender: ({ index }) => {
       const getPagination = unref(getPaginationRef);
       if (isBoolean(getPagination)) {
@@ -79,22 +94,27 @@ function handleIndexColumn(
     },
     ...(isFixedLeft
       ? {
-          fixed: 'left',
+          fixed: "left",
         }
       : {}),
     ...indexColumnProps,
   });
 }
 
-function handleActionColumn(propsRef: ComputedRef<BasicTableProps>, columns: BasicColumn[]) {
+function handleActionColumn(
+  propsRef: ComputedRef<BasicTableProps>,
+  columns: BasicColumn[],
+) {
   const { actionColumn } = unref(propsRef);
   if (!actionColumn) return;
 
-  const hasIndex = columns.findIndex((column) => column.flag === ACTION_COLUMN_FLAG);
+  const hasIndex = columns.findIndex(
+    (column) => column.flag === ACTION_COLUMN_FLAG,
+  );
   if (hasIndex === -1) {
     columns.push({
       ...columns[hasIndex],
-      fixed: 'right',
+      fixed: "right",
       ...actionColumn,
       flag: ACTION_COLUMN_FLAG,
     });
@@ -105,7 +125,9 @@ export function useColumns(
   propsRef: ComputedRef<BasicTableProps>,
   getPaginationRef: ComputedRef<boolean | PaginationProps>,
 ) {
-  const columnsRef = ref(unref(propsRef).columns) as unknown as Ref<BasicColumn[]>;
+  const columnsRef = ref(unref(propsRef).columns) as unknown as Ref<
+    BasicColumn[]
+  >;
   let cacheColumns = unref(propsRef).columns;
 
   const getColumnsRef = computed(() => {
@@ -123,7 +145,9 @@ export function useColumns(
 
       handleItem(
         item,
-        Reflect.has(item, 'ellipsis') ? !!item.ellipsis : !!ellipsis && !customRender && !slots,
+        Reflect.has(item, "ellipsis")
+          ? !!item.ellipsis
+          : !!ellipsis && !customRender && !slots,
       );
     });
     return columns;
@@ -153,7 +177,9 @@ export function useColumns(
       if (!slots || !slots?.title) {
         column.customTitle = column.title;
       }
-      const isDefaultAction = [INDEX_COLUMN_FLAG, ACTION_COLUMN_FLAG].includes(flag!);
+      const isDefaultAction = [INDEX_COLUMN_FLAG, ACTION_COLUMN_FLAG].includes(
+        flag!,
+      );
       if (!customRender && format && !edit && !isDefaultAction) {
         column.customRender = ({ text, record, index }) => {
           return formatCell(text, format, record, index);
@@ -188,7 +214,10 @@ export function useColumns(
     },
   );
 
-  function setCacheColumnsByField(dataIndex: string | undefined, value: Partial<BasicColumn>) {
+  function setCacheColumnsByField(
+    dataIndex: string | undefined,
+    value: Partial<BasicColumn>,
+  ) {
     if (!dataIndex || !value) {
       return;
     }
@@ -203,7 +232,9 @@ export function useColumns(
    * set columns
    * @param columnList key｜column
    */
-  function setColumns(columnList: Partial<BasicColumn>[] | (string | string[])[]) {
+  function setColumns(
+    columnList: Partial<BasicColumn>[] | (string | string[])[],
+  ) {
     const columns = cloneDeep(columnList);
     if (!isArray(columns)) return;
 
@@ -219,12 +250,16 @@ export function useColumns(
     if (!isString(firstColumn) && !isArray(firstColumn)) {
       columnsRef.value = columns as BasicColumn[];
     } else {
-      const columnKeys = (columns as (string | string[])[]).map((m) => m.toString());
+      const columnKeys = (columns as (string | string[])[]).map((m) =>
+        m.toString(),
+      );
       const newColumns: BasicColumn[] = [];
       cacheColumns.forEach((item) => {
         newColumns.push({
           ...item,
-          defaultHidden: !columnKeys.includes(item.dataIndex?.toString() || (item.key as string)),
+          defaultHidden: !columnKeys.includes(
+            item.dataIndex?.toString() || (item.key as string),
+          ),
         });
       });
       // Sort according to another array
@@ -287,11 +322,11 @@ function sortFixedColumn(columns: BasicColumn[]) {
   const fixedRightColumns: BasicColumn[] = [];
   const defColumns: BasicColumn[] = [];
   for (const column of columns) {
-    if (column.fixed === 'left') {
+    if (column.fixed === "left") {
       fixedLeftColumns.push(column);
       continue;
     }
-    if (column.fixed === 'right') {
+    if (column.fixed === "right") {
       fixedRightColumns.push(column);
       continue;
     }
@@ -300,7 +335,11 @@ function sortFixedColumn(columns: BasicColumn[]) {
   // 筛选逻辑
   const filterFunc = (item) => !item.defaultHidden;
   // 筛选首层显示列（1级表头）
-  const viewColumns = [...fixedLeftColumns, ...defColumns, ...fixedRightColumns].filter(filterFunc);
+  const viewColumns = [
+    ...fixedLeftColumns,
+    ...defColumns,
+    ...fixedRightColumns,
+  ].filter(filterFunc);
   // 筛选>=2级表头（深度优先）
   const list = [...viewColumns];
   while (list.length) {
@@ -317,7 +356,12 @@ function sortFixedColumn(columns: BasicColumn[]) {
 }
 
 // format cell
-export function formatCell(text: string, format: CellFormat, record: Recordable, index: number) {
+export function formatCell(
+  text: string,
+  format: CellFormat,
+  record: Recordable,
+  index: number,
+) {
   if (!format) {
     return text;
   }
@@ -329,9 +373,9 @@ export function formatCell(text: string, format: CellFormat, record: Recordable,
 
   try {
     // date type
-    const DATE_FORMAT_PREFIX = 'date|';
+    const DATE_FORMAT_PREFIX = "date|";
     if (isString(format) && format.startsWith(DATE_FORMAT_PREFIX) && text) {
-      const dateFormat = format.replace(DATE_FORMAT_PREFIX, '');
+      const dateFormat = format.replace(DATE_FORMAT_PREFIX, "");
 
       if (!dateFormat) {
         return text;

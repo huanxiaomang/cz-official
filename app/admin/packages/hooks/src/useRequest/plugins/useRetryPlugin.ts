@@ -1,6 +1,6 @@
-import { ref } from 'vue';
+import { ref } from "vue";
 
-import type { UseRequestPlugin, UseRequestTimeout } from '../types';
+import type { UseRequestPlugin, UseRequestTimeout } from "../types";
 
 const useRetryPlugin: UseRequestPlugin<any, any[]> = (
   fetchInstance,
@@ -33,7 +33,8 @@ const useRetryPlugin: UseRequestPlugin<any, any[]> = (
       countRef.value += 1;
       if (retryCount === -1 || countRef.value <= retryCount) {
         // Exponential backoff
-        const timeout = retryInterval ?? Math.min(1000 * 2 ** countRef.value, 30000);
+        const timeout =
+          retryInterval ?? Math.min(1000 * 2 ** countRef.value, 30000);
         timerRef.value = setTimeout(() => {
           triggerByRetry.value = true;
           fetchInstance.refresh();

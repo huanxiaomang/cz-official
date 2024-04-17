@@ -1,21 +1,21 @@
-import type { VNodeChild } from 'vue';
-import type { PaginationProps } from './pagination';
-import type { FormProps } from '@/components/Form';
+import type { VNodeChild } from "vue";
+import type { PaginationProps } from "./pagination";
+import type { FormProps } from "@/components/Form";
 import type {
   TableRowSelection as ITableRowSelection,
   Key,
-} from 'ant-design-vue/lib/table/interface';
+} from "ant-design-vue/lib/table/interface";
 
-import type { ColumnProps } from 'ant-design-vue/lib/table';
+import type { ColumnProps } from "ant-design-vue/lib/table";
 
-import { ComponentType } from './componentType';
-import { VueNode } from '@/utils/propTypes';
-import { RoleEnum } from '@/enums/roleEnum';
-import { FixedType } from 'ant-design-vue/es/vc-table/interface';
+import { ComponentType } from "./componentType";
+import { VueNode } from "@/utils/propTypes";
+import { RoleEnum } from "@/enums/roleEnum";
+import { FixedType } from "ant-design-vue/es/vc-table/interface";
 
-import AntDesignVueTable from 'ant-design-vue/es/table';
+import AntDesignVueTable from "ant-design-vue/es/table";
 
-export declare type SortOrder = 'ascend' | 'descend';
+export declare type SortOrder = "ascend" | "descend";
 
 export interface TableCurrentDataSource<T = Recordable> {
   currentDataSource: T[];
@@ -29,13 +29,22 @@ export interface TableRowSelection<T = any> extends ITableRowSelection {
    * @param isClickCustomRow 是否是点击行触发（反之，就是点击checkbox/radiobox）
    * @returns void
    */
-  onChange?: (selectedRowKeys: Key[], selectedRows: T[], isClickCustomRow?: boolean) => void;
+  onChange?: (
+    selectedRowKeys: Key[],
+    selectedRows: T[],
+    isClickCustomRow?: boolean,
+  ) => void;
 
   /**
    * Callback executed when select/deselect one row
    * @type Function
    */
-  onSelect?: (record: T, selected: boolean, selectedRows: Object[], nativeEvent: Event) => any;
+  onSelect?: (
+    record: T,
+    selected: boolean,
+    selectedRows: Object[],
+    nativeEvent: Event,
+  ) => any;
 
   /**
    * Callback executed when select/deselect all rows
@@ -90,7 +99,7 @@ export interface GetColumnsParams {
   sort?: boolean;
 }
 
-export type SizeType = 'default' | 'middle' | 'small' | 'large';
+export type SizeType = "default" | "middle" | "small" | "large";
 
 export interface TableActionType {
   reload: (opt?: FetchParams) => Promise<Recordable<any>[] | undefined>;
@@ -106,9 +115,15 @@ export interface TableActionType {
   deleteSelectRowByKey: (keyValue: Key) => void;
   setPagination: (info: Partial<PaginationProps>) => void;
   setTableData: <T = Recordable>(values: T[]) => void;
-  updateTableDataRecord: (keyValue: Key, record: Recordable) => Recordable | void;
+  updateTableDataRecord: (
+    keyValue: Key,
+    record: Recordable,
+  ) => Recordable | void;
   deleteTableDataRecord: (keyValues: Key | Key[]) => void;
-  insertTableDataRecord: (record: Recordable | Recordable[], index?: number) => Recordable[] | void;
+  insertTableDataRecord: (
+    record: Recordable | Recordable[],
+    index?: number,
+  ) => Recordable[] | void;
   findTableDataRecord: (keyValue: Key) => Recordable | void;
   getColumns: (opt?: GetColumnsParams) => BasicColumn[];
   setColumns: (columns: BasicColumn[] | string[]) => void;
@@ -126,7 +141,10 @@ export interface TableActionType {
   updateTableData: (index: number, key: string, value: any) => Recordable;
   setShowPagination: (show: boolean) => Promise<void>;
   getShowPagination: () => boolean;
-  setCacheColumnsByField?: (dataIndex: string | undefined, value: BasicColumn) => void;
+  setCacheColumnsByField?: (
+    dataIndex: string | undefined,
+    value: BasicColumn,
+  ) => void;
   setCacheColumns?: (columns: BasicColumn[]) => void;
 }
 
@@ -216,7 +234,7 @@ export interface BasicTableProps<T = any> {
   // 在分页改变的时候清空选项
   clearSelectOnPageChange?: boolean;
   //
-  rowKey?: InstanceType<typeof AntDesignVueTable>['$props']['rowKey'];
+  rowKey?: InstanceType<typeof AntDesignVueTable>["$props"]["rowKey"];
   // 数据
   dataSource?: Recordable[];
   // 标题右侧提示
@@ -266,7 +284,9 @@ export interface BasicTableProps<T = any> {
    * Expanded container render for each row
    * @type Function
    */
-  expandedRowRender?: (record?: ExpandedRowRenderRecord<T>) => VNodeChild | JSX.Element;
+  expandedRowRender?: (
+    record?: ExpandedRowRenderRecord<T>,
+  ) => VNodeChild | JSX.Element;
 
   /**
    * Customize row expand Icon.
@@ -330,7 +350,7 @@ export interface BasicTableProps<T = any> {
    * you need to add style .ant-table td { white-space: nowrap; }.
    * @type object
    */
-  scroll?: InstanceType<typeof AntDesignVueTable>['$props']['scroll'];
+  scroll?: InstanceType<typeof AntDesignVueTable>["$props"]["scroll"];
 
   /**
    * Whether to show table header
@@ -371,7 +391,7 @@ export interface BasicTableProps<T = any> {
    * @see https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout
    * @version 1.5.0
    */
-  tableLayout?: 'auto' | 'fixed' | string;
+  tableLayout?: "auto" | "fixed" | string;
 
   /**
    * the render container of dropdowns in table
@@ -440,17 +460,21 @@ export interface BasicColumn extends ColumnProps<Recordable> {
     value: string;
     children?:
       | unknown[]
-      | (((props: Record<string, unknown>) => unknown[]) & (() => unknown[]) & (() => unknown[]));
+      | (((props: Record<string, unknown>) => unknown[]) &
+          (() => unknown[]) &
+          (() => unknown[]));
   }[];
 
   //
-  flag?: 'INDEX' | 'DEFAULT' | 'CHECKBOX' | 'RADIO' | 'ACTION';
+  flag?: "INDEX" | "DEFAULT" | "CHECKBOX" | "RADIO" | "ACTION";
   customTitle?: VueNode;
 
   slots?: Recordable;
 
   // 自定义header渲染
-  customHeaderRender?: (column: BasicColumn) => string | VNodeChild | JSX.Element;
+  customHeaderRender?: (
+    column: BasicColumn,
+  ) => string | VNodeChild | JSX.Element;
   // Whether to hide the column by default, it can be displayed in the column configuration
   defaultHidden?: boolean;
 
@@ -493,7 +517,7 @@ export interface BasicColumn extends ColumnProps<Recordable> {
 
 export type ColumnChangeParam = {
   dataIndex: string;
-  fixed: boolean | 'left' | 'right' | undefined;
+  fixed: boolean | "left" | "right" | undefined;
   visible: boolean;
 };
 
@@ -502,8 +526,8 @@ export interface InnerHandlers {
 }
 
 export interface InnerMethods {
-  clearSelectedRowKeys: TableActionType['clearSelectedRowKeys'];
-  getSelectRowKeys: TableActionType['getSelectRowKeys'];
+  clearSelectedRowKeys: TableActionType["clearSelectedRowKeys"];
+  getSelectRowKeys: TableActionType["getSelectRowKeys"];
 }
 
 export interface ColumnOptionsType {

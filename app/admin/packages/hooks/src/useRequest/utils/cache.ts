@@ -13,7 +13,11 @@ interface RecordData extends CachedData {
 
 const cache = new Map<CachedKey, RecordData>();
 
-export const setCache = (key: CachedKey, cacheTime: number, cachedData: CachedData) => {
+export const setCache = (
+  key: CachedKey,
+  cacheTime: number,
+  cachedData: CachedData,
+) => {
   const currentCache = cache.get(key);
   if (currentCache?.timer) {
     clearTimeout(currentCache.timer);

@@ -1,9 +1,12 @@
-import type { Ref } from 'vue';
-import { computed, unref } from 'vue';
-import type { FormProps, FormSchemaInner as FormSchema } from '../types/form';
-import { isNumber } from '@/utils/is';
+import type { Ref } from "vue";
+import { computed, unref } from "vue";
+import type { FormProps, FormSchemaInner as FormSchema } from "../types/form";
+import { isNumber } from "@/utils/is";
 
-export function useItemLabelWidth(schemaItemRef: Ref<FormSchema>, propsRef: Ref<FormProps>) {
+export function useItemLabelWidth(
+  schemaItemRef: Ref<FormSchema>,
+  propsRef: Ref<FormProps>,
+) {
   return computed(() => {
     const schemaItem = unref(schemaItemRef);
     const { labelCol = {}, wrapperCol = {} } = schemaItem.itemProps || {};
@@ -17,9 +20,12 @@ export function useItemLabelWidth(schemaItemRef: Ref<FormSchema>, propsRef: Ref<
     } = unref(propsRef);
 
     // If labelWidth is set globally, all items setting
-    if ((!globalLabelWidth && !labelWidth && !globalLabelCol) || disabledLabelWidth) {
+    if (
+      (!globalLabelWidth && !labelWidth && !globalLabelCol) ||
+      disabledLabelWidth
+    ) {
       labelCol.style = {
-        textAlign: 'left',
+        textAlign: "left",
       };
       return { labelCol, wrapperCol };
     }
@@ -34,7 +40,9 @@ export function useItemLabelWidth(schemaItemRef: Ref<FormSchema>, propsRef: Ref<
     return {
       labelCol: { style: { width }, ...col },
       wrapperCol: {
-        style: { width: layout === 'vertical' ? '100%' : `calc(100% - ${width})` },
+        style: {
+          width: layout === "vertical" ? "100%" : `calc(100% - ${width})`,
+        },
         ...wrapCol,
       },
     };

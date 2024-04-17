@@ -11,70 +11,70 @@
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import { ref, nextTick } from 'vue';
-  import { BasicModal, useModalInner } from '@/components/Modal';
-  import { BasicForm, FormSchema, useForm } from '@/components/Form';
+import { ref, nextTick } from "vue";
+import { BasicModal, useModalInner } from "@/components/Modal";
+import { BasicForm, FormSchema, useForm } from "@/components/Form";
 
-  const schemas: FormSchema[] = [
-    {
-      field: 'field1',
-      component: 'Input',
-      label: '字段1',
-      colProps: {
-        span: 24,
-      },
-      defaultValue: '111',
-    },
-    {
-      field: 'field2',
-      component: 'Input',
-      label: '字段2',
-      colProps: {
-        span: 24,
-      },
-    },
-  ];
-
-  const props = defineProps({
-    userData: { type: Object },
-  });
-  const modelRef = ref({});
-  const [
-    registerForm,
-    // {
-    //   // setFieldsValue,
-    //   // setProps
-    // },
-  ] = useForm({
-    labelWidth: 120,
-    schemas,
-    showActionButtonGroup: false,
-    actionColOptions: {
+const schemas: FormSchema[] = [
+  {
+    field: "field1",
+    component: "Input",
+    label: "字段1",
+    colProps: {
       span: 24,
     },
-  });
+    defaultValue: "111",
+  },
+  {
+    field: "field2",
+    component: "Input",
+    label: "字段2",
+    colProps: {
+      span: 24,
+    },
+  },
+];
 
-  const [register] = useModalInner((data) => {
-    data && onDataReceive(data);
-  });
+const props = defineProps({
+  userData: { type: Object },
+});
+const modelRef = ref({});
+const [
+  registerForm,
+  // {
+  //   // setFieldsValue,
+  //   // setProps
+  // },
+] = useForm({
+  labelWidth: 120,
+  schemas,
+  showActionButtonGroup: false,
+  actionColOptions: {
+    span: 24,
+  },
+});
 
-  function onDataReceive(data) {
-    console.log('Data Received', data);
-    // 方式1;
-    // setFieldsValue({
-    //   field2: data.data,
-    //   field1: data.info,
-    // });
+const [register] = useModalInner((data) => {
+  data && onDataReceive(data);
+});
 
-    // // 方式2
-    modelRef.value = { field2: data.data, field1: data.info };
+function onDataReceive(data) {
+  console.log("Data Received", data);
+  // 方式1;
+  // setFieldsValue({
+  //   field2: data.data,
+  //   field1: data.info,
+  // });
 
-    // setProps({
-    //   model:{ field2: data.data, field1: data.info }
-    // })
-  }
+  // // 方式2
+  modelRef.value = { field2: data.data, field1: data.info };
 
-  function handleVisibleChange(v) {
-    v && props.userData && nextTick(() => onDataReceive(props.userData));
-  }
+  // setProps({
+  //   model:{ field2: data.data, field1: data.info }
+  // })
+}
+
+function handleVisibleChange(v) {
+  v && props.userData && nextTick(() => onDataReceive(props.userData));
+}
 </script>

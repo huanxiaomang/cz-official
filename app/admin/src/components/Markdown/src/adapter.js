@@ -10,10 +10,13 @@ if (!navigator.mediaDevices) {
   if (!navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia = function (constraints) {
       // 首先，如果有 getUserMedia 的话，就获得它
-      const getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+      const getUserMedia =
+        navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
       // 一些浏览器根本没实现它 - 那么就返回一个 error 到 promise 的 reject 来保持一个统一的接口
       if (!getUserMedia) {
-        return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+        return Promise.reject(
+          new Error("getUserMedia is not implemented in this browser"),
+        );
       }
       // 否则，为老的 navigator.getUserMedia 方法包裹一个 Promise
       return new Promise(function (resolve, reject) {

@@ -1,11 +1,20 @@
-import { isFunction } from '@/utils/is';
-import type { BasicTableProps, TableRowSelection } from '../types/table';
-import { computed, ComputedRef, nextTick, Ref, ref, toRaw, unref, watch } from 'vue';
-import { ROW_KEY } from '../const';
-import { omit } from 'lodash-es';
-import { findNodeAll } from '@/utils/helper/treeHelper';
-import type { Key } from 'ant-design-vue/lib/table/interface';
-import { parseRowKey, parseRowKeyValue } from '../helper';
+import { isFunction } from "@/utils/is";
+import type { BasicTableProps, TableRowSelection } from "../types/table";
+import {
+  computed,
+  ComputedRef,
+  nextTick,
+  Ref,
+  ref,
+  toRaw,
+  unref,
+  watch,
+} from "vue";
+import { ROW_KEY } from "../const";
+import { omit } from "lodash-es";
+import { findNodeAll } from "@/utils/helper/treeHelper";
+import type { Key } from "ant-design-vue/lib/table/interface";
+import { parseRowKey, parseRowKeyValue } from "../helper";
 
 export function useRowSelection(
   propsRef: ComputedRef<BasicTableProps>,
@@ -23,7 +32,11 @@ export function useRowSelection(
 
     return {
       selectedRowKeys: unref(selectedRowKeysRef),
-      onChange: (selectedRowKeys: Key[], selectedRows: any[], isClickCustomRow?: boolean) => {
+      onChange: (
+        selectedRowKeys: Key[],
+        selectedRows: any[],
+        isClickCustomRow?: boolean,
+      ) => {
         if (isClickCustomRow) {
           // 点击行触发
 
@@ -33,7 +46,9 @@ export function useRowSelection(
           // 点击 checkbox/radiobox 触发
 
           // 取出【当前页】所有 keyValues
-          const currentPageKeys = tableData.value.map((o) => parseRowKeyValue(unref(getRowKey), o));
+          const currentPageKeys = tableData.value.map((o) =>
+            parseRowKeyValue(unref(getRowKey), o),
+          );
 
           // 从【所有分页】已选的 keyValues，且属于【当前页】的部分
           for (const selectedKey of selectedRowKeysRef.value.filter((k) =>
@@ -42,7 +57,9 @@ export function useRowSelection(
             // 判断是否已经不存在于【当前页】
             if (selectedRowKeys.findIndex((k) => k === selectedKey) < 0) {
               // 不存在 = 取消勾选
-              const removeIndex = selectedRowKeysRef.value.findIndex((k) => k === selectedKey);
+              const removeIndex = selectedRowKeysRef.value.findIndex(
+                (k) => k === selectedKey,
+              );
               if (removeIndex > -1) {
                 // 取消勾选
                 selectedRowKeysRef.value.splice(removeIndex, 1);
@@ -53,7 +70,9 @@ export function useRowSelection(
 
           // 存在于【当前页】，但不存在于【所有分页】，则认为是新增的
           for (const selectedKey of selectedRowKeys) {
-            const existIndex = selectedRowKeysRef.value.findIndex((k) => k === selectedKey);
+            const existIndex = selectedRowKeysRef.value.findIndex(
+              (k) => k === selectedKey,
+            );
             if (existIndex < 0) {
               // 新增勾选
               selectedRowKeysRef.value.push(selectedKey);
@@ -70,10 +89,13 @@ export function useRowSelection(
           setSelectedRowKeys(selectedRowKeysRef.value);
 
           // 维持外部定义的onChange回调
-          rowSelection.onChange?.(selectedRowKeysRef.value, selectedRowRef.value);
+          rowSelection.onChange?.(
+            selectedRowKeysRef.value,
+            selectedRowRef.value,
+          );
         }
       },
-      ...omit(rowSelection, ['onChange']),
+      ...omit(rowSelection, ["onChange"]),
     };
   });
 
@@ -91,9 +113,10 @@ export function useRowSelection(
         const { rowSelection } = unref(propsRef);
         if (rowSelection) {
           const { onChange } = rowSelection;
-          if (onChange && isFunction(onChange)) onChange(getSelectRowKeys(), getSelectRows(), true);
+          if (onChange && isFunction(onChange))
+            onChange(getSelectRowKeys(), getSelectRows(), true);
         }
-        emit('selection-change', {
+        emit("selection-change", {
           keys: getSelectRowKeys(),
           rows: getSelectRows(),
         });
@@ -118,7 +141,7 @@ export function useRowSelection(
       rows,
       (item) => keyValues?.includes(parseRowKeyValue(unref(getRowKey), item)),
       {
-        children: propsRef.value.childrenColumnName ?? 'children',
+        children: propsRef.value.childrenColumnName ?? "children",
       },
     );
     const trueSelectedRows: any[] = [];
@@ -132,7 +155,9 @@ export function useRowSelection(
         // 跨页的时候，非本页数据无法得到，暂如此处理
         // tableData or selectedRowRef 总有数据
         if (rows[0]) {
-          trueSelectedRows.push({ [parseRowKey(unref(getRowKey), rows[0])]: keyValue });
+          trueSelectedRows.push({
+            [parseRowKey(unref(getRowKey), rows[0])]: keyValue,
+          });
         }
       }
     });

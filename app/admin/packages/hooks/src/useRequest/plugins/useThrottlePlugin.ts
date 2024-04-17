@@ -1,8 +1,8 @@
-import type { DebouncedFunc, ThrottleSettings } from 'lodash-es';
-import { throttle } from 'lodash-es';
-import { ref, watchEffect } from 'vue';
+import type { DebouncedFunc, ThrottleSettings } from "lodash-es";
+import { throttle } from "lodash-es";
+import { ref, watchEffect } from "vue";
 
-import type { UseRequestPlugin } from '../types';
+import type { UseRequestPlugin } from "../types";
 
 const useThrottlePlugin: UseRequestPlugin<any, any[]> = (
   fetchInstance,

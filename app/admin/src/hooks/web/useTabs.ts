@@ -1,10 +1,10 @@
-import type { RouteLocationNormalized, Router } from 'vue-router';
+import type { RouteLocationNormalized, Router } from "vue-router";
 
-import { useRouter } from 'vue-router';
-import { unref } from 'vue';
+import { useRouter } from "vue-router";
+import { unref } from "vue";
 
-import { useMultipleTabStore } from '@/store/modules/multipleTab';
-import { useAppStore } from '@/store/modules/app';
+import { useMultipleTabStore } from "@/store/modules/multipleTab";
+import { useAppStore } from "@/store/modules/app";
 
 enum TableActionEnum {
   REFRESH,
@@ -22,7 +22,9 @@ export function useTabs(_router?: Router) {
   function canIUseTabs(): boolean {
     const { show } = appStore.getMultiTabsSetting;
     if (!show) {
-      throw new Error('The multi-tab page is currently not open, please open it in the settings！');
+      throw new Error(
+        "The multi-tab page is currently not open, please open it in the settings！",
+      );
     }
     return !!show;
   }
@@ -34,7 +36,9 @@ export function useTabs(_router?: Router) {
 
   function getCurrentTab() {
     const route = unref(currentRoute);
-    return tabStore.getTabList.find((item) => item.fullPath === route.fullPath)!;
+    return tabStore.getTabList.find(
+      (item) => item.fullPath === route.fullPath,
+    )!;
   }
 
   async function updateTabTitle(title: string, tab?: RouteLocationNormalized) {
@@ -55,7 +59,10 @@ export function useTabs(_router?: Router) {
     await tabStore.updateTabPath(path, targetTab);
   }
 
-  async function handleTabAction(action: TableActionEnum, tab?: RouteLocationNormalized) {
+  async function handleTabAction(
+    action: TableActionEnum,
+    tab?: RouteLocationNormalized,
+  ) {
     const canIUse = canIUseTabs;
     if (!canIUse) {
       return;
@@ -96,8 +103,11 @@ export function useTabs(_router?: Router) {
     closeRight: () => handleTabAction(TableActionEnum.CLOSE_RIGHT),
     closeOther: () => handleTabAction(TableActionEnum.CLOSE_OTHER),
     closeCurrent: () => handleTabAction(TableActionEnum.CLOSE_CURRENT),
-    close: (tab?: RouteLocationNormalized) => handleTabAction(TableActionEnum.CLOSE, tab),
-    setTitle: (title: string, tab?: RouteLocationNormalized) => updateTabTitle(title, tab),
-    updatePath: (fullPath: string, tab?: RouteLocationNormalized) => updateTabPath(fullPath, tab),
+    close: (tab?: RouteLocationNormalized) =>
+      handleTabAction(TableActionEnum.CLOSE, tab),
+    setTitle: (title: string, tab?: RouteLocationNormalized) =>
+      updateTabTitle(title, tab),
+    updatePath: (fullPath: string, tab?: RouteLocationNormalized) =>
+      updateTabPath(fullPath, tab),
   };
 }

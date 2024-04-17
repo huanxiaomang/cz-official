@@ -1,54 +1,54 @@
-import type { AppRouteModule } from '@/router/types';
+import type { AppRouteModule } from "@/router/types";
 
-import { getParentLayout, LAYOUT } from '@/router/constant';
-import { ExceptionEnum } from '@/enums/exceptionEnum';
-import { t } from '@/hooks/web/useI18n';
+import { getParentLayout, LAYOUT } from "@/router/constant";
+import { ExceptionEnum } from "@/enums/exceptionEnum";
+import { t } from "@/hooks/web/useI18n";
 
-const ExceptionPage = () => import('@/views/sys/exception/Exception.vue');
+const ExceptionPage = () => import("@/views/sys/exception/Exception.vue");
 
 const page: AppRouteModule = {
-  path: '/page-demo',
-  name: 'PageDemo',
+  path: "/page-demo",
+  name: "PageDemo",
   component: LAYOUT,
-  redirect: '/page-demo/form/basic',
+  redirect: "/page-demo/form/basic",
   meta: {
     orderNo: 20,
-    icon: 'ion:aperture-outline',
-    title: t('routes.demo.page.page'),
+    icon: "ion:aperture-outline",
+    title: t("routes.demo.page.page"),
   },
   children: [
     // =============================form start=============================
     {
-      path: 'form',
-      name: 'FormPage',
-      redirect: '/page-demo/form/basic',
-      component: getParentLayout('FormPage'),
+      path: "form",
+      name: "FormPage",
+      redirect: "/page-demo/form/basic",
+      component: getParentLayout("FormPage"),
       meta: {
-        title: t('routes.demo.page.form'),
+        title: t("routes.demo.page.form"),
       },
       children: [
         {
-          path: 'basic',
-          name: 'FormBasicPage',
-          component: () => import('@/views/demo/page/form/basic/index.vue'),
+          path: "basic",
+          name: "FormBasicPage",
+          component: () => import("@/views/demo/page/form/basic/index.vue"),
           meta: {
-            title: t('routes.demo.page.formBasic'),
+            title: t("routes.demo.page.formBasic"),
           },
         },
         {
-          path: 'step',
-          name: 'FormStepPage',
-          component: () => import('@/views/demo/page/form/step/index.vue'),
+          path: "step",
+          name: "FormStepPage",
+          component: () => import("@/views/demo/page/form/step/index.vue"),
           meta: {
-            title: t('routes.demo.page.formStep'),
+            title: t("routes.demo.page.formStep"),
           },
         },
         {
-          path: 'high',
-          name: 'FormHightPage',
-          component: () => import('@/views/demo/page/form/high/index.vue'),
+          path: "high",
+          name: "FormHightPage",
+          component: () => import("@/views/demo/page/form/high/index.vue"),
           meta: {
-            title: t('routes.demo.page.formHigh'),
+            title: t("routes.demo.page.formHigh"),
           },
         },
       ],
@@ -56,28 +56,28 @@ const page: AppRouteModule = {
     // =============================form end=============================
     // =============================desc start=============================
     {
-      path: 'desc',
-      name: 'DescPage',
-      component: getParentLayout('DescPage'),
-      redirect: '/page-demo/desc/basic',
+      path: "desc",
+      name: "DescPage",
+      component: getParentLayout("DescPage"),
+      redirect: "/page-demo/desc/basic",
       meta: {
-        title: t('routes.demo.page.desc'),
+        title: t("routes.demo.page.desc"),
       },
       children: [
         {
-          path: 'basic',
-          name: 'DescBasicPage',
-          component: () => import('@/views/demo/page/desc/basic/index.vue'),
+          path: "basic",
+          name: "DescBasicPage",
+          component: () => import("@/views/demo/page/desc/basic/index.vue"),
           meta: {
-            title: t('routes.demo.page.descBasic'),
+            title: t("routes.demo.page.descBasic"),
           },
         },
         {
-          path: 'high',
-          name: 'DescHighPage',
-          component: () => import('@/views/demo/page/desc/high/index.vue'),
+          path: "high",
+          name: "DescHighPage",
+          component: () => import("@/views/demo/page/desc/high/index.vue"),
           meta: {
-            title: t('routes.demo.page.descHigh'),
+            title: t("routes.demo.page.descHigh"),
           },
         },
       ],
@@ -86,29 +86,29 @@ const page: AppRouteModule = {
 
     // =============================result start=============================
     {
-      path: 'result',
-      name: 'ResultPage',
-      redirect: '/page-demo/result/success',
-      component: getParentLayout('ResultPage'),
+      path: "result",
+      name: "ResultPage",
+      redirect: "/page-demo/result/success",
+      component: getParentLayout("ResultPage"),
 
       meta: {
-        title: t('routes.demo.page.result'),
+        title: t("routes.demo.page.result"),
       },
       children: [
         {
-          path: 'success',
-          name: 'ResultSuccessPage',
-          component: () => import('@/views/demo/page/result/success/index.vue'),
+          path: "success",
+          name: "ResultSuccessPage",
+          component: () => import("@/views/demo/page/result/success/index.vue"),
           meta: {
-            title: t('routes.demo.page.resultSuccess'),
+            title: t("routes.demo.page.resultSuccess"),
           },
         },
         {
-          path: 'fail',
-          name: 'ResultFailPage',
-          component: () => import('@/views/demo/page/result/fail/index.vue'),
+          path: "fail",
+          name: "ResultFailPage",
+          component: () => import("@/views/demo/page/result/fail/index.vue"),
           meta: {
-            title: t('routes.demo.page.resultFail'),
+            title: t("routes.demo.page.resultFail"),
           },
         },
       ],
@@ -117,28 +117,29 @@ const page: AppRouteModule = {
 
     // =============================account start=============================
     {
-      path: 'account',
-      name: 'AccountPage',
-      component: getParentLayout('AccountPage'),
-      redirect: '/page-demo/account/setting',
+      path: "account",
+      name: "AccountPage",
+      component: getParentLayout("AccountPage"),
+      redirect: "/page-demo/account/setting",
       meta: {
-        title: t('routes.demo.page.account'),
+        title: t("routes.demo.page.account"),
       },
       children: [
         {
-          path: 'center',
-          name: 'AccountCenterPage',
-          component: () => import('@/views/demo/page/account/center/index.vue'),
+          path: "center",
+          name: "AccountCenterPage",
+          component: () => import("@/views/demo/page/account/center/index.vue"),
           meta: {
-            title: t('routes.demo.page.accountCenter'),
+            title: t("routes.demo.page.accountCenter"),
           },
         },
         {
-          path: 'setting',
-          name: 'AccountSettingPage',
-          component: () => import('@/views/demo/page/account/setting/index.vue'),
+          path: "setting",
+          name: "AccountSettingPage",
+          component: () =>
+            import("@/views/demo/page/account/setting/index.vue"),
           meta: {
-            title: t('routes.demo.page.accountSetting'),
+            title: t("routes.demo.page.accountSetting"),
           },
         },
       ],
@@ -146,67 +147,67 @@ const page: AppRouteModule = {
     // =============================account end=============================
     // =============================exception start=============================
     {
-      path: 'exception',
-      name: 'ExceptionPage',
-      component: getParentLayout('ExceptionPage'),
-      redirect: '/page-demo/exception/404',
+      path: "exception",
+      name: "ExceptionPage",
+      component: getParentLayout("ExceptionPage"),
+      redirect: "/page-demo/exception/404",
       meta: {
-        title: t('routes.demo.page.exception'),
+        title: t("routes.demo.page.exception"),
       },
       children: [
         {
-          path: '403',
-          name: 'PageNotAccess',
+          path: "403",
+          name: "PageNotAccess",
           component: ExceptionPage,
           props: {
             status: ExceptionEnum.PAGE_NOT_ACCESS,
           },
           meta: {
-            title: '403',
+            title: "403",
           },
         },
         {
-          path: '404',
-          name: 'PageNotFound',
+          path: "404",
+          name: "PageNotFound",
           component: ExceptionPage,
           props: {
             status: ExceptionEnum.PAGE_NOT_FOUND,
           },
           meta: {
-            title: '404',
+            title: "404",
           },
         },
         {
-          path: '500',
-          name: 'ServiceError',
+          path: "500",
+          name: "ServiceError",
           component: ExceptionPage,
           props: {
             status: ExceptionEnum.ERROR,
           },
           meta: {
-            title: '500',
+            title: "500",
           },
         },
         {
-          path: 'net-work-error',
-          name: 'NetWorkError',
+          path: "net-work-error",
+          name: "NetWorkError",
           component: ExceptionPage,
           props: {
             status: ExceptionEnum.NET_WORK_ERROR,
           },
           meta: {
-            title: t('routes.demo.page.netWorkError'),
+            title: t("routes.demo.page.netWorkError"),
           },
         },
         {
-          path: 'not-data',
-          name: 'NotData',
+          path: "not-data",
+          name: "NotData",
           component: ExceptionPage,
           props: {
             status: ExceptionEnum.PAGE_NOT_DATA,
           },
           meta: {
-            title: t('routes.demo.page.notData'),
+            title: t("routes.demo.page.notData"),
           },
         },
       ],
@@ -214,36 +215,36 @@ const page: AppRouteModule = {
     // =============================exception end=============================
     // =============================list start=============================
     {
-      path: 'list',
-      name: 'ListPage',
-      component: getParentLayout('ListPage'),
-      redirect: '/page-demo/list/card',
+      path: "list",
+      name: "ListPage",
+      component: getParentLayout("ListPage"),
+      redirect: "/page-demo/list/card",
       meta: {
-        title: t('routes.demo.page.list'),
+        title: t("routes.demo.page.list"),
       },
       children: [
         {
-          path: 'basic',
-          name: 'ListBasicPage',
-          component: () => import('@/views/demo/page/list/basic/index.vue'),
+          path: "basic",
+          name: "ListBasicPage",
+          component: () => import("@/views/demo/page/list/basic/index.vue"),
           meta: {
-            title: t('routes.demo.page.listBasic'),
+            title: t("routes.demo.page.listBasic"),
           },
         },
         {
-          path: 'card',
-          name: 'ListCardPage',
-          component: () => import('@/views/demo/page/list/card/index.vue'),
+          path: "card",
+          name: "ListCardPage",
+          component: () => import("@/views/demo/page/list/card/index.vue"),
           meta: {
-            title: t('routes.demo.page.listCard'),
+            title: t("routes.demo.page.listCard"),
           },
         },
         {
-          path: 'search',
-          name: 'ListSearchPage',
-          component: () => import('@/views/demo/page/list/search/index.vue'),
+          path: "search",
+          name: "ListSearchPage",
+          component: () => import("@/views/demo/page/list/search/index.vue"),
           meta: {
-            title: t('routes.demo.page.listSearch'),
+            title: t("routes.demo.page.listSearch"),
           },
         },
       ],

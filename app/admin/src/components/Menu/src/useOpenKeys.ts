@@ -1,11 +1,11 @@
-import { MenuModeEnum } from '@/enums/menuEnum';
-import type { Menu as MenuType } from '@/router/types';
-import type { MenuState, Key } from './types';
-import { computed, Ref, toRaw, unref } from 'vue';
-import { useTimeoutFn } from '@vben/hooks';
-import { uniq } from 'lodash-es';
-import { useMenuSetting } from '@/hooks/setting/useMenuSetting';
-import { getAllParentPath } from '@/router/helper/menuHelper';
+import { MenuModeEnum } from "@/enums/menuEnum";
+import type { Menu as MenuType } from "@/router/types";
+import type { MenuState, Key } from "./types";
+import { computed, Ref, toRaw, unref } from "vue";
+import { useTimeoutFn } from "@vben/hooks";
+import { uniq } from "lodash-es";
+import { useMenuSetting } from "@/hooks/setting/useMenuSetting";
+import { getAllParentPath } from "@/router/helper/menuHelper";
 
 export function useOpenKeys(
   menuState: MenuState,
@@ -27,7 +27,10 @@ export function useOpenKeys(
         return;
       }
       if (!unref(accordion)) {
-        menuState.openKeys = uniq([...menuState.openKeys, ...getAllParentPath(menuList, path)]);
+        menuState.openKeys = uniq([
+          ...menuState.openKeys,
+          ...getAllParentPath(menuList, path),
+        ]);
       } else {
         menuState.openKeys = getAllParentPath(menuList, path);
       }
@@ -54,7 +57,11 @@ export function useOpenKeys(
   }
 
   function handleOpenChange(openKeys: Key[]) {
-    if (unref(mode) === MenuModeEnum.HORIZONTAL || !unref(accordion) || unref(getIsMixSidebar)) {
+    if (
+      unref(mode) === MenuModeEnum.HORIZONTAL ||
+      !unref(accordion) ||
+      unref(getIsMixSidebar)
+    ) {
       menuState.openKeys = openKeys;
     } else {
       // const menuList = toRaw(menus.value);
@@ -66,7 +73,9 @@ export function useOpenKeys(
         }
       }
       if (!unref(getCollapsed)) {
-        const latestOpenKey = openKeys.find((key) => menuState.openKeys.indexOf(key) === -1);
+        const latestOpenKey = openKeys.find(
+          (key) => menuState.openKeys.indexOf(key) === -1,
+        );
         if (rootSubMenuKeys.indexOf(latestOpenKey as string) === -1) {
           menuState.openKeys = openKeys;
         } else {

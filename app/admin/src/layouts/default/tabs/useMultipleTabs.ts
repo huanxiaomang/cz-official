@@ -1,12 +1,12 @@
-import { toRaw, ref, nextTick } from 'vue';
-import type { RouteLocationNormalized } from 'vue-router';
-import { useDesign } from '@/hooks/web/useDesign';
-import { useSortable } from '@/hooks/web/useSortable';
-import { useMultipleTabStore } from '@/store/modules/multipleTab';
-import { isNil } from '@/utils/is';
-import projectSetting from '@/settings/projectSetting';
-import { useRouter } from 'vue-router';
-import { useI18n } from '@/hooks/web/useI18n';
+import { toRaw, ref, nextTick } from "vue";
+import type { RouteLocationNormalized } from "vue-router";
+import { useDesign } from "@/hooks/web/useDesign";
+import { useSortable } from "@/hooks/web/useSortable";
+import { useMultipleTabStore } from "@/store/modules/multipleTab";
+import { isNil } from "@/utils/is";
+import projectSetting from "@/settings/projectSetting";
+import { useRouter } from "vue-router";
+import { useI18n } from "@/hooks/web/useI18n";
 
 const { t } = useI18n();
 
@@ -33,7 +33,9 @@ export function initAffixTabs(): string[] {
    * @description: Set fixed tabs
    */
   function addAffixTabs(): void {
-    const affixTabs = filterAffixTabs(router.getRoutes() as unknown as RouteLocationNormalized[]);
+    const affixTabs = filterAffixTabs(
+      router.getRoutes() as unknown as RouteLocationNormalized[],
+    );
     affixList.value = affixTabs;
     for (const tab of affixTabs) {
       tabStore.addTab({
@@ -50,13 +52,15 @@ export function initAffixTabs(): string[] {
     addAffixTabs();
     isAddAffix = true;
   }
-  return affixList.value.map((item) => item.meta?.title).filter(Boolean) as string[];
+  return affixList.value
+    .map((item) => item.meta?.title)
+    .filter(Boolean) as string[];
 }
 
 export function useTabsDrag(affixTextList: string[]) {
   const tabStore = useMultipleTabStore();
   const { multiTabsSetting } = projectSetting;
-  const { prefixCls } = useDesign('multiple-tabs');
+  const { prefixCls } = useDesign("multiple-tabs");
   nextTick(() => {
     if (!multiTabsSetting.canDrag) return;
     const el = document.querySelectorAll(

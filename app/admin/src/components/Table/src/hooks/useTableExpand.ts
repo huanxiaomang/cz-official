@@ -1,9 +1,9 @@
-import type { ComputedRef, Ref } from 'vue';
-import type { BasicTableProps } from '../types/table';
-import { computed, unref, ref, toRaw, nextTick } from 'vue';
-import { ROW_KEY } from '../const';
-import { parseRowKeyValue } from '../helper';
-import type { Key } from 'ant-design-vue/lib/table/interface';
+import type { ComputedRef, Ref } from "vue";
+import type { BasicTableProps } from "../types/table";
+import { computed, unref, ref, toRaw, nextTick } from "vue";
+import { ROW_KEY } from "../const";
+import { parseRowKeyValue } from "../helper";
+import type { Key } from "ant-design-vue/lib/table/interface";
 
 export function useTableExpand(
   propsRef: ComputedRef<BasicTableProps>,
@@ -29,7 +29,7 @@ export function useTableExpand(
       expandedRowKeys: unref(expandedRowKeys),
       onExpandedRowsChange: (keyValues: string[]) => {
         expandedRowKeys.value = keyValues;
-        emit('expanded-rows-change', keyValues);
+        emit("expanded-rows-change", keyValues);
       },
     };
   });
@@ -64,7 +64,7 @@ export function useTableExpand(
     const { childrenColumnName } = unref(propsRef);
     toRaw(data || unref(tableData)).forEach((item) => {
       keyValues.push(parseRowKeyValue(unref(getRowKey), item));
-      const children = item[childrenColumnName || 'children'];
+      const children = item[childrenColumnName || "children"];
       if (children?.length) {
         keyValues.push(...getAllKeys(children));
       }
@@ -80,14 +80,19 @@ export function useTableExpand(
     paths: Array<Key>,
   ): boolean {
     if (
-      records.findIndex((record) => parseRowKeyValue(unref(getRowKey), record) === keyValue) > -1
+      records.findIndex(
+        (record) => parseRowKeyValue(unref(getRowKey), record) === keyValue,
+      ) > -1
     ) {
       paths.push(keyValue);
       return true;
     } else {
       for (const record of records) {
         const children = record[childrenColumnName];
-        if (Array.isArray(children) && getKeyPaths(children, childrenColumnName, keyValue, paths)) {
+        if (
+          Array.isArray(children) &&
+          getKeyPaths(children, childrenColumnName, keyValue, paths)
+        ) {
           paths.push(parseRowKeyValue(unref(getRowKey), record));
           return true;
         }
@@ -100,7 +105,12 @@ export function useTableExpand(
   function expandRowAccordion(keyValue: Key) {
     const { childrenColumnName } = unref(propsRef);
     const paths: Array<Key> = [];
-    getKeyPaths(tableData.value, childrenColumnName || 'children', keyValue, paths);
+    getKeyPaths(
+      tableData.value,
+      childrenColumnName || "children",
+      keyValue,
+      paths,
+    );
     expandedRowKeys.value = paths;
   }
 

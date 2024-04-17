@@ -1,11 +1,17 @@
-import { ref, unref, watch } from 'vue';
+import { ref, unref, watch } from "vue";
 
-import type { UseRequestPlugin } from '../types';
+import type { UseRequestPlugin } from "../types";
 
 // support refreshDeps & ready
 const useAutoRunPlugin: UseRequestPlugin<any, any[]> = (
   fetchInstance,
-  { manual, ready = true, defaultParams = [], refreshDeps = [], refreshDepsAction },
+  {
+    manual,
+    ready = true,
+    defaultParams = [],
+    refreshDeps = [],
+    refreshDepsAction,
+  },
 ) => {
   const hasAutoRun = ref(false);
 

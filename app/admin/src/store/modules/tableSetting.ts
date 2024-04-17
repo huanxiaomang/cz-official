@@ -1,18 +1,21 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
-import { TABLE_SETTING_KEY } from '@/enums/cacheEnum';
+import { TABLE_SETTING_KEY } from "@/enums/cacheEnum";
 
-import { Persistent } from '@/utils/cache/persistent';
+import { Persistent } from "@/utils/cache/persistent";
 
-import type { TableSetting } from '#/store';
-import type { SizeType, ColumnOptionsType } from '@/components/Table/src/types/table';
+import type { TableSetting } from "#/store";
+import type {
+  SizeType,
+  ColumnOptionsType,
+} from "@/components/Table/src/types/table";
 
 interface TableSettingState {
   setting: Nullable<Partial<TableSetting>>;
 }
 
 export const useTableSettingStore = defineStore({
-  id: 'table-setting',
+  id: "table-setting",
   state: (): TableSettingState => ({
     setting: Persistent.getLocal(TABLE_SETTING_KEY),
   }),
@@ -22,7 +25,7 @@ export const useTableSettingStore = defineStore({
     },
     //
     getTableSize(state) {
-      return state.setting?.size || 'middle';
+      return state.setting?.size || "middle";
     },
     //
     getShowIndexColumn(state) {

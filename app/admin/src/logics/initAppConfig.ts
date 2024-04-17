@@ -1,30 +1,35 @@
 /**
  * Application configuration
  */
-import type { ProjectConfig } from '#/config';
+import type { ProjectConfig } from "#/config";
 
-import { PROJ_CFG_KEY } from '@/enums/cacheEnum';
-import projectSetting from '@/settings/projectSetting';
+import { PROJ_CFG_KEY } from "@/enums/cacheEnum";
+import projectSetting from "@/settings/projectSetting";
 
-import { updateDarkTheme } from '@/logics/theme/dark';
-import { updateHeaderBgColor, updateSidebarBgColor } from '@/logics/theme/updateBackground';
-import { updateColorWeak } from '@/logics/theme/updateColorWeak';
-import { updateGrayMode } from '@/logics/theme/updateGrayMode';
+import { updateDarkTheme } from "@/logics/theme/dark";
+import {
+  updateHeaderBgColor,
+  updateSidebarBgColor,
+} from "@/logics/theme/updateBackground";
+import { updateColorWeak } from "@/logics/theme/updateColorWeak";
+import { updateGrayMode } from "@/logics/theme/updateGrayMode";
 
-import { useAppStore } from '@/store/modules/app';
-import { useLocaleStore } from '@/store/modules/locale';
+import { useAppStore } from "@/store/modules/app";
+import { useLocaleStore } from "@/store/modules/locale";
 
-import { getCommonStoragePrefix, getStorageShortName } from '@/utils/env';
+import { getCommonStoragePrefix, getStorageShortName } from "@/utils/env";
 
-import { ThemeEnum } from '@/enums/appEnum';
-import { deepMerge } from '@/utils';
-import { Persistent } from '@/utils/cache/persistent';
+import { ThemeEnum } from "@/enums/appEnum";
+import { deepMerge } from "@/utils";
+import { Persistent } from "@/utils/cache/persistent";
 
 // Initial project configuration
 export function initAppConfigStore() {
   const localeStore = useLocaleStore();
   const appStore = useAppStore();
-  let projCfg: ProjectConfig = Persistent.getLocal(PROJ_CFG_KEY) as ProjectConfig;
+  let projCfg: ProjectConfig = Persistent.getLocal(
+    PROJ_CFG_KEY,
+  ) as ProjectConfig;
   projCfg = deepMerge(projectSetting, projCfg || {});
   const darkMode = appStore.getDarkMode;
   const {

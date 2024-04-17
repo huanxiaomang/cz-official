@@ -1,20 +1,27 @@
-import { defHttp } from '@/utils/http/axios';
-import { LoginParams, LoginResultModel, GetUserInfoModel } from './model/userModel';
+import { defHttp } from "@/utils/http/axios";
+import {
+  LoginParams,
+  LoginResultModel,
+  GetUserInfoModel,
+} from "./model/userModel";
 
-import { ErrorMessageMode } from '#/axios';
+import { ErrorMessageMode } from "#/axios";
 
 enum Api {
-  Login = '/login',
-  Logout = '/logout',
-  GetUserInfo = '/getUserInfo',
-  GetPermCode = '/getPermCode',
-  TestRetry = '/testRetry',
+  Login = "/login",
+  Logout = "/logout",
+  GetUserInfo = "/getUserInfo",
+  GetPermCode = "/getPermCode",
+  TestRetry = "/testRetry",
 }
 
 /**
  * @description: user login api
  */
-export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') {
+export function loginApi(
+  params: LoginParams,
+  mode: ErrorMessageMode = "modal",
+) {
   return defHttp.post<LoginResultModel>(
     {
       url: Api.Login,
@@ -30,7 +37,10 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
  * @description: getUserInfo
  */
 export function getUserInfo() {
-  return defHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' });
+  return defHttp.get<GetUserInfoModel>(
+    { url: Api.GetUserInfo },
+    { errorMessageMode: "none" },
+  );
 }
 
 export function getPermCode() {

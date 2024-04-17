@@ -15,7 +15,9 @@
       <Descriptions title="项目名称">
         <Descriptions.Item label="项目 ID"> 111222 </Descriptions.Item>
         <Descriptions.Item label="负责人"> Vben </Descriptions.Item>
-        <Descriptions.Item label="生效时间"> 2016-12-12 ~ 2017-12-12 </Descriptions.Item>
+        <Descriptions.Item label="生效时间">
+          2016-12-12 ~ 2017-12-12
+        </Descriptions.Item>
       </Descriptions>
       <Steps :current="1" progress-dot size="small">
         <Steps.Step title="创建项目">
@@ -36,16 +38,16 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { Result, Steps, Descriptions } from 'ant-design-vue';
+import { Result, Steps, Descriptions } from "ant-design-vue";
 </script>
 <style lang="less" scoped>
-  .result-success {
-    padding: 48px 32px;
-    background-color: @component-background;
+.result-success {
+  padding: 48px 32px;
+  background-color: @component-background;
 
-    &__content {
-      padding: 24px 40px;
-      background-color: @app-content-background;
-    }
+  &__content {
+    padding: 24px 40px;
+    background-color: @app-content-background;
   }
+}
 </style>

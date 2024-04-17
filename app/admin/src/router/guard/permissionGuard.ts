@@ -1,13 +1,13 @@
-import type { Router, RouteRecordRaw } from 'vue-router';
+import type { Router, RouteRecordRaw } from "vue-router";
 
-import { usePermissionStoreWithOut } from '@/store/modules/permission';
+import { usePermissionStoreWithOut } from "@/store/modules/permission";
 
-import { PageEnum } from '@/enums/pageEnum';
-import { useUserStoreWithOut } from '@/store/modules/user';
+import { PageEnum } from "@/enums/pageEnum";
+import { useUserStoreWithOut } from "@/store/modules/user";
 
-import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic';
+import { PAGE_NOT_FOUND_ROUTE } from "@/router/routes/basic";
 
-import { RootRoute } from '@/router/routes';
+import { RootRoute } from "@/router/routes";
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
 
@@ -38,7 +38,7 @@ export function createPermissionGuard(router: Router) {
         try {
           await userStore.afterLoginAction();
           if (!isSessionTimeout) {
-            next(decodeURIComponent((to.query?.redirect as string) || '/'));
+            next(decodeURIComponent((to.query?.redirect as string) || "/"));
             return;
           }
         } catch {
@@ -57,7 +57,11 @@ export function createPermissionGuard(router: Router) {
       }
 
       // redirect login page
-      const redirectData: { path: string; replace: boolean; query?: Recordable<string> } = {
+      const redirectData: {
+        path: string;
+        replace: boolean;
+        query?: Recordable<string>;
+      } = {
         path: LOGIN_PATH,
         replace: true,
       };
@@ -98,25 +102,30 @@ export function createPermissionGuard(router: Router) {
 
     if (to.name === PAGE_NOT_FOUND_ROUTE.name) {
       // 遇到不存在页面，后续逻辑不再处理redirect（阻止下面else逻辑）
-      from.query.redirect = '';
+      from.query.redirect = "";
 
       if (
         from.path === LOGIN_PATH &&
         to.fullPath !== (userStore.getUserInfo.homePath || PageEnum.BASE_HOME)
       ) {
         // 登陆重定向不存在路由，转去“首页”
-        next({ path: userStore.getUserInfo.homePath || PageEnum.BASE_HOME, replace: true });
+        next({
+          path: userStore.getUserInfo.homePath || PageEnum.BASE_HOME,
+          replace: true,
+        });
       } else {
         // 正常前往“404”页面
         next();
       }
     } else if (from.query.redirect) {
       // 存在redirect
-      const redirect = decodeURIComponent((from.query.redirect as string) || '');
+      const redirect = decodeURIComponent(
+        (from.query.redirect as string) || "",
+      );
 
       // 只处理一次 from.query.redirect
       // 也避免某场景（指向路由定义了 redirect）下的死循环
-      from.query.redirect = '';
+      from.query.redirect = "";
 
       if (redirect === to.fullPath) {
         // 已经被redirect

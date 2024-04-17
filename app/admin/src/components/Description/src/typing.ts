@@ -1,6 +1,6 @@
-import type { VNode, CSSProperties } from 'vue';
-import type { CollapseContainerOptions } from '@/components/Container';
-import type { DescriptionsProps } from 'ant-design-vue/es/descriptions';
+import type { VNode, CSSProperties } from "vue";
+import type { CollapseContainerOptions } from "@/components/Container";
+import type { DescriptionsProps } from "ant-design-vue/es/descriptions";
 
 export interface DescItem {
   labelMinWidth?: number;

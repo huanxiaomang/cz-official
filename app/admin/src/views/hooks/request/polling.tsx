@@ -1,8 +1,8 @@
-import { defineComponent } from 'vue';
-import { Card, Typography, Button, Space, message } from 'ant-design-vue';
-import { imitateApi } from './mock-api';
-import { useRequest } from '@vben/hooks';
-import { PageWrapper } from '@/components/Page';
+import { defineComponent } from "vue";
+import { Card, Typography, Button, Space, message } from "ant-design-vue";
+import { imitateApi } from "./mock-api";
+import { useRequest } from "@vben/hooks";
+import { PageWrapper } from "@/components/Page";
 
 const Demo1 = defineComponent({
   setup() {
@@ -19,7 +19,10 @@ const Demo1 = defineComponent({
         <Typography>
           <Typography.Paragraph>
             通过设置
-            <Typography.Text type="danger"> options.pollingInterval </Typography.Text>
+            <Typography.Text type="danger">
+              {" "}
+              options.pollingInterval{" "}
+            </Typography.Text>
             ，进入轮询模式，useRequest 会定时触发 service 执行。
           </Typography.Paragraph>
           <Typography.Paragraph>
@@ -30,7 +33,7 @@ const Demo1 = defineComponent({
         </Typography>
 
         <div>
-          <div>Username: {loading.value ? 'Loading' : data.value}</div>
+          <div>Username: {loading.value ? "Loading" : data.value}</div>
           <Space>
             <Button onClick={() => run()}>start</Button>
             <Button type="dashed" onClick={cancel}>
@@ -60,7 +63,10 @@ const Demo2 = defineComponent({
         <Typography>
           <Typography.Paragraph>
             通过
-            <Typography.Text type="danger"> options.pollingErrorRetryCount </Typography.Text>
+            <Typography.Text type="danger">
+              {" "}
+              options.pollingErrorRetryCount{" "}
+            </Typography.Text>
             轮询错误重试次数。
           </Typography.Paragraph>
           <Typography.Paragraph>
@@ -71,9 +77,9 @@ const Demo2 = defineComponent({
         </Typography>
 
         <div>
-          <div>Username: {loading.value ? 'Loading' : data.value}</div>
+          <div>Username: {loading.value ? "Loading" : data.value}</div>
           <Space>
-            <Button onClick={() => run('lutz', false)}>start</Button>
+            <Button onClick={() => run("lutz", false)}>start</Button>
             <Button type="dashed" onClick={cancel}>
               stop
             </Button>

@@ -9,10 +9,16 @@
       <FormItem label="表单布局">
         <RadioGroup button-style="solid" v-model:value="formConfig.layout">
           <RadioButton value="horizontal">水平</RadioButton>
-          <RadioButton value="vertical" :disabled="formConfig.labelLayout === 'Grid'">
+          <RadioButton
+            value="vertical"
+            :disabled="formConfig.labelLayout === 'Grid'"
+          >
             垂直
           </RadioButton>
-          <RadioButton value="inline" :disabled="formConfig.labelLayout === 'Grid'">
+          <RadioButton
+            value="inline"
+            :disabled="formConfig.labelLayout === 'Grid'"
+          >
             行内
           </RadioButton>
         </RadioGroup>
@@ -26,13 +32,19 @@
           @change="lableLayoutChange"
         >
           <RadioButton value="flex">固定</RadioButton>
-          <RadioButton value="Grid" :disabled="formConfig.layout !== 'horizontal'">
+          <RadioButton
+            value="Grid"
+            :disabled="formConfig.layout !== 'horizontal'"
+          >
             栅格
           </RadioButton>
         </RadioGroup>
       </FormItem>
       <!-- </Row> -->
-      <FormItem label="标签宽度（px）" v-show="formConfig.labelLayout === 'flex'">
+      <FormItem
+        label="标签宽度（px）"
+        v-show="formConfig.labelLayout === 'flex'"
+      >
         <InputNumber
           :style="{ width: '100%' }"
           v-model:value="formConfig.labelWidth"
@@ -49,7 +61,10 @@
         </FormItem>
 
         <FormItem label="标签对齐">
-          <RadioGroup button-style="solid" v-model:value="formConfig.labelAlign">
+          <RadioGroup
+            button-style="solid"
+            v-model:value="formConfig.labelAlign"
+          >
             <RadioButton value="left">靠左</RadioButton>
             <RadioButton value="right">靠右</RadioButton>
           </RadioGroup>
@@ -65,48 +80,56 @@
       </div>
       <FormItem label="表单属性">
         <Col
-          ><Checkbox v-model:checked="formConfig.colon" v-if="formConfig.layout === 'horizontal'"
+          ><Checkbox
+            v-model:checked="formConfig.colon"
+            v-if="formConfig.layout === 'horizontal'"
             >label后面显示冒号</Checkbox
           ></Col
         >
-        <Col><Checkbox v-model:checked="formConfig.disabled">禁用</Checkbox></Col>
-        <Col><Checkbox v-model:checked="formConfig.hideRequiredMark">隐藏必选标记</Checkbox></Col>
+        <Col
+          ><Checkbox v-model:checked="formConfig.disabled">禁用</Checkbox></Col
+        >
+        <Col
+          ><Checkbox v-model:checked="formConfig.hideRequiredMark"
+            >隐藏必选标记</Checkbox
+          ></Col
+        >
       </FormItem>
     </Form>
   </div>
 </template>
 <script lang="ts" setup name="FormProps">
-  import { computed } from 'vue';
-  import { useFormDesignState } from '../../../hooks/useFormDesignState';
-  import {
-    InputNumber,
-    Slider,
-    Checkbox,
-    Col,
-    RadioChangeEvent,
-    Form,
-    FormItem,
-    RadioButton,
-    RadioGroup,
-  } from 'ant-design-vue';
+import { computed } from "vue";
+import { useFormDesignState } from "../../../hooks/useFormDesignState";
+import {
+  InputNumber,
+  Slider,
+  Checkbox,
+  Col,
+  RadioChangeEvent,
+  Form,
+  FormItem,
+  RadioButton,
+  RadioGroup,
+} from "ant-design-vue";
 
-  const { formConfig } = useFormDesignState();
+const { formConfig } = useFormDesignState();
 
-  formConfig.value = formConfig.value || {
-    labelCol: { span: 24 },
-    wrapperCol: { span: 24 },
-  };
+formConfig.value = formConfig.value || {
+  labelCol: { span: 24 },
+  wrapperCol: { span: 24 },
+};
 
-  const lableLayoutChange = (e: RadioChangeEvent) => {
-    if (e.target.value === 'Grid') {
-      formConfig.value.layout = 'horizontal';
-    }
-  };
+const lableLayoutChange = (e: RadioChangeEvent) => {
+  if (e.target.value === "Grid") {
+    formConfig.value.layout = "horizontal";
+  }
+};
 
-  const sliderSpan = computed(() => {
-    if (formConfig.value.labelLayout) {
-      return Number(formConfig.value.labelCol!.span);
-    }
-    return 0;
-  });
+const sliderSpan = computed(() => {
+  if (formConfig.value.labelLayout) {
+    return Number(formConfig.value.labelCol!.span);
+  }
+  return 0;
+});
 </script>

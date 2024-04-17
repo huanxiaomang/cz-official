@@ -20,7 +20,11 @@
           >
             <draggable
               class="list-main draggable-box"
-              :component-data="{ name: 'list', tag: 'div', type: 'transition-group' }"
+              :component-data="{
+                name: 'list',
+                tag: 'div',
+                type: 'transition-group',
+              }"
               v-bind="{
                 group: 'form-draggable',
                 ghostClass: 'moving',
@@ -58,70 +62,70 @@
   </Col>
 </template>
 <script lang="ts">
-  import { computed, defineComponent, PropType, reactive, toRefs } from 'vue';
-  import draggable from 'vuedraggable';
-  import FormNode from './FormNode.vue';
-  import FormNodeOperate from './FormNodeOperate.vue';
-  import { useFormDesignState } from '../../../hooks/useFormDesignState';
-  import { IVFormComponent } from '../../../typings/v-form-component';
-  import { Row, Col } from 'ant-design-vue';
+import { computed, defineComponent, PropType, reactive, toRefs } from "vue";
+import draggable from "vuedraggable";
+import FormNode from "./FormNode.vue";
+import FormNodeOperate from "./FormNodeOperate.vue";
+import { useFormDesignState } from "../../../hooks/useFormDesignState";
+import { IVFormComponent } from "../../../typings/v-form-component";
+import { Row, Col } from "ant-design-vue";
 
-  export default defineComponent({
-    name: 'LayoutItem',
-    components: {
-      FormNode,
-      FormNodeOperate,
-      draggable,
-      Row,
-      Col,
+export default defineComponent({
+  name: "LayoutItem",
+  components: {
+    FormNode,
+    FormNodeOperate,
+    draggable,
+    Row,
+    Col,
+  },
+  props: {
+    schema: {
+      type: Object as PropType<IVFormComponent>,
+      required: true,
     },
-    props: {
-      schema: {
-        type: Object as PropType<IVFormComponent>,
-        required: true,
-      },
-      currentItem: {
-        type: Object,
-        required: true,
-      },
+    currentItem: {
+      type: Object,
+      required: true,
     },
-    emits: ['dragStart', 'handleColAdd', 'handle-copy', 'handle-delete'],
-    setup(props) {
-      const {
-        formDesignMethods: { handleSetSelectItem },
-        formConfig,
-      } = useFormDesignState();
-      const state = reactive({});
-      const colPropsComputed = computed(() => {
-        const { colProps = {} } = props.schema;
-        return colProps;
-      });
+  },
+  emits: ["dragStart", "handleColAdd", "handle-copy", "handle-delete"],
+  setup(props) {
+    const {
+      formDesignMethods: { handleSetSelectItem },
+      formConfig,
+    } = useFormDesignState();
+    const state = reactive({});
+    const colPropsComputed = computed(() => {
+      const { colProps = {} } = props.schema;
+      return colProps;
+    });
 
-      const list1 = computed(() => props.schema.columns);
+    const list1 = computed(() => props.schema.columns);
 
-      // 计算布局元素，水平模式下为ACol，非水平模式下为div
-      const layoutTag = computed(() => {
-        return formConfig.value.layout === 'horizontal' ? 'Col' : 'div';
-      });
+    // 计算布局元素，水平模式下为ACol，非水平模式下为div
+    const layoutTag = computed(() => {
+      return formConfig.value.layout === "horizontal" ? "Col" : "div";
+    });
 
-      return {
-        ...toRefs(state),
-        colPropsComputed,
-        handleSetSelectItem,
-        layoutTag,
-        list1,
-      };
-    },
-  });
+    return {
+      ...toRefs(state),
+      colPropsComputed,
+      handleSetSelectItem,
+      layoutTag,
+      list1,
+    };
+  },
+});
 </script>
 <style lang="less">
-  @import url('../styles/variable.less');
+@import url("../styles/variable.less");
 
-  .layout-width {
-    width: 100%;
-  }
+.layout-width {
+  width: 100%;
+}
 
-  .hidden-item {
-    background-color: rgb(240 191 195);
-  }
+.hidden-item {
+  background-color: rgb(240 191 195);
+}
 </style>

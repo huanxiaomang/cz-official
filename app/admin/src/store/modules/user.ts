@@ -1,21 +1,21 @@
-import type { UserInfo } from '#/store';
-import type { ErrorMessageMode } from '#/axios';
-import { defineStore } from 'pinia';
-import { store } from '@/store';
-import { RoleEnum } from '@/enums/roleEnum';
-import { PageEnum } from '@/enums/pageEnum';
-import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '@/enums/cacheEnum';
-import { getAuthCache, setAuthCache } from '@/utils/auth';
-import { GetUserInfoModel, LoginParams } from '@/api/sys/model/userModel';
-import { doLogout, getUserInfo, loginApi } from '@/api/sys/user';
-import { useI18n } from '@/hooks/web/useI18n';
-import { useMessage } from '@/hooks/web/useMessage';
-import { router } from '@/router';
-import { usePermissionStore } from '@/store/modules/permission';
-import { RouteRecordRaw } from 'vue-router';
-import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic';
-import { isArray } from '@/utils/is';
-import { h } from 'vue';
+import type { UserInfo } from "#/store";
+import type { ErrorMessageMode } from "#/axios";
+import { defineStore } from "pinia";
+import { store } from "@/store";
+import { RoleEnum } from "@/enums/roleEnum";
+import { PageEnum } from "@/enums/pageEnum";
+import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from "@/enums/cacheEnum";
+import { getAuthCache, setAuthCache } from "@/utils/auth";
+import { GetUserInfoModel, LoginParams } from "@/api/sys/model/userModel";
+import { doLogout, getUserInfo, loginApi } from "@/api/sys/user";
+import { useI18n } from "@/hooks/web/useI18n";
+import { useMessage } from "@/hooks/web/useMessage";
+import { router } from "@/router";
+import { usePermissionStore } from "@/store/modules/permission";
+import { RouteRecordRaw } from "vue-router";
+import { PAGE_NOT_FOUND_ROUTE } from "@/router/routes/basic";
+import { isArray } from "@/utils/is";
+import { h } from "vue";
 
 interface UserState {
   userInfo: Nullable<UserInfo>;
@@ -26,7 +26,7 @@ interface UserState {
 }
 
 export const useUserStore = defineStore({
-  id: 'app-user',
+  id: "app-user",
   state: (): UserState => ({
     // user info
     userInfo: null,
@@ -47,7 +47,9 @@ export const useUserStore = defineStore({
       return state.token || getAuthCache<string>(TOKEN_KEY);
     },
     getRoleList(state): RoleEnum[] {
-      return state.roleList.length > 0 ? state.roleList : getAuthCache<RoleEnum[]>(ROLES_KEY);
+      return state.roleList.length > 0
+        ? state.roleList
+        : getAuthCache<RoleEnum[]>(ROLES_KEY);
     },
     getSessionTimeout(state): boolean {
       return !!state.sessionTimeout;
@@ -58,7 +60,7 @@ export const useUserStore = defineStore({
   },
   actions: {
     setToken(info: string | undefined) {
-      this.token = info ? info : ''; // for null or undefined value
+      this.token = info ? info : ""; // for null or undefined value
       setAuthCache(TOKEN_KEY, info);
     },
     setRoleList(roleList: RoleEnum[]) {
@@ -75,7 +77,7 @@ export const useUserStore = defineStore({
     },
     resetState() {
       this.userInfo = null;
-      this.token = '';
+      this.token = "";
       this.roleList = [];
       this.sessionTimeout = false;
     },
@@ -121,7 +123,8 @@ export const useUserStore = defineStore({
           permissionStore.setDynamicAddedRoute(true);
         }
 
-        goHome && (await router.replace(userInfo?.homePath || PageEnum.BASE_HOME));
+        goHome &&
+          (await router.replace(userInfo?.homePath || PageEnum.BASE_HOME));
       }
       return userInfo;
     },
@@ -147,7 +150,7 @@ export const useUserStore = defineStore({
         try {
           await doLogout();
         } catch {
-          console.log('注销Token失败');
+          console.log("注销Token失败");
         }
       }
       this.setToken(undefined);
@@ -174,9 +177,9 @@ export const useUserStore = defineStore({
       const { createConfirm } = useMessage();
       const { t } = useI18n();
       createConfirm({
-        iconType: 'warning',
-        title: () => h('span', t('sys.app.logoutTip')),
-        content: () => h('span', t('sys.app.logoutMessage')),
+        iconType: "warning",
+        title: () => h("span", t("sys.app.logoutTip")),
+        content: () => h("span", t("sys.app.logoutMessage")),
         onOk: async () => {
           // 主动登出，不带redirect地址
           await this.logout(true);

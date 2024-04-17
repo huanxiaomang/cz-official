@@ -1,6 +1,10 @@
-import { cacheCipher } from '@/settings/encryptionSetting';
-import { isNil } from '@/utils/is';
-import { Encryption, EncryptionFactory, EncryptionParams } from '@/utils/cipher';
+import { cacheCipher } from "@/settings/encryptionSetting";
+import { isNil } from "@/utils/is";
+import {
+  Encryption,
+  EncryptionFactory,
+  EncryptionParams,
+} from "@/utils/cipher";
 
 export interface CreateStorageParams extends EncryptionParams {
   prefixKey: string;
@@ -10,7 +14,7 @@ export interface CreateStorageParams extends EncryptionParams {
 }
 // TODO 移除此文件夹下全部代码
 export const createStorage = ({
-  prefixKey = '',
+  prefixKey = "",
   storage = sessionStorage,
   key = cacheCipher.key,
   iv = cacheCipher.iv,
@@ -18,7 +22,7 @@ export const createStorage = ({
   hasEncrypt = true,
 }: Partial<CreateStorageParams> = {}) => {
   if (hasEncrypt && [key.length, iv.length].some((item) => item !== 16)) {
-    throw new Error('When hasEncrypt is true, the key or iv must be 16 bits!');
+    throw new Error("When hasEncrypt is true, the key or iv must be 16 bits!");
   }
 
   const persistEncryption: Encryption = EncryptionFactory.createAesEncryption({
@@ -64,7 +68,9 @@ export const createStorage = ({
         time: Date.now(),
         expire: !isNil(expire) ? new Date().getTime() + expire * 1000 : null,
       });
-      const stringifyValue = this.hasEncrypt ? this.encryption.encrypt(stringData) : stringData;
+      const stringifyValue = this.hasEncrypt
+        ? this.encryption.encrypt(stringData)
+        : stringData;
       this.storage.setItem(this.getKey(key), stringifyValue);
     }
 

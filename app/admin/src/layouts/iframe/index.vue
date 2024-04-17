@@ -10,14 +10,14 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { unref, computed } from 'vue';
-  import FramePage from '@/views/sys/iframe/index.vue';
+import { unref, computed } from "vue";
+import FramePage from "@/views/sys/iframe/index.vue";
 
-  import { useFrameKeepAlive } from './useFrameKeepAlive';
+import { useFrameKeepAlive } from "./useFrameKeepAlive";
 
-  defineOptions({ name: 'FrameLayout' });
+defineOptions({ name: "FrameLayout" });
 
-  const { getFramePages, hasRenderFrame, showIframe } = useFrameKeepAlive();
+const { getFramePages, hasRenderFrame, showIframe } = useFrameKeepAlive();
 
-  const showFrame = computed(() => unref(getFramePages).length > 0);
+const showFrame = computed(() => unref(getFramePages).length > 0);
 </script>

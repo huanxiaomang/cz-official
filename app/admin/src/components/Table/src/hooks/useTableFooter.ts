@@ -1,12 +1,12 @@
-import type { ComputedRef, Ref } from 'vue';
-import type { BasicTableProps } from '../types/table';
-import { unref, computed, h, nextTick, watchEffect } from 'vue';
-import TableFooter from '../components/TableFooter.vue';
-import { useEventListener } from '@/hooks/event/useEventListener';
+import type { ComputedRef, Ref } from "vue";
+import type { BasicTableProps } from "../types/table";
+import { unref, computed, h, nextTick, watchEffect } from "vue";
+import TableFooter from "../components/TableFooter.vue";
+import { useEventListener } from "@/hooks/event/useEventListener";
 
 export function useTableFooter(
   propsRef: ComputedRef<BasicTableProps>,
-  scrollRef: ComputedRef<BasicTableProps['scroll']>,
+  scrollRef: ComputedRef<BasicTableProps["scroll"]>,
   tableElRef: Ref<ComponentRef>,
   getDataSourceRef: ComputedRef<Recordable>,
 ) {
@@ -17,7 +17,8 @@ export function useTableFooter(
   const getFooterProps = computed((): Recordable | undefined => {
     const { summaryFunc, showSummary, summaryData } = unref(propsRef);
     return showSummary && !unref(getIsEmptyData)
-      ? () => h(TableFooter, { summaryFunc, summaryData, scroll: unref(scrollRef) })
+      ? () =>
+          h(TableFooter, { summaryFunc, summaryData, scroll: unref(scrollRef) })
       : undefined;
   });
 
@@ -32,10 +33,12 @@ export function useTableFooter(
     nextTick(() => {
       const tableEl = unref(tableElRef);
       if (!tableEl) return;
-      const bodyDom = tableEl.$el.querySelector(' .ant-table-content,  .ant-table-body');
+      const bodyDom = tableEl.$el.querySelector(
+        " .ant-table-content,  .ant-table-body",
+      );
       useEventListener({
         el: bodyDom,
-        name: 'scroll',
+        name: "scroll",
         listener: () => {
           const footerBodyDom = tableEl.$el.querySelector(
             '.ant-table-footer .ant-table-container  [class^="ant-table-"]',

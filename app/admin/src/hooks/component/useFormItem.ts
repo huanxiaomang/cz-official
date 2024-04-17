@@ -1,4 +1,4 @@
-import type { UnwrapRef, Ref, WritableComputedRef, DeepReadonly } from 'vue';
+import type { UnwrapRef, Ref, WritableComputedRef, DeepReadonly } from "vue";
 import {
   reactive,
   readonly,
@@ -8,11 +8,15 @@ import {
   unref,
   toRaw,
   nextTick,
-} from 'vue';
+} from "vue";
 
-import { isEqual } from 'lodash-es';
+import { isEqual } from "lodash-es";
 
-export function useRuleFormItem<T extends Recordable, K extends keyof T, V = UnwrapRef<T[K]>>(
+export function useRuleFormItem<
+  T extends Recordable,
+  K extends keyof T,
+  V = UnwrapRef<T[K]>,
+>(
   props: T,
   key?: K,
   changeEvent?,
@@ -21,8 +25,8 @@ export function useRuleFormItem<T extends Recordable, K extends keyof T, V = Unw
 
 export function useRuleFormItem<T extends Recordable>(
   props: T,
-  key: keyof T = 'value',
-  changeEvent = 'change',
+  key: keyof T = "value",
+  changeEvent = "change",
   emitData?: Ref<any[]>,
 ) {
   const instance = getCurrentInstance();

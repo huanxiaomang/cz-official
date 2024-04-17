@@ -23,10 +23,10 @@
   </CollapseContainer>
 </template>
 <script lang="ts" setup>
-  import { CollapseContainer } from '@/components/Container';
-  import { List } from 'ant-design-vue';
-  import { secureSettingList } from './data';
+import { CollapseContainer } from "@/components/Container";
+import { List } from "ant-design-vue";
+import { secureSettingList } from "./data";
 
-  const ListItem = List.Item;
-  const ListItemMeta = List.Item.Meta;
+const ListItem = List.Item;
+const ListItemMeta = List.Item.Meta;
 </script>

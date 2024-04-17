@@ -57,95 +57,100 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { BasicTable, useTable, BasicColumn, TableAction } from '@/components/Table';
+import {
+  BasicTable,
+  useTable,
+  BasicColumn,
+  TableAction,
+} from "@/components/Table";
 
-  import { demoListApi } from '@/api/demo/table';
+import { demoListApi } from "@/api/demo/table";
 
-  const columns: BasicColumn[] = [
-    {
-      title: '编号',
-      dataIndex: 'no',
-      width: 100,
+const columns: BasicColumn[] = [
+  {
+    title: "编号",
+    dataIndex: "no",
+    width: 100,
+  },
+  {
+    title: "姓名",
+    dataIndex: "name",
+    minWidth: 200,
+    auth: "test", // 根据权限控制是否显示: 无权限，不显示
+  },
+  {
+    title: "状态",
+    dataIndex: "status",
+    width: 100,
+  },
+  {
+    title: "状态1",
+    dataIndex: "status1",
+    width: 100,
+  },
+  {
+    title: "状态2",
+    dataIndex: "status2",
+    width: 100,
+  },
+  {
+    title: "状态3",
+    dataIndex: "status3",
+    width: 100,
+  },
+  {
+    title: "状态4",
+    dataIndex: "status4",
+    width: 100,
+  },
+  {
+    title: "状态5",
+    dataIndex: "status5",
+    width: 100,
+  },
+  {
+    title: "地址",
+    dataIndex: "address",
+    auth: "super", // 同时根据权限和业务控制是否显示
+    ifShow: (_column) => {
+      return true;
     },
-    {
-      title: '姓名',
-      dataIndex: 'name',
-      minWidth: 200,
-      auth: 'test', // 根据权限控制是否显示: 无权限，不显示
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      width: 100,
-    },
-    {
-      title: '状态1',
-      dataIndex: 'status1',
-      width: 100,
-    },
-    {
-      title: '状态2',
-      dataIndex: 'status2',
-      width: 100,
-    },
-    {
-      title: '状态3',
-      dataIndex: 'status3',
-      width: 100,
-    },
-    {
-      title: '状态4',
-      dataIndex: 'status4',
-      width: 100,
-    },
-    {
-      title: '状态5',
-      dataIndex: 'status5',
-      width: 100,
-    },
-    {
-      title: '地址',
-      dataIndex: 'address',
-      auth: 'super', // 同时根据权限和业务控制是否显示
-      ifShow: (_column) => {
-        return true;
-      },
-    },
-    {
-      title: '开始时间',
-      dataIndex: 'beginTime',
-    },
-    {
-      title: '结束时间',
-      dataIndex: 'endTime',
-      width: 200,
-    },
-  ];
+  },
+  {
+    title: "开始时间",
+    dataIndex: "beginTime",
+  },
+  {
+    title: "结束时间",
+    dataIndex: "endTime",
+    width: 200,
+  },
+];
 
-  const [registerTable] = useTable({
-    title: 'TableAction组件及固定列示例',
-    api: demoListApi,
-    columns: columns,
-    bordered: true,
-    rowKey: 'id',
-    rowSelection: {
-      type: 'checkbox',
-    },
-    actionColumn: {
-      width: 250,
-      title: 'Action',
-      dataIndex: 'action',
-      // slots: { customRender: 'action' },
-    },
-    showSelectionBar: true, // 显示多选状态栏
-  });
-  function handleEdit(record: Recordable) {
-    console.log('点击了编辑', record);
-  }
-  function handleDelete(record: Recordable) {
-    console.log('点击了删除', record);
-  }
-  function handleOpen(record: Recordable) {
-    console.log('点击了启用', record);
-  }
+const [registerTable] = useTable({
+  title: "TableAction组件及固定列示例",
+  api: demoListApi,
+  columns: columns,
+  bordered: true,
+  rowKey: "id",
+  rowSelection: {
+    type: "checkbox",
+  },
+  actionColumn: {
+    width: 250,
+    title: "Action",
+    dataIndex: "action",
+    // slots: { customRender: 'action' },
+  },
+  showSelectionBar: true, // 显示多选状态栏
+});
+function handleEdit(record: Recordable) {
+  console.log("点击了编辑", record);
+}
+function handleDelete(record: Recordable) {
+  console.log("点击了删除", record);
+}
+function handleOpen(record: Recordable) {
+  console.log("点击了启用", record);
+}
 </script>

@@ -19,77 +19,80 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs } from 'vue';
-  import { CodeEditor, MODE } from '@/components/CodeEditor';
+import { defineComponent, reactive, toRefs } from "vue";
+import { CodeEditor, MODE } from "@/components/CodeEditor";
 
-  import { copyText } from '@/utils/copyTextToClipboard';
-  import { useMessage } from '@/hooks/web/useMessage';
+import { copyText } from "@/utils/copyTextToClipboard";
+import { useMessage } from "@/hooks/web/useMessage";
 
-  export default defineComponent({
-    name: 'PreviewCode',
-    components: {
-      CodeEditor,
+export default defineComponent({
+  name: "PreviewCode",
+  components: {
+    CodeEditor,
+  },
+  props: {
+    fileFormat: {
+      type: String,
+      default: "json",
     },
-    props: {
-      fileFormat: {
-        type: String,
-        default: 'json',
-      },
-      editorJson: {
-        type: String,
-        default: '',
-      },
+    editorJson: {
+      type: String,
+      default: "",
     },
-    setup(props) {
-      const state = reactive({
-        visible: false,
-      });
+  },
+  setup(props) {
+    const state = reactive({
+      visible: false,
+    });
 
-      const exportData = (data: string, fileName = `file.${props.fileFormat}`) => {
-        let content = 'data:text/csv;charset=utf-8,';
-        content += data;
-        const encodedUri = encodeURI(content);
-        const actions = document.createElement('a');
-        actions.setAttribute('href', encodedUri);
-        actions.setAttribute('download', fileName);
-        actions.click();
-      };
+    const exportData = (
+      data: string,
+      fileName = `file.${props.fileFormat}`,
+    ) => {
+      let content = "data:text/csv;charset=utf-8,";
+      content += data;
+      const encodedUri = encodeURI(content);
+      const actions = document.createElement("a");
+      actions.setAttribute("href", encodedUri);
+      actions.setAttribute("download", fileName);
+      actions.click();
+    };
 
-      const handleExportJson = () => {
-        exportData(props.editorJson);
-      };
+    const handleExportJson = () => {
+      exportData(props.editorJson);
+    };
 
-      const { createMessage } = useMessage();
+    const { createMessage } = useMessage();
 
-      const handleCopyJson = () => {
-        // 复制数据
-        const value = props.editorJson;
-        if (!value) {
-          createMessage.warning('代码为空！');
-          return;
-        }
-        copyText(value);
-      };
+    const handleCopyJson = () => {
+      // 复制数据
+      const value = props.editorJson;
+      if (!value) {
+        createMessage.warning("代码为空！");
+        return;
+      }
+      copyText(value);
+    };
 
-      return {
-        ...toRefs(state),
-        exportData,
-        handleCopyJson,
-        handleExportJson,
-        MODE,
-      };
-    },
-  });
+    return {
+      ...toRefs(state),
+      exportData,
+      handleCopyJson,
+      handleExportJson,
+      MODE,
+    };
+  },
+});
 </script>
 
 <style lang="less" scoped>
-  // modal复制按钮样式
-  .copy-btn-box {
-    padding-top: 8px;
-    text-align: center;
+// modal复制按钮样式
+.copy-btn-box {
+  padding-top: 8px;
+  text-align: center;
 
-    .copy-btn {
-      margin-right: 8px;
-    }
+  .copy-btn {
+    margin-right: 8px;
   }
+}
 </style>

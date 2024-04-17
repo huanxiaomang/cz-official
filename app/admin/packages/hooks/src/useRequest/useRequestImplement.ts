@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { onMounted, onUnmounted, toRefs } from 'vue';
+import { onMounted, onUnmounted, toRefs } from "vue";
 
-import Fetch from './Fetch';
-import type { Service, UseRequestOptions, UseRequestPlugin, UseRequestResult } from './types';
+import Fetch from "./Fetch";
+import type {
+  Service,
+  UseRequestOptions,
+  UseRequestPlugin,
+  UseRequestResult,
+} from "./types";
 
 export function useRequestImplement<TData, TParams extends any[]>(
   service: Service<TData, TParams>,
@@ -12,7 +17,9 @@ export function useRequestImplement<TData, TParams extends any[]>(
   const { manual = false, ...rest } = options;
   const fetchOptions = { manual, ...rest };
 
-  const initState = plugins.map((p) => p?.onInit?.(fetchOptions)).filter(Boolean);
+  const initState = plugins
+    .map((p) => p?.onInit?.(fetchOptions))
+    .filter(Boolean);
 
   const fetchInstance = new Fetch<TData, TParams>(
     service,
@@ -23,7 +30,9 @@ export function useRequestImplement<TData, TParams extends any[]>(
 
   fetchInstance.options = fetchOptions;
   // run all plugins hooks
-  fetchInstance.pluginImpls = plugins.map((p) => p(fetchInstance, fetchOptions));
+  fetchInstance.pluginImpls = plugins.map((p) =>
+    p(fetchInstance, fetchOptions),
+  );
 
   onMounted(() => {
     if (!manual) {

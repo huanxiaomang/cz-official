@@ -1,8 +1,12 @@
-import { Ref, SetupContext, type EmitsOptions } from 'vue';
-import { IVFormComponent, IFormConfig, AForm } from '../typings/v-form-component';
-import { findFormItem, formItemsForEach } from '../utils';
-import { cloneDeep, isFunction } from 'lodash-es';
-import { IAnyObject } from '../typings/base-type';
+import { Ref, SetupContext, type EmitsOptions } from "vue";
+import {
+  IVFormComponent,
+  IFormConfig,
+  AForm,
+} from "../typings/v-form-component";
+import { findFormItem, formItemsForEach } from "../utils";
+import { cloneDeep, isFunction } from "lodash-es";
+import { IAnyObject } from "../typings/base-type";
 
 interface IFormInstanceMethods extends AForm {
   submit: () => Promise<any>;
@@ -86,7 +90,7 @@ export function useVFormMethods<E extends EmitsOptions = EmitsOptions>(
   const setProps: ISetProps = (field, key, value) => {
     const formItem = get(field);
     if (formItem?.componentProps) {
-      ['options', 'treeData'].includes(key) && setValue(field, undefined);
+      ["options", "treeData"].includes(key) && setValue(field, undefined);
 
       formItem.componentProps[key] = value;
     }
@@ -97,7 +101,7 @@ export function useVFormMethods<E extends EmitsOptions = EmitsOptions>(
    * @param value  需要设置的值
    */
   const setValue: ISetValue = (field, value) => {
-    if (typeof field === 'string') {
+    if (typeof field === "string") {
       // props.formData[field] = value
       props.formModel[field] = value;
       formInstance.value?.validateField(field, value, []);
@@ -138,7 +142,7 @@ export function useVFormMethods<E extends EmitsOptions = EmitsOptions>(
    * @param {string} field 需要隐藏的表单项的field
    */
   const hidden: IHidden = (field) => {
-    set(field, 'hidden', true);
+    set(field, "hidden", true);
   };
 
   /**
@@ -146,9 +150,9 @@ export function useVFormMethods<E extends EmitsOptions = EmitsOptions>(
    * @param {string | undefined} field
    */
   const disable: IDisable = (field) => {
-    typeof field === 'string'
-      ? setProps(field, 'disabled', true)
-      : setFormConfig('disabled', field !== false);
+    typeof field === "string"
+      ? setProps(field, "disabled", true)
+      : setFormConfig("disabled", field !== false);
   };
 
   /**
@@ -156,7 +160,7 @@ export function useVFormMethods<E extends EmitsOptions = EmitsOptions>(
    * @param {string} field 需要显示的表单项的field
    */
   const show: IShow = (field) => {
-    set(field, 'hidden', false);
+    set(field, "hidden", false);
   };
 
   /**
@@ -169,8 +173,12 @@ export function useVFormMethods<E extends EmitsOptions = EmitsOptions>(
     formItemsForEach(schemas, (formItem) => {
       // 如果需要关联，则进行第二层遍历，查找表单中关联的字段，存到Set中
       formItemsForEach(schemas, (item) => {
-        if (!linkOn[item.field!]) linkOn[item.field!] = new Set<IVFormComponent>();
-        if (formItem.link?.includes(item.field!) && isFunction(formItem.update)) {
+        if (!linkOn[item.field!])
+          linkOn[item.field!] = new Set<IVFormComponent>();
+        if (
+          formItem.link?.includes(item.field!) &&
+          isFunction(formItem.update)
+        ) {
           linkOn[item.field!].add(formItem);
         }
       });

@@ -1,6 +1,6 @@
-import { ref, computed, ComputedRef, unref } from 'vue';
-import { useEventListener } from '@/hooks/event/useEventListener';
-import { screenMap, sizeEnum, screenEnum } from '@/enums/breakpointEnum';
+import { ref, computed, ComputedRef, unref } from "vue";
+import { useEventListener } from "@/hooks/event/useEventListener";
+import { screenMap, sizeEnum, screenEnum } from "@/enums/breakpointEnum";
 
 // 可以用这个替换，优化项
 // import { Grid } from 'ant-design-vue';
@@ -29,7 +29,9 @@ export function useBreakpoint() {
 }
 
 // Just call it once
-export function createBreakpointListen(fn?: (opt: CreateCallbackParams) => void) {
+export function createBreakpointListen(
+  fn?: (opt: CreateCallbackParams) => void,
+) {
   const screenRef = ref<sizeEnum>(sizeEnum.XL);
   const realWidthRef = ref(window.innerWidth);
 
@@ -58,7 +60,7 @@ export function createBreakpointListen(fn?: (opt: CreateCallbackParams) => void)
 
   useEventListener({
     el: window,
-    name: 'resize',
+    name: "resize",
 
     listener: () => {
       getWindowWidth();

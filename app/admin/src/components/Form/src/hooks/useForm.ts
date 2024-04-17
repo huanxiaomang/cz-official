@@ -3,15 +3,17 @@ import type {
   FormActionType,
   UseFormReturnType,
   FormSchemaInner as FormSchema,
-} from '../types/form';
-import type { NamePath } from 'ant-design-vue/lib/form/interface';
-import type { DynamicProps } from '#/utils';
-import { ref, onUnmounted, unref, nextTick, watch } from 'vue';
-import { isProdMode } from '@/utils/env';
-import { error } from '@/utils/log';
-import { getDynamicProps } from '@/utils';
+} from "../types/form";
+import type { NamePath } from "ant-design-vue/lib/form/interface";
+import type { DynamicProps } from "#/utils";
+import { ref, onUnmounted, unref, nextTick, watch } from "vue";
+import { isProdMode } from "@/utils/env";
+import { error } from "@/utils/log";
+import { getDynamicProps } from "@/utils";
 
-export declare type ValidateFields = (nameList?: NamePath[]) => Promise<Recordable>;
+export declare type ValidateFields = (
+  nameList?: NamePath[],
+) => Promise<Recordable>;
 
 type Props = Partial<DynamicProps<FormProps>>;
 
@@ -23,7 +25,7 @@ export function useForm(props?: Props): UseFormReturnType {
     const form = unref(formRef);
     if (!form) {
       error(
-        'The form instance has not been obtained, please make sure that the form has been rendered when performing the form operation!',
+        "The form instance has not been obtained, please make sure that the form has been rendered when performing the form operation!",
       );
     }
     await nextTick();
@@ -54,7 +56,10 @@ export function useForm(props?: Props): UseFormReturnType {
   }
 
   const methods: FormActionType = {
-    scrollToField: async (name: NamePath, options?: ScrollOptions | undefined) => {
+    scrollToField: async (
+      name: NamePath,
+      options?: ScrollOptions | undefined,
+    ) => {
       const form = await getForm();
       form.scrollToField(name, options);
     },
@@ -112,7 +117,9 @@ export function useForm(props?: Props): UseFormReturnType {
       return form.submit();
     },
 
-    validate: async <T = Recordable>(nameList?: NamePath[] | false): Promise<T> => {
+    validate: async <T = Recordable>(
+      nameList?: NamePath[] | false,
+    ): Promise<T> => {
       const form = await getForm();
       return form.validate(nameList);
     },

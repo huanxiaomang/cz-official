@@ -10,81 +10,81 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, unref, nextTick } from 'vue';
-  import { Scrollbar, ScrollbarType } from '@/components/Scrollbar';
-  import { useScrollTo } from '@vben/hooks';
-  import { type Nullable } from '@vben/types';
+import { ref, unref, nextTick } from "vue";
+import { Scrollbar, ScrollbarType } from "@/components/Scrollbar";
+import { useScrollTo } from "@vben/hooks";
+import { type Nullable } from "@vben/types";
 
-  defineOptions({ name: 'ScrollContainer' });
+defineOptions({ name: "ScrollContainer" });
 
-  defineProps({
-    scrollHeight: {
-      type: Number,
-    },
-  });
+defineProps({
+  scrollHeight: {
+    type: Number,
+  },
+});
 
-  const scrollbarRef = ref<Nullable<ScrollbarType>>(null);
+const scrollbarRef = ref<Nullable<ScrollbarType>>(null);
 
-  function getScrollWrap() {
-    const scrollbar = unref(scrollbarRef);
-    if (!scrollbar) {
-      return null;
+function getScrollWrap() {
+  const scrollbar = unref(scrollbarRef);
+  if (!scrollbar) {
+    return null;
+  }
+  return scrollbar.wrap;
+}
+
+/**
+ * Scroll to the specified position
+ */
+function scrollTo(to: number, duration = 500) {
+  const wrap = unref(getScrollWrap());
+  nextTick(() => {
+    if (!wrap) {
+      return;
     }
-    return scrollbar.wrap;
-  }
-
-  /**
-   * Scroll to the specified position
-   */
-  function scrollTo(to: number, duration = 500) {
-    const wrap = unref(getScrollWrap());
-    nextTick(() => {
-      if (!wrap) {
-        return;
-      }
-      const { start } = useScrollTo({
-        el: wrap,
-        to,
-        duration,
-      });
-      start();
+    const { start } = useScrollTo({
+      el: wrap,
+      to,
+      duration,
     });
-  }
-
-  /**
-   * Scroll to the bottom
-   */
-  function scrollBottom() {
-    const wrap = unref(getScrollWrap());
-    nextTick(() => {
-      if (!wrap) {
-        return;
-      }
-      const scrollHeight = wrap.scrollHeight as number;
-      const { start } = useScrollTo({
-        el: wrap,
-        to: scrollHeight,
-      });
-      start();
-    });
-  }
-
-  defineExpose({
-    scrollTo,
-    scrollBottom,
+    start();
   });
+}
+
+/**
+ * Scroll to the bottom
+ */
+function scrollBottom() {
+  const wrap = unref(getScrollWrap());
+  nextTick(() => {
+    if (!wrap) {
+      return;
+    }
+    const scrollHeight = wrap.scrollHeight as number;
+    const { start } = useScrollTo({
+      el: wrap,
+      to: scrollHeight,
+    });
+    start();
+  });
+}
+
+defineExpose({
+  scrollTo,
+  scrollBottom,
+});
 </script>
 <style lang="less">
-  .scroll-container {
-    width: 100%;
-    height: 100%;
+.scroll-container {
+  width: 100%;
+  height: 100%;
 
-    .scrollbar__wrap {
-      margin-bottom: 18px !important;
-    }
-
-    .scrollbar__view {
-      box-sizing: border-box;
-    }
+  .scrollbar__wrap {
+    margin-bottom: 18px !important;
   }
+
+  .scrollbar__view {
+    box-sizing: border-box;
+  }
+}
 </style>

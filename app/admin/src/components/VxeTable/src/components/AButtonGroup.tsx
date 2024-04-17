@@ -2,8 +2,12 @@ import {
   FormItemContentRenderParams,
   FormItemRenderOptions,
   VxeGlobalRendererHandles,
-} from 'vxe-table';
-import { createDefaultRender, createEditRender, createFormItemRender } from './AButton';
+} from "vxe-table";
+import {
+  createDefaultRender,
+  createEditRender,
+  createFormItemRender,
+} from "./AButton";
 
 function createEditButtonRender() {
   return function (
@@ -40,12 +44,16 @@ function createDefaultButtonRender() {
 }
 
 function createButtonItemRender() {
-  return function (renderOpts: FormItemRenderOptions, params: FormItemContentRenderParams) {
+  return function (
+    renderOpts: FormItemRenderOptions,
+    params: FormItemContentRenderParams,
+  ) {
     const buttonItemRender = createFormItemRender();
     const { children } = renderOpts;
     if (children) {
       return children.map(
-        (childRenderOpts: FormItemRenderOptions) => buttonItemRender(childRenderOpts, params)[0],
+        (childRenderOpts: FormItemRenderOptions) =>
+          buttonItemRender(childRenderOpts, params)[0],
       );
     }
     return [];

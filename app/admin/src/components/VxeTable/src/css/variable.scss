@@ -1,5 +1,5 @@
 /* stylelint-disable scss/no-global-function-names */
-html[data-theme='dark'] {
+html[data-theme="dark"] {
   // $bg-color: #151515;
   // $tooltip-bg-color: #303133;
   // $text-color: #c9d1d9;
@@ -38,8 +38,10 @@ html[data-theme='dark'] {
   --vxe-table-popup-border-color: #303030;
   --vxe-select-option-hover-background-color: lighten(#1e1e1e, 15%);
   --vxe-pulldown-panel-background-color: #151515;
-  --vxe-table-fixed-left-scrolling-box-shadow: 8px 0px 10px -5px rgb(255 255 255 / 12%);
-  --vxe-table-fixed-right-scrolling-box-shadow: -8px 0px 10px -5px rgb(255 255 255 / 12%);
+  --vxe-table-fixed-left-scrolling-box-shadow: 8px 0px 10px -5px rgb(255 255 255 /
+        12%);
+  --vxe-table-fixed-right-scrolling-box-shadow: -8px 0px 10px -5px rgb(255 255
+        255 / 12%);
   --vxe-loading-background-color: rgb(0 0 0 / 50%);
   --vxe-tooltip-dark-background-color: lighten(#303133, 25%);
   --vxe-modal-header-background-color: #1e1e1e;

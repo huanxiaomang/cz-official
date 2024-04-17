@@ -1,9 +1,11 @@
-import type { MaybeRef, Ref, WatchSource } from 'vue';
+import type { MaybeRef, Ref, WatchSource } from "vue";
 
-import type Fetch from './Fetch';
-import type { CachedData } from './utils/cache';
+import type Fetch from "./Fetch";
+import type { CachedData } from "./utils/cache";
 
-export type Service<TData, TParams extends any[]> = (...args: TParams) => Promise<TData>;
+export type Service<TData, TParams extends any[]> = (
+  ...args: TParams
+) => Promise<TData>;
 export type Subscribe = () => void;
 
 // for Fetch
@@ -98,7 +100,9 @@ export interface UseRequestPlugin<TData, TParams extends any[]> {
     fetchInstance: Fetch<TData, TParams>,
     options: UseRequestOptions<TData, TParams>,
   ): PluginReturn<TData, TParams>;
-  onInit?: (options: UseRequestOptions<TData, TParams>) => Partial<FetchState<TData, TParams>>;
+  onInit?: (
+    options: UseRequestOptions<TData, TParams>,
+  ) => Partial<FetchState<TData, TParams>>;
 }
 
 // for index
@@ -113,12 +117,12 @@ export interface UseRequestResult<TData, TParams extends any[]> {
   data: Ref<TData>;
   error: Ref<Error>;
   params: Ref<TParams | []>;
-  cancel: Fetch<TData, TParams>['cancel'];
-  refresh: Fetch<TData, TParams>['refresh'];
-  refreshAsync: Fetch<TData, TParams>['refreshAsync'];
-  run: Fetch<TData, TParams>['run'];
-  runAsync: Fetch<TData, TParams>['runAsync'];
-  mutate: Fetch<TData, TParams>['mutate'];
+  cancel: Fetch<TData, TParams>["cancel"];
+  refresh: Fetch<TData, TParams>["refresh"];
+  refreshAsync: Fetch<TData, TParams>["refreshAsync"];
+  run: Fetch<TData, TParams>["run"];
+  runAsync: Fetch<TData, TParams>["runAsync"];
+  mutate: Fetch<TData, TParams>["mutate"];
 }
 
 export type UseRequestTimeout = ReturnType<typeof setTimeout>;

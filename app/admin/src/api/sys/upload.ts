@@ -1,10 +1,10 @@
-import { UploadApiResult } from './model/uploadModel';
-import { defHttp } from '@/utils/http/axios';
-import { UploadFileParams } from '#/axios';
-import { useGlobSetting } from '@/hooks/setting';
-import { AxiosProgressEvent } from 'axios';
+import { UploadApiResult } from "./model/uploadModel";
+import { defHttp } from "@/utils/http/axios";
+import { UploadFileParams } from "#/axios";
+import { useGlobSetting } from "@/hooks/setting";
+import { AxiosProgressEvent } from "axios";
 
-const { uploadUrl = '' } = useGlobSetting();
+const { uploadUrl = "" } = useGlobSetting();
 
 /**
  * @description: Upload interface

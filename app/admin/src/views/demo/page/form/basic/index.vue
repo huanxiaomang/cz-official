@@ -9,56 +9,56 @@
   </PageWrapper>
 </template>
 <script lang="ts" setup>
-  import { BasicForm, useForm } from '@/components/Form';
-  import { schemas } from './data';
-  import { useMessage } from '@/hooks/web/useMessage';
-  import { PageWrapper } from '@/components/Page';
+import { BasicForm, useForm } from "@/components/Form";
+import { schemas } from "./data";
+import { useMessage } from "@/hooks/web/useMessage";
+import { PageWrapper } from "@/components/Page";
 
-  defineOptions({ name: 'FormBasicPage' });
+defineOptions({ name: "FormBasicPage" });
 
-  const { createMessage } = useMessage();
-  const [register, { validate, setProps }] = useForm({
-    labelCol: {
-      span: 8,
-    },
-    wrapperCol: {
-      span: 15,
-    },
-    schemas: schemas,
-    actionColOptions: {
-      offset: 8,
-      span: 23,
-    },
-    submitButtonOptions: {
-      text: '提交',
-    },
-    submitFunc: customSubmitFunc,
-  });
+const { createMessage } = useMessage();
+const [register, { validate, setProps }] = useForm({
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 15,
+  },
+  schemas: schemas,
+  actionColOptions: {
+    offset: 8,
+    span: 23,
+  },
+  submitButtonOptions: {
+    text: "提交",
+  },
+  submitFunc: customSubmitFunc,
+});
 
-  async function customSubmitFunc() {
-    try {
-      await validate();
+async function customSubmitFunc() {
+  try {
+    await validate();
+    setProps({
+      submitButtonOptions: {
+        loading: true,
+      },
+    });
+    setTimeout(() => {
       setProps({
         submitButtonOptions: {
-          loading: true,
+          loading: false,
         },
       });
-      setTimeout(() => {
-        setProps({
-          submitButtonOptions: {
-            loading: false,
-          },
-        });
-        createMessage.success('提交成功！');
-      }, 2000);
-    } catch (error) {
-      console.error(error);
-    }
+      createMessage.success("提交成功！");
+    }, 2000);
+  } catch (error) {
+    console.error(error);
   }
+}
 </script>
 <style lang="less" scoped>
-  .form-wrap {
-    padding: 24px;
-    background-color: @component-background;
-  }
+.form-wrap {
+  padding: 24px;
+  background-color: @component-background;
+}
 </style>

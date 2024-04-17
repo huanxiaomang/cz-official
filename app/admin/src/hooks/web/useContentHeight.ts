@@ -1,8 +1,8 @@
-import { useLayoutHeight } from '@/layouts/default/content/useContentViewHeight';
-import { getViewportOffset } from '@/utils/domUtils';
-import { isNumber, isString } from '@/utils/is';
-import { onMountedOrActivated, useWindowSizeFn } from '@vben/hooks';
-import { ComputedRef, isRef, nextTick, Ref, ref, unref, watch } from 'vue';
+import { useLayoutHeight } from "@/layouts/default/content/useContentViewHeight";
+import { getViewportOffset } from "@/utils/domUtils";
+import { isNumber, isString } from "@/utils/is";
+import { onMountedOrActivated, useWindowSizeFn } from "@vben/hooks";
+import { ComputedRef, isRef, nextTick, Ref, ref, unref, watch } from "vue";
 
 export interface CompensationHeight {
   // 使用 layout Footer 高度作为判断补偿高度的条件
@@ -51,25 +51,25 @@ export function useContentHeight(
 
   function calcSubtractSpace(
     element: Element | null | undefined,
-    direction: 'all' | 'top' | 'bottom' = 'all',
+    direction: "all" | "top" | "bottom" = "all",
   ): number {
     function numberPx(px: string) {
-      return Number(px.replace(/[^\d]/g, ''));
+      return Number(px.replace(/[^\d]/g, ""));
     }
     let subtractHeight = 0;
-    const ZERO_PX = '0px';
+    const ZERO_PX = "0px";
     if (element) {
       const cssStyle = getComputedStyle(element);
       const marginTop = numberPx(cssStyle?.marginTop ?? ZERO_PX);
       const marginBottom = numberPx(cssStyle?.marginBottom ?? ZERO_PX);
       const paddingTop = numberPx(cssStyle?.paddingTop ?? ZERO_PX);
       const paddingBottom = numberPx(cssStyle?.paddingBottom ?? ZERO_PX);
-      if (direction === 'all') {
+      if (direction === "all") {
         subtractHeight += marginTop;
         subtractHeight += marginBottom;
         subtractHeight += paddingTop;
         subtractHeight += paddingBottom;
-      } else if (direction === 'top') {
+      } else if (direction === "top") {
         subtractHeight += marginTop;
         subtractHeight += paddingTop;
       } else {
@@ -84,7 +84,9 @@ export function useContentHeight(
     if (element == null) {
       return null;
     }
-    return (element instanceof HTMLDivElement ? element : element.$el) as HTMLDivElement;
+    return (
+      element instanceof HTMLDivElement ? element : element.$el
+    ) as HTMLDivElement;
   }
 
   async function calcContentHeight() {
@@ -114,20 +116,23 @@ export function useContentHeight(
 
     // upwardSpace
     let upwardSpaceHeight = 0;
-    function upward(element: Element | null, upwardLvlOrClass: number | string | null | undefined) {
+    function upward(
+      element: Element | null,
+      upwardLvlOrClass: number | string | null | undefined,
+    ) {
       if (element && upwardLvlOrClass) {
         const parent = element.parentElement;
         if (parent) {
           if (isString(upwardLvlOrClass)) {
             if (!parent.classList.contains(upwardLvlOrClass)) {
-              upwardSpaceHeight += calcSubtractSpace(parent, 'bottom');
+              upwardSpaceHeight += calcSubtractSpace(parent, "bottom");
               upward(parent, upwardLvlOrClass);
             } else {
-              upwardSpaceHeight += calcSubtractSpace(parent, 'bottom');
+              upwardSpaceHeight += calcSubtractSpace(parent, "bottom");
             }
           } else if (isNumber(upwardLvlOrClass)) {
             if (upwardLvlOrClass > 0) {
-              upwardSpaceHeight += calcSubtractSpace(parent, 'bottom');
+              upwardSpaceHeight += calcSubtractSpace(parent, "bottom");
               upward(parent, --upwardLvlOrClass);
             }
           }
@@ -154,7 +159,10 @@ export function useContentHeight(
         height += getEl(unref(item))?.offsetHeight ?? 0;
       });
     };
-    if (compensationHeight.useLayoutFooter && unref(layoutFooterHeightRef) > 0) {
+    if (
+      compensationHeight.useLayoutFooter &&
+      unref(layoutFooterHeightRef) > 0
+    ) {
       calcCompensationHeight();
     } else {
       calcCompensationHeight();
@@ -180,7 +188,7 @@ export function useContentHeight(
       calcContentHeight();
     },
     {
-      flush: 'post',
+      flush: "post",
       immediate: true,
     },
   );

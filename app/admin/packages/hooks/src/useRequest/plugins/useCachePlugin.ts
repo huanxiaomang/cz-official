@@ -1,10 +1,10 @@
-import { onUnmounted, ref, watchEffect } from 'vue';
+import { onUnmounted, ref, watchEffect } from "vue";
 
-import type { UseRequestPlugin } from '../types';
-import type { CachedData } from '../utils/cache';
-import { getCache, setCache } from '../utils/cache';
-import { getCachePromise, setCachePromise } from '../utils/cachePromise';
-import { subscribe, trigger } from '../utils/cacheSubscribe';
+import type { UseRequestPlugin } from "../types";
+import type { CachedData } from "../utils/cache";
+import { getCache, setCache } from "../utils/cache";
+import { getCachePromise, setCachePromise } from "../utils/cachePromise";
+import { subscribe, trigger } from "../utils/cacheSubscribe";
 
 const useCachePlugin: UseRequestPlugin<any, any[]> = (
   fetchInstance,
@@ -20,7 +20,9 @@ const useCachePlugin: UseRequestPlugin<any, any[]> = (
   const currentPromiseRef = ref<Promise<any>>();
 
   const _setCache = (key: string, cachedData: CachedData) => {
-    customSetCache ? customSetCache(cachedData) : setCache(key, cacheTime, cachedData);
+    customSetCache
+      ? customSetCache(cachedData)
+      : setCache(key, cacheTime, cachedData);
     trigger(key, cachedData.data);
   };
 
@@ -33,11 +35,14 @@ const useCachePlugin: UseRequestPlugin<any, any[]> = (
 
     // get data from cache when init
     const cacheData = _getCache(cacheKey);
-    if (cacheData && Object.hasOwnProperty.call(cacheData, 'data')) {
+    if (cacheData && Object.hasOwnProperty.call(cacheData, "data")) {
       fetchInstance.state.data = cacheData.data;
       fetchInstance.state.params = cacheData.params;
 
-      if (staleTime === -1 || new Date().getTime() - cacheData.time <= staleTime) {
+      if (
+        staleTime === -1 ||
+        new Date().getTime() - cacheData.time <= staleTime
+      ) {
         fetchInstance.state.loading = false;
       }
     }
@@ -60,12 +65,15 @@ const useCachePlugin: UseRequestPlugin<any, any[]> = (
     onBefore: (params) => {
       const cacheData = _getCache(cacheKey, params);
 
-      if (!cacheData || !Object.hasOwnProperty.call(cacheData, 'data')) {
+      if (!cacheData || !Object.hasOwnProperty.call(cacheData, "data")) {
         return {};
       }
 
       // If the data is fresh, stop request
-      if (staleTime === -1 || new Date().getTime() - cacheData.time <= staleTime) {
+      if (
+        staleTime === -1 ||
+        new Date().getTime() - cacheData.time <= staleTime
+      ) {
         return {
           loading: false,
           data: cacheData?.data,

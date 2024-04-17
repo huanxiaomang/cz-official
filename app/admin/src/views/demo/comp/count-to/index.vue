@@ -2,7 +2,13 @@
   <PageWrapper title="数字动画示例">
     <Card>
       <CardGrid class="count-to-demo-card">
-        <CountTo prefix="$" :color="'#409EFF'" :startVal="1" :endVal="200000" :duration="8000" />
+        <CountTo
+          prefix="$"
+          :color="'#409EFF'"
+          :startVal="1"
+          :endVal="200000"
+          :duration="8000"
+        />
       </CardGrid>
       <CardGrid class="count-to-demo-card">
         <CountTo
@@ -36,18 +42,18 @@
   </PageWrapper>
 </template>
 <script lang="ts" setup>
-  import { Card } from 'ant-design-vue';
-  import { CountTo } from '@/components/CountTo';
-  import { PageWrapper } from '@/components/Page';
+import { Card } from "ant-design-vue";
+import { CountTo } from "@/components/CountTo";
+import { PageWrapper } from "@/components/Page";
 
-  const CardGrid = Card.Grid;
+const CardGrid = Card.Grid;
 </script>
 <style lang="less" scoped>
-  .count-to-demo {
-    &-card {
-      width: 50%;
-      font-size: 30px;
-      text-align: center;
-    }
+.count-to-demo {
+  &-card {
+    width: 50%;
+    font-size: 30px;
+    text-align: center;
   }
+}
 </style>

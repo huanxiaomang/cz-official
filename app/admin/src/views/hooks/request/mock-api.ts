@@ -1,10 +1,13 @@
-import Mock from 'mockjs';
+import Mock from "mockjs";
 
-export async function imitateApi(username?: string, pass: boolean = true): Promise<string> {
+export async function imitateApi(
+  username?: string,
+  pass: boolean = true,
+): Promise<string> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (pass) {
-        resolve(username ?? Mock.mock('@name'));
+        resolve(username ?? Mock.mock("@name"));
       } else {
         reject(new Error(`Failed to modify username: ${username}`));
       }
@@ -18,7 +21,7 @@ export async function getArticle(
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
-        data: Mock.mock('@paragraph'),
+        data: Mock.mock("@paragraph"),
         time: new Date().getTime(),
         keyword,
       });

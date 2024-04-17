@@ -1,8 +1,16 @@
-import { defineComponent, onMounted, ref, unref } from 'vue';
-import { Card, Spin, Typography, message, Input, Button, Space } from 'ant-design-vue';
-import { imitateApi } from './mock-api';
-import { useRequest } from '@vben/hooks';
-import { PageWrapper } from '@/components/Page';
+import { defineComponent, onMounted, ref, unref } from "vue";
+import {
+  Card,
+  Spin,
+  Typography,
+  message,
+  Input,
+  Button,
+  Space,
+} from "ant-design-vue";
+import { imitateApi } from "./mock-api";
+import { useRequest } from "@vben/hooks";
+import { PageWrapper } from "@/components/Page";
 
 const Demo1 = defineComponent({
   setup() {
@@ -26,7 +34,9 @@ const Demo1 = defineComponent({
 
         {/* 基础案例 */}
         <Spin spinning={loading.value}>
-          <div class="mt-4">{error.value ? 'failed to load' : `Username: ${data.value}`}</div>
+          <div class="mt-4">
+            {error.value ? "failed to load" : `Username: ${data.value}`}
+          </div>
         </Spin>
       </Card>
     );
@@ -35,7 +45,7 @@ const Demo1 = defineComponent({
 
 const Demo2 = defineComponent({
   setup() {
-    const search = ref('');
+    const search = ref("");
     const setSearch = (value: string) => {
       search.value = value;
     };
@@ -44,7 +54,7 @@ const Demo2 = defineComponent({
       manual: true,
       onSuccess: (result, params) => {
         if (result) {
-          setSearch('');
+          setSearch("");
           message.success(`The username was changed to "${params[0]}" !`);
         }
       },
@@ -55,7 +65,10 @@ const Demo2 = defineComponent({
         <Typography>
           <Typography.Paragraph>
             如果设置了
-            <Typography.Text type="danger"> options.manual = true </Typography.Text>
+            <Typography.Text type="danger">
+              {" "}
+              options.manual = true{" "}
+            </Typography.Text>
             ，则 useRequest 不会默认执行，需要通过
             <Typography.Text type="danger"> run </Typography.Text>来触发执行。
           </Typography.Paragraph>
@@ -66,9 +79,16 @@ const Demo2 = defineComponent({
 
         {/* 手动触发 */}
         <Space class="mt-4">
-          <Input v-model={[search.value, 'value']} placeholder="Please enter username" />
-          <Button type="primary" disabled={loading.value} onClick={() => run(search.value)}>
-            {loading.value ? 'Loading' : 'Edit'}
+          <Input
+            v-model={[search.value, "value"]}
+            placeholder="Please enter username"
+          />
+          <Button
+            type="primary"
+            disabled={loading.value}
+            onClick={() => run(search.value)}
+          >
+            {loading.value ? "Loading" : "Edit"}
           </Button>
         </Space>
       </Card>
@@ -78,7 +98,7 @@ const Demo2 = defineComponent({
 
 const Demo3 = defineComponent({
   setup() {
-    const search = ref('');
+    const search = ref("");
     const setSearch = (value: string) => {
       search.value = value;
     };
@@ -90,7 +110,7 @@ const Demo3 = defineComponent({
       },
       onSuccess: (result, params) => {
         if (result) {
-          setSearch('');
+          setSearch("");
           message.success(`The username was changed to "${params[0]}" !`);
         }
       },
@@ -133,12 +153,23 @@ const Demo3 = defineComponent({
 
         {/* 生命周期 */}
         <Space>
-          <Input v-model={[search.value, 'value']} placeholder="Please enter username" />
-          <Button type="primary" disabled={loading.value} onClick={() => run(search.value, true)}>
-            {loading.value ? 'Loading' : 'Edit'}
+          <Input
+            v-model={[search.value, "value"]}
+            placeholder="Please enter username"
+          />
+          <Button
+            type="primary"
+            disabled={loading.value}
+            onClick={() => run(search.value, true)}
+          >
+            {loading.value ? "Loading" : "Edit"}
           </Button>
-          <Button danger disabled={loading.value} onClick={() => run(search.value, false)}>
-            {loading.value ? 'Loading' : 'Error Edit'}
+          <Button
+            danger
+            disabled={loading.value}
+            onClick={() => run(search.value, false)}
+          >
+            {loading.value ? "Loading" : "Error Edit"}
           </Button>
         </Space>
       </Card>
@@ -152,7 +183,7 @@ const Demo4 = defineComponent({
       manual: true,
     });
 
-    onMounted(() => run('lutz'));
+    onMounted(() => run("lutz"));
 
     const changeData = () => {
       data.value = `${Date.now()}`;
@@ -186,7 +217,7 @@ const Demo4 = defineComponent({
 
 const Demo5 = defineComponent({
   setup() {
-    const search = ref('');
+    const search = ref("");
     const setSearch = (value: string) => {
       search.value = value;
     };
@@ -195,7 +226,7 @@ const Demo5 = defineComponent({
       manual: true,
       onSuccess: (result, params) => {
         if (result) {
-          setSearch('');
+          setSearch("");
           message.success(`The username was changed to "${params[0]}" !`);
         }
       },
@@ -206,15 +237,22 @@ const Demo5 = defineComponent({
         <Typography>
           <Typography.Paragraph>
             <Typography.Text type="danger"> useRequest </Typography.Text>提供了
-            <Typography.Text type="danger"> cancel </Typography.Text>函数，用于忽略当前 promise
-            返回的数据和错误
+            <Typography.Text type="danger"> cancel </Typography.Text>
+            函数，用于忽略当前 promise 返回的数据和错误
           </Typography.Paragraph>
         </Typography>
 
         {/* 取消响应 */}
         <Space>
-          <Input v-model={[search.value, 'value']} placeholder="Please enter username" />
-          <Button type="primary" disabled={loading.value} onClick={() => run(search.value)}>
+          <Input
+            v-model={[search.value, "value"]}
+            placeholder="Please enter username"
+          />
+          <Button
+            type="primary"
+            disabled={loading.value}
+            onClick={() => run(search.value)}
+          >
             Edit
           </Button>
           <Button type="dashed" disabled={!loading.value} onClick={cancel}>
@@ -228,7 +266,7 @@ const Demo5 = defineComponent({
 
 const Demo6 = defineComponent({
   setup() {
-    const search = ref('');
+    const search = ref("");
 
     const {
       data: username,
@@ -236,7 +274,7 @@ const Demo6 = defineComponent({
       run,
       params,
     } = useRequest(imitateApi, {
-      defaultParams: ['lutz'],
+      defaultParams: ["lutz"],
     });
 
     const onChange = () => {
@@ -248,26 +286,39 @@ const Demo6 = defineComponent({
         <Typography>
           <Typography.Paragraph>
             <Typography.Text type="danger"> useRequest </Typography.Text>返回的
-            <Typography.Text type="danger"> params </Typography.Text>会记录当次调用
-            <Typography.Text type="danger"> service </Typography.Text>的参数数组。比如你触发了
+            <Typography.Text type="danger"> params </Typography.Text>
+            会记录当次调用
+            <Typography.Text type="danger"> service </Typography.Text>
+            的参数数组。比如你触发了
             <Typography.Text code>run(1, 2, 3)</Typography.Text>,则
             <Typography.Text type="danger"> params </Typography.Text> 等于
             <Typography.Text code> [1, 2, 3] </Typography.Text>
           </Typography.Paragraph>
           <Typography.Paragraph>
             如果我们设置了
-            <Typography.Text type="danger"> options.manual = false </Typography.Text>，则首次调用
+            <Typography.Text type="danger">
+              {" "}
+              options.manual = false{" "}
+            </Typography.Text>
+            ，则首次调用
             <Typography.Text type="danger"> service </Typography.Text>
-            的参数可以通过<Typography.Text type="danger"> options.defaultParams </Typography.Text>
+            的参数可以通过
+            <Typography.Text type="danger">
+              {" "}
+              options.defaultParams{" "}
+            </Typography.Text>
             来设置。
           </Typography.Paragraph>
         </Typography>
 
         {/* 管理参数 */}
         <Space>
-          <Input v-model={[search.value, 'value']} placeholder="Please enter username" />
+          <Input
+            v-model={[search.value, "value"]}
+            placeholder="Please enter username"
+          />
           <Button disabled={loading.value} onClick={onChange}>
-            {loading.value ? 'Loading' : 'Edit'}
+            {loading.value ? "Loading" : "Edit"}
           </Button>
         </Space>
         <div>
@@ -290,21 +341,21 @@ export default defineComponent({
                 href="https://ahooks.js.org/zh-CN/hooks/use-request/index"
                 target="_blank"
               >
-                ahooks{' '}
+                ahooks{" "}
               </Typography.Link>
               useRequest 的 vue 版本，是一个强大的异步数据管理的 Hooks。
               <Typography.Paragraph>
                 <ul>
                   {[
-                    '自动请求/手动请求',
-                    '轮询',
-                    '防抖',
-                    '节流',
-                    '屏幕聚焦重新请求',
-                    '错误重试',
-                    'loading delay',
-                    'SWR(stale-while-revalidate)',
-                    '缓存',
+                    "自动请求/手动请求",
+                    "轮询",
+                    "防抖",
+                    "节流",
+                    "屏幕聚焦重新请求",
+                    "错误重试",
+                    "loading delay",
+                    "SWR(stale-while-revalidate)",
+                    "缓存",
                   ].map((item) => (
                     <li>
                       <Typography.Text>{item}</Typography.Text>

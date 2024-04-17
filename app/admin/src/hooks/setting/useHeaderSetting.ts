@@ -1,13 +1,13 @@
-import type { HeaderSetting } from '#/config';
+import type { HeaderSetting } from "#/config";
 
-import { computed, unref } from 'vue';
+import { computed, unref } from "vue";
 
-import { useAppStore } from '@/store/modules/app';
+import { useAppStore } from "@/store/modules/app";
 
-import { useMenuSetting } from '@/hooks/setting/useMenuSetting';
-import { useRootSetting } from '@/hooks/setting/useRootSetting';
-import { useFullContent } from '@/hooks/web/useFullContent';
-import { MenuModeEnum } from '@/enums/menuEnum';
+import { useMenuSetting } from "@/hooks/setting/useMenuSetting";
+import { useRootSetting } from "@/hooks/setting/useRootSetting";
+import { useFullContent } from "@/hooks/web/useFullContent";
+import { MenuModeEnum } from "@/enums/menuEnum";
 
 export function useHeaderSetting() {
   const { getFullContent } = useFullContent();
@@ -23,7 +23,9 @@ export function useHeaderSetting() {
     );
   });
 
-  const getUnFixedAndFull = computed(() => !unref(getFixed) && !unref(getShowFullHeaderRef));
+  const getUnFixedAndFull = computed(
+    () => !unref(getFixed) && !unref(getShowFullHeaderRef),
+  );
 
   const getShowInsetHeaderRef = computed(() => {
     const need = !unref(getFullContent) && unref(getShowHeader);
@@ -44,7 +46,9 @@ export function useHeaderSetting() {
   } = useMenuSetting();
   const { getShowBreadCrumb, getShowLogo } = useRootSetting();
 
-  const getShowMixHeaderRef = computed(() => !unref(getIsSidebarType) && unref(getShowHeader));
+  const getShowMixHeaderRef = computed(
+    () => !unref(getIsSidebarType) && unref(getShowHeader),
+  );
 
   const getShowDoc = computed(() => appStore.getHeaderSetting.showDoc);
 
@@ -62,18 +66,24 @@ export function useHeaderSetting() {
 
   const getUseLockPage = computed(() => appStore.getHeaderSetting.useLockPage);
 
-  const getShowFullScreen = computed(() => appStore.getHeaderSetting.showFullScreen);
+  const getShowFullScreen = computed(
+    () => appStore.getHeaderSetting.showFullScreen,
+  );
 
   const getShowNotice = computed(() => appStore.getHeaderSetting.showNotice);
 
   const getShowBread = computed(() => {
     return (
-      unref(getMenuMode) !== MenuModeEnum.HORIZONTAL && unref(getShowBreadCrumb) && !unref(getSplit)
+      unref(getMenuMode) !== MenuModeEnum.HORIZONTAL &&
+      unref(getShowBreadCrumb) &&
+      !unref(getSplit)
     );
   });
 
   const getShowHeaderLogo = computed(() => {
-    return unref(getShowLogo) && !unref(getIsSidebarType) && !unref(getIsMixSidebar);
+    return (
+      unref(getShowLogo) && !unref(getIsSidebarType) && !unref(getIsMixSidebar)
+    );
   });
 
   const getShowContent = computed(() => {

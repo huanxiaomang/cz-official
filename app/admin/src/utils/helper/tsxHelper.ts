@@ -1,11 +1,16 @@
-import { Slots } from 'vue';
-import { isFunction } from '@/utils/is';
-import { RenderOpts } from '@/components/Form';
+import { Slots } from "vue";
+import { isFunction } from "@/utils/is";
+import { RenderOpts } from "@/components/Form";
 
 /**
  * @description:  Get slot to prevent empty error
  */
-export function getSlot(slots: Slots, slot = 'default', data?: any, opts?: RenderOpts) {
+export function getSlot(
+  slots: Slots,
+  slot = "default",
+  data?: any,
+  opts?: RenderOpts,
+) {
   if (!slots || !Reflect.has(slots, slot)) {
     return null;
   }

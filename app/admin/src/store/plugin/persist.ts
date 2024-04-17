@@ -4,12 +4,15 @@
  * @link https://prazdevs.github.io/pinia-plugin-persistedstate/zh/guide/
  *
  */
-import type { Pinia } from 'pinia';
-import { createPersistedState, Serializer } from 'pinia-plugin-persistedstate';
-import type { PersistedStateFactoryOptions } from 'pinia-plugin-persistedstate';
-import { getCommonStoragePrefix } from '@/utils/env';
-import { Encryption, EncryptionFactory } from '@/utils/cipher';
-import { cacheCipher, SHOULD_ENABLE_STORAGE_ENCRYPTION } from '@/settings/encryptionSetting';
+import type { Pinia } from "pinia";
+import { createPersistedState, Serializer } from "pinia-plugin-persistedstate";
+import type { PersistedStateFactoryOptions } from "pinia-plugin-persistedstate";
+import { getCommonStoragePrefix } from "@/utils/env";
+import { Encryption, EncryptionFactory } from "@/utils/cipher";
+import {
+  cacheCipher,
+  SHOULD_ENABLE_STORAGE_ENCRYPTION,
+} from "@/settings/encryptionSetting";
 
 export const PERSIST_KEY_PREFIX = getCommonStoragePrefix();
 
@@ -56,7 +59,9 @@ function customSerializer(shouldEnableEncryption: boolean): Serializer {
  * @param pinia Pinia instance Pinia 实例
  */
 export function registerPiniaPersistPlugin(pinia: Pinia) {
-  pinia.use(createPersistedState(createPersistedStateOptions(PERSIST_KEY_PREFIX)));
+  pinia.use(
+    createPersistedState(createPersistedStateOptions(PERSIST_KEY_PREFIX)),
+  );
 }
 
 /**
@@ -66,7 +71,9 @@ export function registerPiniaPersistPlugin(pinia: Pinia) {
  * @param keyPrefix prefix for storage key 储存键前缀
  * @returns persisted state factory options
  */
-export function createPersistedStateOptions(keyPrefix: string): PersistedStateFactoryOptions {
+export function createPersistedStateOptions(
+  keyPrefix: string,
+): PersistedStateFactoryOptions {
   return {
     storage: localStorage,
     key: (id) => `${keyPrefix}__${id}`,

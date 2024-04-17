@@ -1,5 +1,9 @@
-import type { BasicTableProps, FetchParams, SorterResult } from '../types/table';
-import type { PaginationProps } from '../types/pagination';
+import type {
+  BasicTableProps,
+  FetchParams,
+  SorterResult,
+} from "../types/table";
+import type { PaginationProps } from "../types/pagination";
 import {
   ref,
   unref,
@@ -10,14 +14,14 @@ import {
   reactive,
   Ref,
   watchEffect,
-} from 'vue';
-import { useTimeoutFn } from '@vben/hooks';
-import { buildUUID } from '@/utils/uuid';
-import { isFunction, isBoolean, isObject } from '@/utils/is';
-import { get, cloneDeep, merge } from 'lodash-es';
-import { FETCH_SETTING, ROW_KEY, PAGE_SIZE } from '../const';
-import { parseRowKeyValue } from '../helper';
-import type { Key } from 'ant-design-vue/lib/table/interface';
+} from "vue";
+import { useTimeoutFn } from "@vben/hooks";
+import { buildUUID } from "@/utils/uuid";
+import { isFunction, isBoolean, isObject } from "@/utils/is";
+import { get, cloneDeep, merge } from "lodash-es";
+import { FETCH_SETTING, ROW_KEY, PAGE_SIZE } from "../const";
+import { parseRowKeyValue } from "../helper";
+import type { Key } from "ant-design-vue/lib/table/interface";
 
 interface ActionType {
   getPaginationInfo: ComputedRef<boolean | PaginationProps>;
@@ -148,7 +152,10 @@ export function useDataSource(
     return dataSourceRef.value[index];
   }
 
-  function updateTableDataRecord(keyValue: Key, record: Recordable): Recordable | undefined {
+  function updateTableDataRecord(
+    keyValue: Key,
+    record: Recordable,
+  ): Recordable | undefined {
     const row = findTableDataRecord(keyValue);
 
     if (row) {
@@ -205,14 +212,16 @@ export function useDataSource(
   ): Recordable[] | undefined {
     // if (!dataSourceRef.value || dataSourceRef.value.length == 0) return;
     index = index ?? dataSourceRef.value?.length;
-    const _record = isObject(record) ? [record as Recordable] : (record as Recordable[]);
+    const _record = isObject(record)
+      ? [record as Recordable]
+      : (record as Recordable[]);
     unref(dataSourceRef).splice(index, 0, ..._record);
     return unref(dataSourceRef);
   }
 
   function findTableDataRecord(keyValue: Key) {
     if (!dataSourceRef.value || dataSourceRef.value.length === 0) return;
-    const { childrenColumnName = 'children' } = unref(propsRef);
+    const { childrenColumnName = "children" } = unref(propsRef);
 
     const findRow = (array: any[]) => {
       let ret;
@@ -250,9 +259,14 @@ export function useDataSource(
       );
       let pageParams: Recordable = {};
 
-      const { current = 1, pageSize = PAGE_SIZE } = unref(getPaginationInfo) as PaginationProps;
+      const { current = 1, pageSize = PAGE_SIZE } = unref(
+        getPaginationInfo,
+      ) as PaginationProps;
 
-      if ((isBoolean(pagination) && !pagination) || isBoolean(getPaginationInfo)) {
+      if (
+        (isBoolean(pagination) && !pagination) ||
+        isBoolean(getPaginationInfo)
+      ) {
         pageParams = {};
       } else {
         pageParams[pageField] = (opt && opt.page) || current;
@@ -282,7 +296,9 @@ export function useDataSource(
       const isArrayResult = Array.isArray(res);
 
       let resultItems: Recordable[] = isArrayResult ? res : get(res, listField);
-      const resultTotal: number = isArrayResult ? res.length : get(res, totalField);
+      const resultTotal: number = isArrayResult
+        ? res.length
+        : get(res, totalField);
 
       // 假如数据变少，导致总页数变少并小于当前选中页码，通过getPaginationRef获取到的页码是不正确的，需获取正确的页码再次执行
       if (Number(resultTotal)) {
@@ -307,13 +323,13 @@ export function useDataSource(
           current: opt.page || 1,
         });
       }
-      emit('fetch-success', {
+      emit("fetch-success", {
         items: unref(resultItems),
         total: resultTotal,
       });
       return resultItems;
     } catch (error) {
-      emit('fetch-error', error);
+      emit("fetch-error", error);
       dataSourceRef.value = [];
       setPagination({
         total: 0,

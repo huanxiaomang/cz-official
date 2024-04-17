@@ -1,26 +1,31 @@
-import { computed, defineComponent, reactive, ref, unref } from 'vue';
-import { Button, Card, Typography, Select } from 'ant-design-vue';
-import { imitateApi } from './mock-api';
-import { useRequest } from '@vben/hooks';
-import { PageWrapper } from '@/components/Page';
+import { computed, defineComponent, reactive, ref, unref } from "vue";
+import { Button, Card, Typography, Select } from "ant-design-vue";
+import { imitateApi } from "./mock-api";
+import { useRequest } from "@vben/hooks";
+import { PageWrapper } from "@/components/Page";
 
 const options = [
-  { label: 'Jack', value: 'Jack' },
-  { label: 'Lucy', value: 'Lucy' },
-  { label: 'Lutz', value: 'Lutz' },
+  { label: "Jack", value: "Jack" },
+  { label: "Lucy", value: "Lucy" },
+  { label: "Lutz", value: "Lutz" },
 ];
 
 const Demo1 = defineComponent({
   setup() {
-    const select = ref('Lutz');
-    const { data, loading } = useRequest(() => imitateApi(select.value), { refreshDeps: [select] });
+    const select = ref("Lutz");
+    const { data, loading } = useRequest(() => imitateApi(select.value), {
+      refreshDeps: [select],
+    });
 
     return () => (
       <Card title="Ref 依赖刷新">
         <Typography>
           <Typography.Paragraph>
             useRequest 提供了一个
-            <Typography.Text type="danger"> options.refreshDeps </Typography.Text>
+            <Typography.Text type="danger">
+              {" "}
+              options.refreshDeps{" "}
+            </Typography.Text>
             参数，当它的值变化后，会重新触发请求。
           </Typography.Paragraph>
           <Typography.Paragraph>
@@ -36,12 +41,12 @@ const { data, loading } = useRequest(() => imitateApi(select.value), {
         </Typography>
 
         <Select
-          v-model={[select.value, 'value']}
+          v-model={[select.value, "value"]}
           options={options}
           style="width: 220px"
           disabled={loading.value}
         />
-        <p>Username: {loading.value ? 'Loading' : unref(data)}</p>
+        <p>Username: {loading.value ? "Loading" : unref(data)}</p>
       </Card>
     );
   },
@@ -55,13 +60,18 @@ const Demo2 = defineComponent({
     };
     const numComp = computed(() => numOrign.value * Math.PI);
 
-    const { data, loading } = useRequest(imitateApi, { refreshDeps: [numComp] });
+    const { data, loading } = useRequest(imitateApi, {
+      refreshDeps: [numComp],
+    });
 
     return () => (
       <Card title="Computed 依赖刷新" class="mt-2">
         <Typography>
           <Typography.Paragraph>
-            <Typography.Text type="danger"> options.refreshDeps </Typography.Text>
+            <Typography.Text type="danger">
+              {" "}
+              options.refreshDeps{" "}
+            </Typography.Text>
             可以是计算类型
           </Typography.Paragraph>
           <Typography.Paragraph>
@@ -81,7 +91,7 @@ const { data, loading } = useRequest(imitateApi, {
           </Typography.Paragraph>
         </Typography>
 
-        <p>Username: {loading.value ? 'Loading' : unref(data)}</p>
+        <p>Username: {loading.value ? "Loading" : unref(data)}</p>
         <Button type="primary" onClick={changeNum} disabled={loading.value}>
           changeNum
         </Button>
@@ -92,18 +102,24 @@ const { data, loading } = useRequest(imitateApi, {
 
 const Demo3 = defineComponent({
   setup() {
-    const status = reactive({ id: 'lutz' });
+    const status = reactive({ id: "lutz" });
     const changeStatus = () => {
-      status.id = status.id === 'LUTZ' ? 'lutz' : 'LUTZ';
+      status.id = status.id === "LUTZ" ? "lutz" : "LUTZ";
     };
-    const { data, loading } = useRequest(imitateApi, { refreshDeps: [() => status.id] });
+    const { data, loading } = useRequest(imitateApi, {
+      refreshDeps: [() => status.id],
+    });
 
     return () => (
       <Card title="Function 依赖刷新" class="mt-2">
         <Typography>
           <Typography.Paragraph>
-            <Typography.Text type="danger"> options.refreshDeps </Typography.Text>
-            可以是一个方法，但必须是一个关于响应型数据 Reactive、Ref、Computed 的 effect 函数
+            <Typography.Text type="danger">
+              {" "}
+              options.refreshDeps{" "}
+            </Typography.Text>
+            可以是一个方法，但必须是一个关于响应型数据 Reactive、Ref、Computed
+            的 effect 函数
           </Typography.Paragraph>
 
           <Typography.Paragraph>
@@ -122,7 +138,7 @@ const { data, loading } = useRequest(imitateApi, {
           </Typography.Paragraph>
         </Typography>
 
-        <p>Username: {loading.value ? 'Loading' : unref(data)}</p>
+        <p>Username: {loading.value ? "Loading" : unref(data)}</p>
         <Button type="primary" onClick={changeStatus} disabled={loading.value}>
           changeStatus
         </Button>
@@ -141,7 +157,10 @@ export default defineComponent({
             <Typography>
               <Typography.Paragraph>
                 useRequest 提供了
-                <Typography.Text type="danger"> options.refreshDeps </Typography.Text>
+                <Typography.Text type="danger">
+                  {" "}
+                  options.refreshDeps{" "}
+                </Typography.Text>
                 参数，当它的值变化后，会重新触发请求。
               </Typography.Paragraph>
               <Typography.Paragraph>
