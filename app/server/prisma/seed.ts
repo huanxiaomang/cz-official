@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 async function run() {
   await prisma.user.create({
     data: {
-      name: 'admin11',
+      username: 'admin11',
       role: 'CZ_MEMBER',
       password: await hash('admin888'),
       email: 'asdasd@123.com',
@@ -19,7 +19,7 @@ async function run() {
   })
   await prisma.user.create({
     data: {
-      name: 'COMMON',
+      username: 'COMMON',
       role: 'COMMON',
       password: await hash('123456'),
       email: 'as32323d@123.com',

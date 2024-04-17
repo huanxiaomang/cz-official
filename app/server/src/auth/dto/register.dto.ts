@@ -5,7 +5,7 @@ import { IsNotExistsRule } from '@/common/rules/is-not-exists.rule';
 export default class RegisterDto {
   @IsNotEmpty({ message: '用户名不能为空' })
   @IsNotExistsRule('user', { message: '用户已经注册' })
-  name: string;
+  username: string;
   @IsNotEmpty({ message: '邮箱不能为空' })
   @IsNotExistsRule('user', { message: '邮箱已被使用' })
   email: string;

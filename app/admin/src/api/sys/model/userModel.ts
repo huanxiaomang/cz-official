@@ -24,8 +24,8 @@ export interface LoginResultModel {
  * @description: Get user information return value
  */
 export interface GetUserInfoModel {
-  id: string | number;
-  name: string;
+  userId: string | number;
+  username: string;
   avatar?: string;
   description?: string;
   role: string;

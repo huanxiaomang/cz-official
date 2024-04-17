@@ -23,7 +23,7 @@ export class AuthService {
   async register(dto: RegisterDto) {
     const user = await this.prisma.user.create({
       data: {
-        name: dto.name,
+        username: dto.username,
         password: await hash(dto.password),
         email: dto.email,
       },
@@ -49,15 +49,15 @@ export class AuthService {
   }
 
   async updateUser(dto: UpdateUserDto, token) {
-    const id = (await this.decodeToken(token) as any).sub;
+    const userId = (await this.decodeToken(token) as any).sub;
 
     // 更新用户信息
     const user = await this.prisma.user.update({
       where: {
-        id
+        userId
       },
       data: {
-        name: dto.name,
+        username: dto.username,
         avatar: dto.avatar,
         background: dto.background,
         description: dto.description,
@@ -68,10 +68,10 @@ export class AuthService {
     return this.token(user)
   }
 
-  private async token({ id, name }) {
+  private async token({ userId, username }) {
     return await this.jwt.signAsync({
-        name,
-        sub: id,
+        username,
+        sub: userId,
       })
 
   }
@@ -88,8 +88,8 @@ export class AuthService {
 
   async serializeUser(user) {
     return {
-      id: user.id,
-      name: user.name,
+      userId: user.userId,
+      username: user.username,
       email: user.email,
       role: user.role,
       avatar: user.avatar,

@@ -16,9 +16,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   //验证通过后结果用户资料
-  async validate({ sub: id }) {
+  async validate({ sub: userId }) {
     return this.prisma.user.findUnique({
-      where: { id },
+      where: { userId },
     })
   }
 }

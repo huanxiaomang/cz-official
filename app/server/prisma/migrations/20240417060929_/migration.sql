@@ -1,7 +1,7 @@
 -- CreateTable
-CREATE TABLE `User` (
-    `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(191) NOT NULL,
+CREATE TABLE `user` (
+    `userId` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    `username` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `role` VARCHAR(191) NULL,
     `email` VARCHAR(191) NOT NULL,
@@ -12,13 +12,13 @@ CREATE TABLE `User` (
     `background` VARCHAR(191) NULL,
     `description` TEXT NULL,
 
-    UNIQUE INDEX `User_name_key`(`name`),
-    UNIQUE INDEX `User_email_key`(`email`),
-    PRIMARY KEY (`id`)
+    UNIQUE INDEX `user_username_key`(`username`),
+    UNIQUE INDEX `user_email_key`(`email`),
+    PRIMARY KEY (`userId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Project` (
+CREATE TABLE `project` (
     `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(191) NOT NULL,
     `content` TEXT NOT NULL,

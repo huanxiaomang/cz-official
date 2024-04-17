@@ -8,8 +8,8 @@ datasource db {
 }
 
 model user {
-  id          Int      @id @default(autoincrement()) @db.UnsignedInt
-  name        String   @unique
+  userId          Int      @id @default(autoincrement()) @db.UnsignedInt
+  username        String   @unique
   password    String
   role        String? // CZ_MEMBER 或者 COMMON
   email       String   @unique

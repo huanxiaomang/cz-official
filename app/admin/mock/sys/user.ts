@@ -9,8 +9,8 @@ import {
 export function createFakeUserList() {
   return [
     {
-      id: "1",
-      name: "huanxiaomang",
+      userId: "1",
+      username: "huanxiaomang",
       email:"atri2022@163.com",
       avatar: "https://i1.hdslb.com/bfs/face/6bc5d59334e3430ebc019d4fecd463e4df028e8c.jpg@240w_240h_1c_1s_!web-avatar-nav.avif",
       description: "gegwgfr23rf3frewdv345refv456ytrgfv",
@@ -75,7 +75,7 @@ export default [
       if (!checkUser) {
         return resultError("Invalid token!");
       }
-      const codeList = fakeCodeList[checkUser.id];
+      const codeList = fakeCodeList[checkUser.userId];
 
       return resultSuccess(codeList);
     },
