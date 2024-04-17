@@ -49,6 +49,15 @@ export function getUserInfo() {
   );
 }
 
+export function getUserInfoById(userId:number) {
+
+
+  return defHttp.get<GetUserInfoModel>(
+    { url: Api.GetUserInfo + `/${userId}`, },
+    { errorMessageMode: "none" },
+  );
+}
+
 export function getPermCode() {
   return defHttp.get<string[]>({ url: Api.GetPermCode });
 }

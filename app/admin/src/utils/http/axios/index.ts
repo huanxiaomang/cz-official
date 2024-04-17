@@ -186,7 +186,7 @@ const transform: AxiosTransform = {
       (config as Recordable).headers.Authorization =
         options.authenticationScheme
           ? `${options.authenticationScheme} ${token}`
-          : token;
+        : `Bearer ${token}`;
     }
     return config;
   },
@@ -307,6 +307,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
 export const defHttp = createAxios({
   requestOptions: {
     apiUrl: 'http://localhost:3000/api',
+
   }
 });
 
