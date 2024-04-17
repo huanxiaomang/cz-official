@@ -27,18 +27,18 @@ export const navItems: NavItem[] = [
     color: "#1fdaca",
   },
   {
-    title: "仪表盘",
+    title: "项目",
     icon: "ion:grid-outline",
     color: "#bf0c2c",
   },
   {
-    title: "组件",
-    icon: "ion:layers-outline",
+    title: "通知",
+    icon: "fe:notice-active",
     color: "#e18525",
   },
   {
-    title: "系统管理",
-    icon: "ion:settings-outline",
+    title: "动态",
+    icon: "icon-park-outline:message-one",
     color: "#3fb27f",
   },
   {
@@ -47,7 +47,7 @@ export const navItems: NavItem[] = [
     color: "#4daf1bc9",
   },
   {
-    title: "图表",
+    title: "创智分",
     icon: "ion:bar-chart-outline",
     color: "#00d8ff",
   },
