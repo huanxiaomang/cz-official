@@ -22,10 +22,13 @@ export function loginApi(
   params: LoginParams,
   mode: ErrorMessageMode = "modal",
 ) {
+  console.log(params);
+
   return defHttp.post<LoginResultModel>(
     {
       url: Api.Login,
-      params,
+      data: params
+
     },
     {
       errorMessageMode: mode,
@@ -36,9 +39,11 @@ export function loginApi(
 /**
  * @description: getUserInfo
  */
-export function getUserInfo() {
+export function getUserInfo(userId: number) {
+  console.log(userId);
+
   return defHttp.get<GetUserInfoModel>(
-    { url: Api.GetUserInfo },
+    { url: Api.GetUserInfo+`/${userId}`,  },
     { errorMessageMode: "none" },
   );
 }

@@ -54,7 +54,8 @@ const transform: AxiosTransform = {
       throw new Error(t("sys.api.apiRequestFailed"));
     }
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, result, message } = data;
+    const { code, result, messages } = data;
+    const message = typeof messages === "string" ? messages : messages[Object.keys(messages)[0]]
 
     // 这里逻辑可以根据项目进行修改
     const hasSuccess =
@@ -92,7 +93,7 @@ const transform: AxiosTransform = {
         userStore.logout(false);
         break;
       default:
-        if (message) {
+        if (messages) {
           timeoutMsg = message;
         }
     }
@@ -100,7 +101,7 @@ const transform: AxiosTransform = {
     // errorMessageMode='modal'的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
     // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
     if (options.errorMessageMode === "modal") {
-      createErrorModal({ title: t("sys.api.errorTip"), content: timeoutMsg });
+      createErrorModal(message);
     } else if (options.errorMessageMode === "message") {
       createMessage.error(timeoutMsg);
     }
@@ -301,7 +302,11 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     ),
   );
 }
-export const defHttp = createAxios();
+export const defHttp = createAxios({
+  requestOptions: {
+    apiUrl: 'http://localhost:3000/api',
+  }
+});
 
 // other api url
 // export const otherHttp = createAxios({

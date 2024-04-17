@@ -153,7 +153,7 @@ async function handleLogin() {
 
       notification.success({
         message: t("sys.login.loginSuccessTitle"),
-        description: `${t("sys.login.loginSuccessDesc")}: ${userInfo.name}`,
+        description: `${t("sys.login.loginSuccessDesc")}: ${userInfo.username}`,
         duration: 3,
       });
       localStorage.setItem("account-remember-me", JSON.stringify(formData));

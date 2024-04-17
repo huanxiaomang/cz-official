@@ -10,6 +10,7 @@ async function bootstrap() {
   app.useGlobalPipes(new Validate())
   app.useGlobalInterceptors(new TransformInterceptor())
   app.setGlobalPrefix('api')
+  app.enableCors();
   app.useStaticAssets('uploads', { prefix: '/uploads' })
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
   await app.listen(require('process').env.PORT)

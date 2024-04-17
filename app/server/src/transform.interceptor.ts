@@ -11,7 +11,7 @@ export class TransformInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler) {
     return next.handle().pipe(
       map((data) => {
-        return data?.meta ? data : { data };
+        return data?.meta ? data : { result:data,code:0,messages:'success' };
       }),
     );
   }
