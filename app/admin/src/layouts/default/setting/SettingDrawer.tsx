@@ -422,7 +422,7 @@ export default defineComponent({
     return () => (
       <BasicDrawer
         {...attrs}
-        title={t("layout.setting.drawerTitle")}
+        title="页面配置"
         width={330}
         class="setting-drawer"
       >

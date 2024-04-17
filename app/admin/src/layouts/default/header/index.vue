@@ -47,22 +47,14 @@
         :class="`${prefixCls}-action__item error-action`"
       />
 
-      <Notify
-        v-if="getShowNotice"
-        :class="`${prefixCls}-action__item notify-item`"
-      />
+
 
       <FullScreen
         v-if="getShowFullScreen"
         :class="`${prefixCls}-action__item fullscreen-item`"
       />
 
-      <AppLocalePicker
-        v-if="getShowLocalePicker"
-        :reload="true"
-        :showText="false"
-        :class="`${prefixCls}-action__item`"
-      />
+
 
       <UserDropDown :theme="getHeaderTheme" />
 
@@ -77,7 +69,7 @@
 import { Layout } from "ant-design-vue";
 import { computed, unref } from "vue";
 
-import { AppLocalePicker, AppLogo, AppSearch } from "@/components/Application";
+import {  AppLogo, AppSearch } from "@/components/Application";
 import { SettingButtonPositionEnum } from "@/enums/appEnum";
 import { MenuModeEnum, MenuSplitTyeEnum } from "@/enums/menuEnum";
 import { useHeaderSetting } from "@/hooks/setting/useHeaderSetting";
@@ -85,7 +77,6 @@ import { useMenuSetting } from "@/hooks/setting/useMenuSetting";
 import { useRootSetting } from "@/hooks/setting/useRootSetting";
 import { useAppInject } from "@/hooks/web/useAppInject";
 import { useDesign } from "@/hooks/web/useDesign";
-import { useLocale } from "@/locales/useLocale";
 import { createAsyncComponent } from "@/utils/factory/createAsyncComponent";
 import { propTypes } from "@/utils/propTypes";
 
@@ -95,7 +86,6 @@ import {
   ErrorAction,
   FullScreen,
   LayoutBreadcrumb,
-  Notify,
   UserDropDown,
 } from "./components";
 
@@ -125,7 +115,6 @@ const { getUseErrorHandle, getShowSettingButton, getSettingButtonPosition } =
 const {
   getHeaderTheme,
   getShowFullScreen,
-  getShowNotice,
   getShowContent,
   getShowBread,
   getShowHeaderLogo,
@@ -133,7 +122,6 @@ const {
   getShowSearch,
 } = useHeaderSetting();
 
-const { getShowLocalePicker } = useLocale();
 
 const { getIsMobile } = useAppInject();
 
