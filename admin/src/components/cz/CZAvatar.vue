@@ -23,7 +23,6 @@ function handleClick() {
 
 onMounted(async() => {
   userInfo.value = await getUserInfoById(props.userId);
-  console.log(userInfo);
 
 })
 
