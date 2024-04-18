@@ -171,9 +171,14 @@ function handleEdit(id: number) {
 
 
 async function handleRemove(id) {
-  await removeProjApi(id);
-  projData.value = (await getProjApi()).data;
-
+  const proj = (await removeProjApi(id)).data;
+    projData.value = (await getProjApi()).data;
+  
+    notification.success({
+        message: `已删除 (,,•́ . •̀,,) `,
+        description: `${proj.title} 再也没有了`,
+        duration: 3,
+    });
 
 }
 
