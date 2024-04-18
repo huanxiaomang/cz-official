@@ -3,7 +3,7 @@
         <template #headerContent>
             <div>
                 <div class="mb-7">
-                    (-_-)👇以下为创智工作室所有项目。
+                    (•ิ_•ิ)👇 以下为创智工作室所有项目。
                 </div>
                 <Button type="primary" @click="handleAdd" class="flex items-center">
                     <Icon icon="material-symbols:add" size="20" color="#fff" class="mx-[-.4rem]">
@@ -70,15 +70,13 @@ import { getProjApi, createProjApi, updateProjApi, removeProjApi } from '@/api/s
 import { ref } from "vue";
 import Icon from "@/components/Icon/Icon.vue";
 import { useMessage } from "@/hooks/web/useMessage";
+import { sortByUpdate } from "@/utils/sortByUpdate";
 const { notification, createErrorModal } = useMessage();
 
 let projData = ref([]);
-let showProjData = computed(() => projData.value.toSorted((a, b) => toTimestamp(b.updatedAt) - toTimestamp(a.updatedAt)));
+let showProjData = computed(() => sortByUpdate(projData.value));
 
-const toTimestamp = (time: string) => {
-    const date = new Date(time);
-    return date.getTime();
-}
+
 
 onMounted(async() => {
     projData.value = (await getProjApi()).data;

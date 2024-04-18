@@ -18,8 +18,24 @@ export class AuthService {
       }
     })
     return await this.serializeUser(user);
-  }
+    }
+    
+    async setUserRole(userId,role) {
+        const user = await this.prisma.user.update({
+            where: {
+                userId:Number(userId)
+            },
+            data: {
+                role
+            },
+        })
+        return await this.serializeUser(user);
+    }
 
+    async getAllMembers() {
+        const users = await this.prisma.user.findMany({})
+        return await Promise.all(users.map(async (u) => await this.serializeUser(u)));
+    }
 
   async getCZMembers() {
     const users = await this.prisma.user.findMany({
@@ -48,9 +64,6 @@ export class AuthService {
         email: dto.email,
       },
     })
-
-
-
 
     if (!(await verify(user.password, dto.password))) {
       throw new BadRequestException('密码输入错误')

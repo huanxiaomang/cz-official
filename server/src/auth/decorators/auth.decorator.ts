@@ -5,6 +5,10 @@ import { RoleGuard } from '../guards/role.guard'
 
 export function Auth(...roles: Role[]) {
 
-  return applyDecorators(SetMetadata('roles', roles), UseGuards(AuthGuard('jwt'), RoleGuard))
+  return applyDecorators(SetMetadata('roles', roles), UseGuards(AuthGuard('jwt')))
 }
 
+export function Admin(...roles: Role[]) {
+
+    return applyDecorators(SetMetadata('roles', roles), UseGuards(AuthGuard('jwt'), RoleGuard))
+}

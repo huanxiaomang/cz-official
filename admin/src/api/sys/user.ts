@@ -11,7 +11,8 @@ import { useUserStore } from "@/store/modules/user";
 enum Api {
   Login = "/login",
   Logout = "/logout",
-  GetUserInfo = "/getUserInfo",
+    GetUserInfo = "/getUserInfo",
+    GetAllUser = "/all",
   GetPermCode = "/getPermCode",
   TestRetry = "/testRetry",
 }
@@ -47,6 +48,14 @@ export function getUserInfo() {
     { url: Api.GetUserInfo + `/${userId}`,  },
     { errorMessageMode: "none" },
   );
+}
+
+export function getAllUser() {
+
+    return defHttp.get<GetUserInfoModel[]>(
+        { url: Api.GetAllUser },
+        { errorMessageMode: "none" },
+    );
 }
 
 export function getUserInfoById(userId:number) {

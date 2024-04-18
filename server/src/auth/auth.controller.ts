@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Post, Headers, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, Headers, Param, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import LoginDto from './dto/login.dto';
 import RegisterDto from './dto/register.dto';
 import UpdateUserDto from './dto/updateUser.dto';
-import { Auth } from './decorators/auth.decorator';
+import { Admin, Auth } from './decorators/auth.decorator';
 
 @Controller()
 export class AuthController {
@@ -12,11 +12,22 @@ export class AuthController {
   @Get('cz')
   getCZMembers() {
     return this.auth.getCZMembers();
-  }
+    }
+    @Get('all')
+    getAllMembers() {
+        return this.auth.getAllMembers();
+    }
+    
   @Get('getUserInfo/:userId')
   getUserInfo(@Param('userId') userId ) {
     return this.auth.getUserInfo(userId);
-  }
+    }
+
+    @Admin()
+    @Get('setUserRole/:userId')
+    setUserRole(@Param('userId') userId,@Query('role') role: string) {
+        return this.auth.setUserRole(userId,role);
+    }
   @Post('register')
   register(@Body() dto: RegisterDto) {
     return this.auth.register(dto);

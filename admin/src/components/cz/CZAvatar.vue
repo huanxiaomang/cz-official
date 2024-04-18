@@ -10,7 +10,7 @@ import {Avatar } from 'ant-design-vue';
 
 defineOptions({ name: "CZAvatar" });
 
-const props = defineProps<{ userId: string }>();
+const props = defineProps<{ userId: string|number }>();
 
 let userInfo = ref({
   avatar:''
