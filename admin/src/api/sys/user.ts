@@ -14,7 +14,8 @@ enum Api {
     GetUserInfo = "/getUserInfo",
     GetAllUser = "/all",
   GetPermCode = "/getPermCode",
-  TestRetry = "/testRetry",
+    TestRetry = "/testRetry",
+  SetUserRole = "/setUserRole",
 }
 
 /**
@@ -50,6 +51,19 @@ export function getUserInfo() {
   );
 }
 
+export function setUserRole(userId, role) {
+
+    return defHttp.get<GetUserInfoModel>(
+        {
+            url: Api.SetUserRole + `/${userId}`,
+            params: {
+                role:role
+            }
+        },
+        { errorMessageMode: "message" },
+    );
+}
+
 export function getAllUser() {
 
     return defHttp.get<GetUserInfoModel[]>(
@@ -72,7 +86,7 @@ export function getPermCode() {
 }
 
 export function doLogout() {
-  return defHttp.get({ url: Api.Logout });
+  return Promise.resolve();
 }
 
 export function testRetry() {

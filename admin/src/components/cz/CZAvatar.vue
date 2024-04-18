@@ -1,12 +1,14 @@
 <template>
-  <Avatar size="medium" :src="userInfo.avatar" @click="handleClick" class="ml-1 cursor-pointer">
-  </Avatar>
+    <Avatar size="medium" :src="showAvatar" @click="handleClick" class="ml-1 cursor-pointer border-1 border-solid border-gray-300">
+    </Avatar>
 </template>
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import { getUserInfoById } from '@/api/sys/user'
 import { ref } from 'vue';
 import {Avatar } from 'ant-design-vue';
+import showUserModal from './UserModal';
+import DefaultAvatar from '@/assets/icons/default-avatar.png';
 
 defineOptions({ name: "CZAvatar" });
 
@@ -16,14 +18,19 @@ let userInfo = ref({
   avatar:''
 });
 
+let showAvatar = ref(DefaultAvatar);
+
 function handleClick() {
-  //TODO: 展示个人信息
-  console.log("点击了头像!");
+    showUserModal(userInfo.value);
 }
 
 onMounted(async() => {
   userInfo.value = await getUserInfoById(props.userId);
-
+    const img = document.createElement('img');
+    img.src = userInfo.value.avatar;
+    img.onload = function () {
+        showAvatar.value = userInfo.value.avatar;
+    }
 })
 
 

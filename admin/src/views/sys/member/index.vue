@@ -5,14 +5,20 @@
                 <div class="mb-3">
                     支持查看成员信息、修改成员权限。
                 </div>
-
+                筛选成员: <Select v-model:value="selectedRole" class="ml-3 w-35">
+                    <SelectOption value="ALL">所有成员</SelectOption>
+                    <SelectOption value="ADMIN">创智管理员</SelectOption>
+                    <SelectOption value="CZ_MEMBER">创智成员</SelectOption>
+                    <SelectOption value="COMMON">普通用户</SelectOption>
+                </Select>
             </div>
         </template>
-        <Card v-for="m of members" :key="m.userId" class="mb-6">
+        <Card v-for="m of filterMembers" :key="m.userId" class="mb-6">
             <div class="flex items-center">
                 <CZAvatar :userId="m.userId"></CZAvatar>
-                <span class="ml-6 text-lg" :class="getClass(m.role) ">{{ m.username }}</span>
-                <Select v-model:value="m.role" class="ml-auto w-35" @change="handleChange">
+                <span class="ml-6 text-lg cursor-pointer" :class="colorList[m.userId]"
+                    @click="showUserModal(m)">{{ m.username }}</span>
+                <Select v-model:value="roles[m.userId]" class="ml-auto w-35" @change="handleChange(m.userId)">
                     <SelectOptGroup>
                         <template #label>
                             <span>
@@ -41,33 +47,52 @@
 <script setup lang='ts'>
 import { Card,Button,Select,SelectOption,SelectOptGroup } from "ant-design-vue";
 import { PageWrapper } from "@/components/Page";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watchEffect } from "vue";
 import { GetUserInfoModel } from "@/api/sys/model/userModel";
 import { sortByUpdate } from "@/utils/sortByUpdate";
-import { getAllUser } from "@/api/sys/user";
+import { getAllUser, setUserRole } from "@/api/sys/user";
 import CZAvatar from "@/components/cz/CZAvatar.vue";
 import Icon from "@/components/Icon/Icon.vue";
+import { getUsernameClassByRole } from "@/utils/getUsernameClass";
+import showUserModal from '@/components/cz/UserModal';
 
 let members = ref<GetUserInfoModel[]>([]);
+const roles = ref({});
+const colorList = ref({});
+const selectedRole = ref<'ADMIN' | 'CZ_MEMBER' | 'COMMON' | 'ALL'>('ALL');
+let filterMembers = computed<GetUserInfoModel[]>(() => {
+    if (selectedRole.value === 'ALL') {
+        return members.value;
+    } else {
+        return members.value.filter(m => m.role === selectedRole.value);
+    }
+});
+
+
+function updateClassList() {
+    console.log(members);
+    colorList.value = members.value.reduce((obj, { userId, role }) => {
+        obj[userId] = getUsernameClassByRole(role);
+        return obj;
+    }, {});
+}
 
 onMounted(async() => {
     members.value = await getAllUser();
+    roles.value = members.value.reduce((obj, { userId, role }) => {
+        obj[userId] = role;
+        return obj;
+    }, {});
+    updateClassList();
+
 })
 
-function getClass(role: string) {
-    if (role === 'ADMIN') {
-        return 'text-red-500';
-    } else if (role === 'CZ_MEMBER') {
-        return 'text-blue-500';
-    }  else {
-        return 'text-gray-500';
-    }
-}
 
 
 
-const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
+const handleChange = async (userId: number) => {
+    const user = await setUserRole(userId, roles.value[userId]);
+    colorList.value[userId] = getUsernameClassByRole(user.role);
 };
-const value = ref(['lucy']);
+
 </script>

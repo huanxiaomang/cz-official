@@ -268,6 +268,10 @@ export class VAxios {
           if (axios.isAxiosError(e)) {
             // rewrite error message from axios in here
           }
+            if (Reflect.has(e, "message") && e.message === 'Request failed with status code 403') {
+                
+            }
+            
           if (Reflect.has(e, "response")) {
             const msgs = e['response'].data.messages || e['response'].data.message;
             if (typeof msgs === "object") {
