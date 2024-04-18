@@ -74,7 +74,7 @@ npx prisma generate
 #### 重新填充数据库
 ```bash
 npx prisma migrate reset
-``
+```
 
 每次修改prisma都要执行上述指令。
 
