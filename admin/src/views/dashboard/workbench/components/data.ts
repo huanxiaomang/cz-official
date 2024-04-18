@@ -42,8 +42,8 @@ export const navItems: NavItem[] = [
     color: "#3fb27f",
   },
   {
-    title: "权限管理",
-    icon: "ion:key-outline",
+    title: "成员",
+      icon: "tdesign:member",
     color: "#4daf1bc9",
   },
   {

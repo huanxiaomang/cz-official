@@ -3,15 +3,14 @@
     <template #headerContent>
       <div class="flex justify-between items-center">
         <span class="flex-1">
-          <a :href="GITHUB_URL" target="_blank">{{ name }}</a>
-          是一个基于Vue3.0、Vite、 Ant-Design-Vue 、TypeScript
-          的后台解决方案，目标是为中大型项目开发,提供现成的开箱解决方案及丰富的示例,原则上不会限制任何代码用于商用。
+          <a :href="GITHUB_URL" target="_blank">CZ-Admin </a>
+          是一个基于Vue3.0、Vite、 Ant-Design-Vue 、TypeScript、unocss
+          的后台解决方案，目标是为管理员提供一个美观、便捷、高效的后台管理系统。
         </span>
       </div>
     </template>
     <Description @register="infoRegister" class="enter-y" />
     <Description @register="register" class="my-4 enter-y" />
-    <Description @register="registerDev" class="enter-y" />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -27,10 +26,9 @@ import { GITHUB_URL, SITE_URL, DOC_URL } from "@/settings/siteSetting";
 
 const { pkg, lastBuildTime } = __APP_INFO__;
 
-const { dependencies, devDependencies, name, version } = pkg;
+const { version } = pkg;
 
 const schema: DescItem[] = [];
-const devSchema: DescItem[] = [];
 
 const commonTagRender = (color: string) => (curVal) =>
   h(Tag, { color }, () => curVal);
@@ -49,20 +47,21 @@ const infoSchema: DescItem[] = [
     render: commonTagRender("blue"),
   },
   {
-    label: "文档地址",
-    field: "doc",
-    render: commonLinkRender("文档地址"),
+    label: "作者",
+    field: "author",
+      render: commonLinkRender("huanxiaomang") ,
   },
-  {
-    label: "预览地址",
-    field: "preview",
-    render: commonLinkRender("预览地址"),
-  },
+
   {
     label: "Github",
     field: "github",
     render: commonLinkRender("Github"),
-  },
+    },
+    {
+        label: "版权",
+        field: "copyright",
+        render: commonLinkRender("Copyright © 2023-present 创智工作室"),
+    },
 ];
 
 const infoData = {
@@ -73,27 +72,25 @@ const infoData = {
   github: GITHUB_URL,
 };
 
-Object.keys(dependencies).forEach((key) => {
+const members = {
+    '项目架构设计 后端接口开发 基础页面开发': 'huanxiaomang',
+    '暂未参与': 'hakurei77',
+}
+
+Object.keys(members).forEach((key) => {
   schema.push({ field: key, label: key });
 });
 
-Object.keys(devDependencies).forEach((key) => {
-  devSchema.push({ field: key, label: key });
-});
+
 
 const [register] = useDescription({
-  title: "生产环境依赖",
-  data: dependencies,
+  title: "负责人员",
+  data: members,
   schema: schema,
-  column: 3,
+  column:1 ,
 });
 
-const [registerDev] = useDescription({
-  title: "开发环境依赖",
-  data: devDependencies,
-  schema: devSchema,
-  column: 3,
-});
+
 
 const [infoRegister] = useDescription({
   title: "项目信息",

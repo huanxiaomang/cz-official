@@ -16,7 +16,7 @@ const about: AppRouteModule = {
   children: [
     {
       path: "index",
-      name: "AboutPage",
+      name: "projectPage",
       component: () => import("@/views/sys/project/index.vue"),
       meta: {
         title: "项目",
