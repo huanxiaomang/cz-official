@@ -2,19 +2,7 @@
   "type": "module",
   "private": true,
   "packageManager": "pnpm@8.15.4",
-  "homepage": "https://github.com/huanxiaomang/cz-official",
-  "bugs": {
-    "url": "https://github.com/huanxiaomang/cz-official/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/huanxiaomang/cz-official.git"
-  },
-    "author": {
-      "name": "huanxiaomang",
-      "email": "atri2022@163.com",
-      "url": "https://github.com/huanxiaomang"
-    },
+
   "scripts": {
     "build": "vite build",
     "dev": "vite --port 3333 --open",
