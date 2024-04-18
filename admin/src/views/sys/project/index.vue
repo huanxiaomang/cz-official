@@ -70,7 +70,7 @@ const open = ref<boolean>(false);
 const confirmLoading = ref<boolean>(false);
 const editingId = ref<number>();
 
-interface FormState {
+interface FormState {1
   title: string;
   content: string;
   stack: string;
@@ -93,15 +93,16 @@ const handleOk = async () => {
   setTimeout(() => {
     open.value = false;
     confirmLoading.value = false;
+    notification.success({
+      message: `已完成(●• ̀ω•́ )✧`,
+      description: `修改成功: 项目${formState.title}`,
+      duration: 3,
+    });
   }, 1000);
   await updateProjApi(editingId.value,formState);
   projData.value = (await getProjApi()).data;
 
-  notification.success({
-    message: `已完成(●• ̀ω•́ )✧`,
-    description: `修改成功: 项目${formState.title}`,
-    duration: 3,
-  });
+
   // formState.content = '';
   // formState.title = '';
   // formState.stack = '';
