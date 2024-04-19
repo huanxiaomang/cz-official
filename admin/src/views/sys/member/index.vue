@@ -18,7 +18,7 @@
                 <CZAvatar :userId="m.userId"></CZAvatar>
                 <span class="ml-6 text-lg cursor-pointer" :class="colorList[m.userId]"
                     @click="showUserModal(m)">{{ m.username }}</span>
-                <Select v-model:value="roles[m.userId]" class="ml-auto w-35" @change="handleChange(m.userId)">
+                <Select v-model:value="roles[m.userId]" class="ml-auto w-35" @change="handleChange(Number(m.userId))">
                     <SelectOptGroup>
                         <template #label>
                             <span>
@@ -91,6 +91,7 @@ onMounted(async() => {
 
 
 const handleChange = async (userId: number) => {
+    
     const user = await setUserRole(userId, roles.value[userId]);
     colorList.value[userId] = getUsernameClassByRole(user.role);
 };
