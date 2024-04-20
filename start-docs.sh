@@ -9,6 +9,6 @@ echo 正在启动项目
 
 cd dist
 
-npx http-server .
+npx http-server . -p 7001
 
 cd -
