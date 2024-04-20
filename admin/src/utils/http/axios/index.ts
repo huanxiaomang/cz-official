@@ -306,7 +306,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
 }
 export const defHttp = createAxios({
   requestOptions: {
-    apiUrl: 'http://localhost:3000/api',
+        apiUrl: 'http://1.92.82.236:3000/api',
 
   }
 });
