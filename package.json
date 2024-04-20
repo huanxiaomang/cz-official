@@ -19,7 +19,7 @@
     "scripts": {
         "dev:docs": "node scripts/loadLocalImages.js && vitepress dev docs",
         "build:docs": "node scripts/loadLocalImages.js && vitepress build docs",
-        "preview": "vitepress preview docs",
+        "preview": "vitepress preview docs"
         
     },
     "packageManager": "pnpm@latest",
