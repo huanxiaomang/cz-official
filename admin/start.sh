@@ -2,14 +2,14 @@
 #!/bin/bash
 set -e
 
-# 检查当前目录是否存在 dist 目录
+# 检查当前目录是否存在dist文件夹
 if [ -d "dist" ]; then
-    # 如果存在，则清空其中的内容
-    rm -rf dist/*
-else
-    # 如果不存在，则创建该目录
-    mkdir dist
+    # 如果存在，则删除dist文件夹及其内容
+    rm -r dist
 fi
+
+# 创建dist文件夹
+mkdir dist
 
 echo 正在启动项目
 
