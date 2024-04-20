@@ -18,6 +18,7 @@
     },
   "scripts": {
   },
+  "packageManager": "pnpm@latest",
   "keywords": [],
   "license": "ISC"
 }
