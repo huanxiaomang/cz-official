@@ -1,6 +1,6 @@
 <template>
     <Avatar :src="showAvatar" @click="handleClick"
-        class="ml-1 cursor-pointer border-1 border-solid border-gray-300 w-[2rem] h-[2rem]">
+        class="ml-1 cursor-pointer border-1 border-solid border-gray-300 w-[2rem] h-[2rem] hover:scale-110 transition-all animate-ease-in-out">
     </Avatar>
 </template>
 <script lang="ts" setup>

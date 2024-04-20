@@ -40,31 +40,34 @@
             </Card>
         </transition-group>
 
-                <Modal v-model:open="open" title="编辑项目信息" :confirm-loading="confirmLoading" @ok="handleOk">
-                    <Form :model="formState" layout="vertical" name="form_in_modal" autocomplete="off" class="p-6 mb-5"
-                        ref="formRef">
-                        <FormItem label="标题" name="title" :rules="[{ required: true, message: '请填写标题!' }]">
-                            <Input v-model:value="formState.title" />
-                        </FormItem>
+        <Modal v-model:open="open" title="编辑项目信息" :confirm-loading="confirmLoading" @ok="handleOk">
+            <Form :model="formState" layout="vertical" name="form_in_modal" autocomplete="off" class="p-6 mb-5"
+                ref="formRef">
+                <FormItem label="标题" name="title" :rules="[{ required: true, message: '请填写标题!' }]">
+                    <Input v-model:value="formState.title" />
+                </FormItem>
 
-                        <FormItem label="技术栈" name="stack" :rules="[{ required: true, message: '请填写技术栈' }]">
-                            <Input v-model:value="formState.stack" />
-                        </FormItem>
+                <FormItem label="技术栈" name="stack" :rules="[{ required: true, message: '请填写技术栈' }]">
+                    <Input v-model:value="formState.stack" />
+                </FormItem>
 
-                        <FormItem label="描述" name="content" :rules="[{ required: true, message: '请填写描述' }]">
-                            <Textarea v-model:value="formState.content" class="textarea" />
-                        </FormItem>
+                <FormItem label="描述" name="content" :rules="[{ required: true, message: '请填写描述' }]">
+                    <Textarea v-model:value="formState.content" class="textarea" />
+                </FormItem>
 
-                        <FormItem label="成员 (填写成员id, 以 ',' 分隔)" name="stack"
-                            :rules="[{ required: true, message: '请填写成员' }]">
-                            <Input v-model:value="formState.members" />
-                        </FormItem>
-                        <CZAvatar v-for="u of formState.members.split(',').filter((u) => u.trim() !== '')" :key="u"
-                            :userId="u">
-                        </CZAvatar>
+                <FormItem label="成员 (填写成员id, 以 ',' 分隔)" name="stack" :rules="[{ required: true, message: '请填写成员' }]">
+                    <Input v-model:value="formState.members" />
+                </FormItem>
+                <transition-group name="list" tag="ul">
+                    <CZAvatar v-for="u of formState.members.split(',').filter((u) => u.trim() !== '')" :key="u"
+                        :userId="u">
+                    </CZAvatar>
+                    <AddMemberBtn :filter-id="formState.members.split(',').filter((u) => u.trim() !== '')">
+                    </AddMemberBtn>
+                </transition-group>
+            </Form>
 
-                    </Form>
-                </Modal>
+        </Modal>
     </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -72,6 +75,7 @@ import {  computed, onMounted, reactive } from "vue";
 import { Card, Popconfirm, Modal, FormItem, Input, Form, Textarea, Button } from "ant-design-vue";
 import { PageWrapper } from "@/components/Page";
 import CZAvatar from "@/components/cz/CZAvatar.vue";
+import AddMemberBtn from "@/components/cz/AddMemberBtn.vue";
 import { getProjApi, createProjApi, updateProjApi, removeProjApi } from '@/api/sys/project'
 import { ref } from "vue";
 import Icon from "@/components/Icon/Icon.vue";
