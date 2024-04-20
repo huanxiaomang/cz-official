@@ -74,7 +74,6 @@ let filterMembers = computed<GetUserInfoModel[]>(() => {
 
 
 function updateClassList() {
-    console.log(members);
     colorList.value = members.value.reduce((obj, { userId, role }) => {
         obj[userId] = getUsernameClassByRole(role);
         return obj;
