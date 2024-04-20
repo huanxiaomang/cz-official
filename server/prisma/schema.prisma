@@ -1,40 +1,43 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
 model user {
-  userId          Int      @id @default(autoincrement()) @db.UnsignedInt
-  username        String   @unique
-  password    String
-  role        String? // CZ_MEMBER 或者 COMMON
-  email       String   @unique
-  avatar      String?
-  github      String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  background  String?
-  description String?  @db.Text
+    userId      Int      @id @default(autoincrement()) @db.UnsignedInt
+    username    String   @unique
+    password    String
+    role        String? // CZ_MEMBER 或者 COMMON 或者ADMIN
+    email       String   @unique
+    avatar      String?
+    github      String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    background  String?
+    description String?  @db.Text
+    major       String
+    grade       Int
+    badge       String? // 徽标，是一个字符串数组,格式形如蓝桥杯国三,创智成员
 }
 
 model project {
-  id        Int      @id @default(autoincrement()) @db.UnsignedInt
-  title     String
-  content   String   @db.Text
-  stack     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  members   String // 项目成员，是一个用户id数组,格式形如1,2,3
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
+    title     String
+    content   String   @db.Text
+    stack     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    members   String // 项目成员，是一个用户id数组,格式形如1,2,3
 }
 
 model message {
-  id        Int      @id @default(autoincrement()) @db.UnsignedInt
-  title     String
-  content   String   @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
+    title     String
+    content   String   @db.Text
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }

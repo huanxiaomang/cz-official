@@ -52,6 +52,7 @@ function handleCoverClick() {
 }
 const info: GetUserInfoModel = ref({});
 // TODO: 重写逻辑 加载Modal就要重新发送请求获取信息
+// 否则信息不是最新的
 
 
 

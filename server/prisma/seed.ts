@@ -7,14 +7,18 @@ const prisma = new PrismaClient()
 async function run() {
   await prisma.user.create({
     data: {
-      username: 'admin11',
-      role: 'CZ_MEMBER',
-      password: await hash('admin888'),
+      username: 'huanxiaomang',
+      role: 'ADMIN',
+      password: await hash('123456'),
       email: 'asdasd@123.com',
-      avatar: 'https://i1.hdslb.com/bfs/face/6bc5d59334e3430ebc019d4fecd463e4df028e8c.jpg@240w_240h_1c_1s_!web-avatar-nav.avif',
+          avatar: 'https://s21.ax1x.com/2024/04/18/pFz7N6O.png',
       github: 'https://github.com/huanxiaomang',
-      background: 'https://i1.hdslb.com/bfs/face/6bc5d59334e3430ebc019d4fecd463e4df028e8c.jpg@240w_240h_1c_1s_!web-avatar-nav.avif',
-      description: Random.cparagraph(30, 50)
+          background: 'https://s21.ax1x.com/2024/04/18/pFzIWnJ.png',
+          description: Random.cparagraph(30, 50),
+          major: '软件工程',
+          grade: 2,
+          badge: '蓝桥杯国三,创智开发者',
+      
     },
   })
   await prisma.user.create({
@@ -26,7 +30,10 @@ async function run() {
       avatar: 'https://i1.hdslb.com/bfs/face/6bc5d59334e3430ebc019d4fecd463e4df028e8c.jpg@240w_240h_1c_1s_!web-avatar-nav.avif',
       github: 'https://github.com/huanxiaomang',
       background: 'https://i1.hdslb.com/bfs/face/6bc5d59334e3430ebc019d4fecd463e4df028e8c.jpg@240w_240h_1c_1s_!web-avatar-nav.avif',
-      description: Random.cparagraph(30, 50)
+          description: Random.cparagraph(30, 50),
+          major: '软件工程',
+          grade: 2,
+          badge: '蓝桥杯省二,创智开发者',
     },
   })
 

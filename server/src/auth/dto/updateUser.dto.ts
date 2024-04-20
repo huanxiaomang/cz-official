@@ -11,5 +11,10 @@ export default class UpdateUserDto {
   avatar: string;
   github: string;
   background: string;
-  description: string;
+    description: string;
+    @IsNotEmpty({ message: '专业不能为空' })
+    major: string;
+    @IsNotEmpty({ message: '年级不能为空' })
+    grade: number;
+    badge: string;
 }

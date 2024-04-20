@@ -11,6 +11,9 @@ CREATE TABLE `user` (
     `updatedAt` DATETIME(3) NOT NULL,
     `background` VARCHAR(191) NULL,
     `description` TEXT NULL,
+    `major` VARCHAR(191) NOT NULL,
+    `grade` VARCHAR(191) NOT NULL,
+    `badge` VARCHAR(191) NULL,
 
     UNIQUE INDEX `user_username_key`(`username`),
     UNIQUE INDEX `user_email_key`(`email`),

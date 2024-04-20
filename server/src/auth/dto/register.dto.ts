@@ -14,4 +14,8 @@ export default class RegisterDto {
   password: string;
   @IsNotEmpty({ message: '确认密码不能为空' })
   password_confirm: string;
+    @IsNotEmpty({ message: '专业不能为空' })
+    major: string;
+    @IsNotEmpty({ message: '年级不能为空' })
+    grade: number;
 }
