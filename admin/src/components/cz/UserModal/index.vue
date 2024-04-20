@@ -4,11 +4,11 @@
             v-show="state.isShowingUserModal"></div>
     </Transition>
     <Transition>
-        <div class=" container w-3xl h-4xl bg-white rounded-lg absolute flex flex-col items-center z-9999 m-auto inset-0"
+        <div class=" container w-80vw h-60vh sm:w-3xl sm:h-4xl bg-white rounded-lg absolute flex flex-col items-center z-9999 m-auto inset-0"
             v-show="state.isShowingUserModal">
-            <img :src="showBg" alt="用户背景图" class="w-[100%] h-[15rem] rounded-t-lg object-cover ">
+            <img :src="showBg" alt="用户背景图" class="h-[10rem] w-[100%] sm:h-[15rem] rounded-t-lg object-cover ">
             <img :src="showAvatar" alt="用户头像"
-                class="w-[8rem] h-[8rem] rounded-full flex items-center justify-center object-cover mt-[-4rem] border-2 border-solid border-gray-300 brightness-105">
+                class="w-[5rem] h-[5rem] sm:w-[8rem] sm:h-[8rem] rounded-full flex items-center justify-center object-cover mt-[-2.5rem] sm:mt-[-4rem] border-2 border-solid border-gray-300 brightness-105">
             <div class="text-3xl text-center mt-[20px]" :class="getUsernameClassByRole(state.showUserInfo.role)">
                 {{ state.showUserInfo.username }}
             </div>
@@ -18,10 +18,10 @@
             <div class="text-[14px] text-center mt-[10px]">{{ state.showUserInfo.email }}</div>
 
             <div class="mt-auto mb-3">
-                <GithubFilled class="mr-2 text-2xl"/>
-                
-            </div>
+                <GithubFilled class="mr-2 text-2xl" />
 
+            </div>
+            
         </div>
     </Transition>
 </template>

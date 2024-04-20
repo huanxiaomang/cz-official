@@ -58,7 +58,7 @@
                 <FormItem label="成员 (填写成员id, 以 ',' 分隔)" name="stack" :rules="[{ required: true, message: '请填写成员' }]">
                     <Input v-model:value="formState.members" />
                 </FormItem>
-                <transition-group name="list" tag="ul">
+                <transition-group name="members" tag="ul">
                     <CZAvatar v-for="u of formState.members.split(',').filter((u) => u.trim() !== '')" :key="u"
                         :userId="u">
                     </CZAvatar>
@@ -221,4 +221,26 @@ function handleAdd() {
 .list-move {
     transition: transform .5s ease-in-out;
 }
+
+
+
+.members-enter-from,
+.members-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.members-enter-active,
+.members-leave-active {
+    transition: all .5s ease-in-out;
+}
+
+.members-leave-active {
+    position: absolute;
+}
+
+.members-move {
+    transition: transform .5s ease-in-out;
+}
+
 </style>
