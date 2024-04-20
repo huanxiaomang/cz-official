@@ -14,15 +14,15 @@
             </div>
         </template>
         <Card v-for="m of filterMembers" :key="m.userId" class="mb-6">
-            <div class="flex items-center justify-between">
-                <span>
+            <div class="flex items-center justify-between md:flex-row flex-col gap-5">
+                <span class="flex items-center">
                     <CZAvatar :userId="m.userId"></CZAvatar>
                     <span class="ml-6 text-lg cursor-pointer" :class="colorList[m.userId]"
                         @click="showUserModal(m)">{{ m.username }}</span>
                 </span>
 
-                <span>{{m.createdAt.replace('T', ' ').replace('Z', '')}}</span>
-                <Select v-model:value="roles[m.userId]" class=" w-35" @change="handleChange(Number(m.userId))">
+                <span class="md:inline hidden">{{ m.createdAt.replace('T', ' ').replace('Z', '')}}</span>
+                <Select v-model:value="roles[m.userId]" class="w-35" @change="handleChange(Number(m.userId))">
                     <SelectOptGroup>
                         <template #label>
                             <span>
@@ -31,7 +31,7 @@
                                 Member
                             </span>
                         </template>
-                        <SelectOption value="ADMIN">创智管理员</SelectOption>
+                        <SelectOption value="ADMIN" >创智管理员</SelectOption>
                         <SelectOption value="CZ_MEMBER">创智成员</SelectOption>
                     </SelectOptGroup>
                     <SelectOptGroup>
