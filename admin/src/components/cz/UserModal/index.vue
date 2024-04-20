@@ -87,7 +87,7 @@ watchEffect(async () => {
 
 .v-enter-from,
 .v-leave-to {
-    transform: translate(0, -50%);
+    transform: scale(0.5);
     opacity: 0;
 }
 .cover-enter-active,

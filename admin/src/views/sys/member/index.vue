@@ -14,11 +14,15 @@
             </div>
         </template>
         <Card v-for="m of filterMembers" :key="m.userId" class="mb-6">
-            <div class="flex items-center">
-                <CZAvatar :userId="m.userId"></CZAvatar>
-                <span class="ml-6 text-lg cursor-pointer" :class="colorList[m.userId]"
-                    @click="showUserModal(m)">{{ m.username }}</span>
-                <Select v-model:value="roles[m.userId]" class="ml-auto w-35" @change="handleChange(Number(m.userId))">
+            <div class="flex items-center justify-between">
+                <span>
+                    <CZAvatar :userId="m.userId"></CZAvatar>
+                    <span class="ml-6 text-lg cursor-pointer" :class="colorList[m.userId]"
+                        @click="showUserModal(m)">{{ m.username }}</span>
+                </span>
+
+                <span>{{m.createdAt.replace('T', ' ').replace('Z', '')}}</span>
+                <Select v-model:value="roles[m.userId]" class=" w-35" @change="handleChange(Number(m.userId))">
                     <SelectOptGroup>
                         <template #label>
                             <span>

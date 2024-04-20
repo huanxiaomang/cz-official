@@ -127,7 +127,8 @@ export class AuthService {
             badge: user.badge,
             background: user.background,
             description: user.description,
-            token: await this.token(user)
+            token: await this.token(user),
+            createdAt: user.createdAt
         }
     }
 }

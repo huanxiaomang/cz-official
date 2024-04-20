@@ -163,8 +163,9 @@ function handleEdit(id: number) {
     formState.stack = info.stack;
     formState.members = info.members;
     editingId.value = info.id;
+    isEditingNotAdd = true;
+
   showModal();
-  isEditingNotAdd = false;
 }
 
 
