@@ -9,6 +9,6 @@ echo 正在拉取编译后的代码...
 
 git pull -f https://github.com/huanxiaomang/cz-official.git master:admin-pages
 
-npx http-server .
+npx http-server . -p 7000
 
 cd -
