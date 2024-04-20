@@ -7,7 +7,7 @@ pnpm build:docs
 
 echo 正在启动项目
 
-cd dist
+cd docs/.vitepress/dist
 
 npx http-server . -p 7001
 
