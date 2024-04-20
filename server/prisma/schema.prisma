@@ -22,6 +22,7 @@ model user {
     major       String
     grade       Int
     badge       String? // 徽标，是一个字符串数组,格式形如蓝桥杯国三,创智成员
+    score       Int @default(0)
 }
 
 model project {
