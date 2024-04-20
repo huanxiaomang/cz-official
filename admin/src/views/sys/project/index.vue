@@ -16,49 +16,55 @@
         <div v-show="Object.keys(projData).length === 0">
             <p>暂无项目</p>
         </div>
-        <Card v-show="Object.keys(projData).length > 0" v-for="p of showProjData" :key="p.id" :title="p.title"
-            class="mb-6">
-            <p>{{p.stack}}</p>
-            <p>{{p.content}}</p>
-            <span class="font-bold">成员</span>:
-            <CZAvatar v-for="u of p.members.split(',')" :key="u" :userId="u"></CZAvatar>
-            <div class="text-sm text-gray-600 pt-5">{{ p.updatedAt.replace('T', ' ').replace('Z', ' ') }}</div>
-            <div class="mr-auto w-fit flex gap-2 pt-3">
-                <Icon icon="uil:edit" size="22"
-                    class="ml-auto !block cursor-pointer text-blue-700/80 hover:text-blue-700/100 transition-all ease-in-out"
-                    @click="handleEdit(p.id)">
-                </Icon>
-                <Popconfirm title="确定删除此项目吗?‭(ノ_<。) ‬" ok-text="Yes" cancel-text="No" @confirm="handleRemove(p.id)">
-                    <Icon icon="material-symbols:delete" size="24"
-                        class="ml-auto !block cursor-pointer text-blue-700/80 hover:text-blue-700/100 transition-all ease-in-out">
+        <transition-group name="list" tag="ul">
+
+            <Card v-show="Object.keys(projData).length > 0" v-for="p of showProjData" :key="p.id" :title="p.title"
+                class="mb-6">
+                <p>{{p.stack}}</p>
+                <p>{{p.content}}</p>
+                <span class="font-bold">成员</span>:
+                <CZAvatar v-for="u of p.members.split(',')" :key="u" :userId="u"></CZAvatar>
+                <div class="text-sm text-gray-600 pt-5">{{ p.updatedAt.replace('T', ' ').replace('Z', ' ') }}</div>
+                <div class="mr-auto w-fit flex gap-2 pt-3">
+                    <Icon icon="uil:edit" size="22"
+                        class="ml-auto !block cursor-pointer text-blue-700/80 hover:text-blue-700/100 transition-all ease-in-out"
+                        @click="handleEdit(p.id)">
                     </Icon>
-                </Popconfirm>
+                    <Popconfirm title="确定删除此项目吗?‭(ノ_<。) ‬" ok-text="Yes" cancel-text="No" @confirm="handleRemove(p.id)">
+                        <Icon icon="material-symbols:delete" size="24"
+                            class="ml-auto !block cursor-pointer text-blue-700/80 hover:text-blue-700/100 transition-all ease-in-out">
+                        </Icon>
+                    </Popconfirm>
 
-            </div>
-        </Card>
-        <Modal v-model:open="open" title="编辑项目信息" :confirm-loading="confirmLoading" @ok="handleOk">
-            <Form :model="formState" layout="vertical" name="form_in_modal" autocomplete="off" class="p-6 mb-5"
-                ref="formRef">
-                <FormItem label="标题" name="title" :rules="[{ required: true, message: '请填写标题!' }]">
-                    <Input v-model:value="formState.title" />
-                </FormItem>
+                </div>
+            </Card>
+        </transition-group>
 
-                <FormItem label="技术栈" name="stack" :rules="[{ required: true, message: '请填写技术栈' }]">
-                    <Input v-model:value="formState.stack" />
-                </FormItem>
+                <Modal v-model:open="open" title="编辑项目信息" :confirm-loading="confirmLoading" @ok="handleOk">
+                    <Form :model="formState" layout="vertical" name="form_in_modal" autocomplete="off" class="p-6 mb-5"
+                        ref="formRef">
+                        <FormItem label="标题" name="title" :rules="[{ required: true, message: '请填写标题!' }]">
+                            <Input v-model:value="formState.title" />
+                        </FormItem>
 
-                <FormItem label="描述" name="content" :rules="[{ required: true, message: '请填写描述' }]">
-                    <Textarea v-model:value="formState.content" class="textarea" />
-                </FormItem>
+                        <FormItem label="技术栈" name="stack" :rules="[{ required: true, message: '请填写技术栈' }]">
+                            <Input v-model:value="formState.stack" />
+                        </FormItem>
 
-                <FormItem label="成员 (填写成员id, 以 ',' 分隔)" name="stack" :rules="[{ required: true, message: '请填写成员' }]">
-                    <Input v-model:value="formState.members" />
-                </FormItem>
-                <CZAvatar v-for="u of formState.members.split(',').filter((u) => u.trim() !== '')" :key="u" :userId="u">
-                </CZAvatar>
+                        <FormItem label="描述" name="content" :rules="[{ required: true, message: '请填写描述' }]">
+                            <Textarea v-model:value="formState.content" class="textarea" />
+                        </FormItem>
 
-            </Form>
-        </Modal>
+                        <FormItem label="成员 (填写成员id, 以 ',' 分隔)" name="stack"
+                            :rules="[{ required: true, message: '请填写成员' }]">
+                            <Input v-model:value="formState.members" />
+                        </FormItem>
+                        <CZAvatar v-for="u of formState.members.split(',').filter((u) => u.trim() !== '')" :key="u"
+                            :userId="u">
+                        </CZAvatar>
+
+                    </Form>
+                </Modal>
     </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -193,5 +199,22 @@ function handleAdd() {
 
 </script>
 <style lang="less" scoped>
+.list-enter-from,
+.list-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
+}
 
+.list-enter-active,
+.list-leave-active {
+    transition: all .5s ease-in-out;
+}
+
+.list-leave-active {
+    position: absolute;
+}
+
+.list-move {
+    transition: transform .5s ease-in-out;
+}
 </style>

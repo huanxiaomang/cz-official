@@ -1,46 +1,48 @@
 <template>
-    <PageWrapper title="项目管理">
+    <PageWrapper title="通知管理">
         <template #headerContent>
             <div>
                 <div class="mb-7">
-                    (•ิ_•ิ)👇 可以在这里发布、编辑、删除消息。
+                    (•ิ_•ิ)👇 可以在这里发布、编辑、删除通知。
                 </div>
                 <Button type="primary" @click="handleAdd" class="flex items-center">
                     <Icon icon="material-symbols:add" size="20" color="#fff" class="mx-[-.4rem]">
                     </Icon>
-                    添加消息
+                    添加通知
                 </Button>
 
             </div>
         </template>
         <div v-show="Object.keys(msgData).length === 0">
-            <p>暂无消息</p>
+            <p>暂无通知</p>
         </div>
-        <Card v-show="Object.keys(msgData).length > 0" v-for="p of showMsgData" :key="p.id" :title="p.title"
-            class="mb-6">
-            <p>{{ p.content }}</p>
-            <div class="text-sm text-gray-600 pt-5">{{ p.updatedAt.replace('T', ' ').replace('Z', ' ') }}</div>
-            <div class="mr-auto w-fit flex gap-2 pt-3">
-                <Icon icon="uil:edit" size="22"
-                    class="ml-auto !block cursor-pointer text-blue-700/80 hover:text-blue-700/100 transition-all ease-in-out"
-                    @click="handleEdit(p.id)">
-                </Icon>
-                <Popconfirm title="确定删除此消息吗?‭(ノ_<。) ‬" ok-text="Yes" cancel-text="No" @confirm="handleRemove(p.id)">
-                    <Icon icon="material-symbols:delete" size="24"
-                        class="ml-auto !block cursor-pointer text-blue-700/80 hover:text-blue-700/100 transition-all ease-in-out">
+        <transition-group name="list" tag="ul">
+            <Card v-show="Object.keys(msgData).length > 0" v-for="p of showMsgData" :key="p.id" :title="p.title"
+                class="mb-6">
+                <p>{{ p.content }}</p>
+                <div class="text-sm text-gray-600 pt-5">{{ p.updatedAt.replace('T', ' ').replace('Z', ' ') }}</div>
+                <div class="mr-auto w-fit flex gap-2 pt-3">
+                    <Icon icon="uil:edit" size="22"
+                        class="ml-auto !block cursor-pointer text-blue-700/80 hover:text-blue-700/100 transition-all ease-in-out"
+                        @click="handleEdit(p.id)">
                     </Icon>
-                </Popconfirm>
+                    <Popconfirm title="确定删除此通知吗?‭(ノ_<。) ‬" ok-text="Yes" cancel-text="No" @confirm="handleRemove(p.id)">
+                        <Icon icon="material-symbols:delete" size="24"
+                            class="ml-auto !block cursor-pointer text-blue-700/80 hover:text-blue-700/100 transition-all ease-in-out">
+                        </Icon>
+                    </Popconfirm>
 
-            </div>
-        </Card>
-        <Modal v-model:open="open" title="编辑项目信息" :confirm-loading="confirmLoading" @ok="handleOk">
+                </div>
+            </Card>
+        </transition-group>
+        <Modal v-model:open="open" title="编辑通知信息" :confirm-loading="confirmLoading" @ok="handleOk">
             <Form :model="formState" layout="vertical" name="form_in_modal" autocomplete="off" class="p-6 mb-5"
                 ref="formRef">
                 <FormItem label="标题" name="title" :rules="[{ required: true, message: '请填写标题!' }]">
                     <Input v-model:value="formState.title" />
                 </FormItem>
 
-                <FormItem label="描述" name="content" :rules="[{ required: true, message: '请填写内容' }]">
+                <FormItem label="内容" name="content" :rules="[{ required: true, message: '请填写内容' }]">
                     <Textarea v-model:value="formState.content" class="textarea" />
                 </FormItem>
 
@@ -113,7 +115,7 @@ const handleOk = async () => {
                 confirmLoading.value = false;
                 notification.success({
                     message: `已完成(●• ̀ω•́ )✧`,
-                    description: `修改成功: 消息${formState.title}`,
+                    description: `修改成功: 通知${formState.title}`,
                     duration: 3,
                 });
             }, 200); // 加钱提速
@@ -126,7 +128,7 @@ const handleOk = async () => {
                 confirmLoading.value = false;
                 notification.success({
                     message: `已完成(●• ̀ω•́ )✧`,
-                    description: `添加成功: 消息${formState.title}`,
+                    description: `添加成功: 通知${formState.title}`,
                     duration: 3,
                 });
             }, 200); // 加钱提速
@@ -170,4 +172,23 @@ function handleAdd() {
 
 
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.list-enter-from,
+.list-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.list-enter-active,
+.list-leave-active {
+    transition: all .5s ease-in-out;
+}
+
+.list-leave-active {
+    position: absolute;
+}
+
+.list-move {
+    transition: transform .5s ease-in-out;
+}
+</style>
