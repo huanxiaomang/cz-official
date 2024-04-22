@@ -1,4 +1,7 @@
 <script setup lang="ts" generic="T extends any, O extends any">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
 defineOptions({
   name: 'IndexPage',
 })
