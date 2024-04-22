@@ -4,6 +4,8 @@
     <div class="item">主页</div>
     <div class="item">项目</div>
     <div class="item">通知</div>
+    <a i-carbon-logo-github icon-btn rel="noreferrer" href="https://github.com/antfu/vitesse-lite" target="_blank"
+      title="GitHub" />
   </div>
 </template>
 

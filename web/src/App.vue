@@ -1,7 +1,10 @@
 <template>
-  <main font-sans text="center" w-full>
+  <main font-sans text="center" w-full relative>
     <Header></Header>
-    <RouterView />
-    <TheFooter />
+    <RouterView pt-20 />
+    <Footer />
   </main>
 </template>
+<style lang="scss">
+
+</style>
