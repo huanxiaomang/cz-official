@@ -1,6 +1,6 @@
 [build]
 publish = "web/dist"
-command = "pnpm run build"
+command = "pnpm run build:web"
 
 [build.environment]
 NODE_VERSION = "20"
