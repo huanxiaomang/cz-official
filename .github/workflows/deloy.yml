@@ -60,7 +60,7 @@ jobs:
               env:
                   SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
                   ARGS: '-avz --delete'
-                  SOURCE: 'dist/'
+                  SOURCE: './dist/'
                   REMOTE_HOST: ${{ env.SERVER_HOST }}
                   REMOTE_USER: ${{ env.USER_NAME }}
                   TARGET: /www/wwwroot/www.czstudio.tech # 服务器目标路径
