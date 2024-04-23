@@ -7,7 +7,7 @@
 <script setup lang='ts'>
 
 
-defineProps<userInfo:>();
+// defineProps<userInfo:>();
 </script>
 
 <style lang="scss" scoped>
