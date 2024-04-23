@@ -53,15 +53,22 @@ jobs:
             # 打包
             - name: Build
               run: pnpm build
-
+            - name: Check if source directory exists
+              run: |
+                if [ -d "dist/" ]; then
+                  echo "Source directory exists."
+                else
+                  echo "Source directory does not exist."
+                  exit 1
+                fi
             # 上传打包资源
             - name: Deploy
               uses: easingthemes/ssh-deploy@v2.0.7
               env:
                   SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
                   ARGS: '-avz --delete'
-                  SOURCE: './dist/'
+                  SOURCE: 'dist/'
                   REMOTE_HOST: ${{ env.SERVER_HOST }}
                   REMOTE_USER: ${{ env.USER_NAME }}
-                  TARGET: /www/wwwroot/www.czstudio.tech # 服务器目标路径
+                  TARGET: /www/wwwroot/www.czstudio.tech/ # 服务器目标路径
 
