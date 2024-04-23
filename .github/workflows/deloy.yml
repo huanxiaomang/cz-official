@@ -19,10 +19,16 @@ jobs:
         runs-on: ubuntu-latest # runs-on字段指定运行所需要的虚拟机环境。注意：这个是必填字段
         steps:
             - uses: actions/checkout@main
-
-            - uses: actions/setup-node@v1
+            - name: Setup PNPM
+              uses: pnpm/action-setup@v2.2.1
               with:
-                  node-version: v20.12.2
+                version: ^7.0
+
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                node-version: 16
+                cache: "pnpm"
 
             #缓存依赖
             - name: Cache nodemodules
