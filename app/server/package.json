@@ -1,9 +1,9 @@
 {
     "name": "cz-server",
     "version": "0.0.1",
+    "private": true,
     "description": "",
     "author": "",
-    "private": true,
     "license": "UNLICENSED",
     "prisma": {
         "seed": "ts-node prisma/seed.ts"
