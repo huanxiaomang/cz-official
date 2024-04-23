@@ -13,35 +13,5 @@ dist
 .cache
 .turbo
 
-tests/server/static
-tests/server/static/upload
-
-server/.local
-# local env files
-.env
-.env.local
-.env.*.local
-.eslintcache
-
-
-# Log files
-server/npm-debug.log*
-server/yarn-debug.log*
-server/yarn-error.log*
-server/pnpm-debug.log*
-
-# Editor directories and files
-.idea
-# .vscode
-server/*.suo
-server/*.ntvs*
-server/*.njsproj
-server/*.sln
-server/*.sw?
-
-server/package-lock.json
-server/pnpm-lock.yaml
-
-server/.history
-
-uploads
+app/server/.vscode/sftp.json
+app/server/.vscode/sftp.json

@@ -6,6 +6,8 @@
 
 <script setup lang='ts'>
 
+
+defineProps<userInfo:>();
 </script>
 
 <style lang="scss" scoped>

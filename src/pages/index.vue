@@ -1,6 +1,8 @@
 <script setup lang="ts" generic="T extends any, O extends any">
-import { ref } from 'vue';
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import MemberCard from '~/components/MemberCard.vue';
 
 defineOptions({
   name: 'IndexPage',
@@ -13,6 +15,15 @@ function go() {
   if (name.value)
     router.push(`/hi/${encodeURIComponent(name.value)}`)
 }
+const userList = ref([]);
+
+onMounted(async() => {
+  axios.get('http://1.92.82.236:3000/api/cz').then(({data}) => {
+    console.log(data);
+    userList.value = data;
+  })
+})
+
 </script>
 
 <template>
@@ -29,22 +40,15 @@ function go() {
 
     <div py-4 />
 
-    <TheInput
-      v-model="name"
-      placeholder="What's your name?"
-      autocomplete="false"
-      @keydown.enter="go"
-    />
+    <TheInput v-model="name" placeholder="What's your name?" autocomplete="false" @keydown.enter="go" />
 
     <div>
-      <button
-        class="m-3 text-sm btn"
-        :disabled="!name"
-        @click="go"
-      >
+      <button class="m-3 text-sm btn" :disabled="!name" @click="go">
         Go
       </button>
     </div>
-    <div h-500></div>
+    <MemberCard v-for="user of userList" :userInfo="user"></MemberCard>
+    <div h-500>
+    </div>
   </div>
 </template>
