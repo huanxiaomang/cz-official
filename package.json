@@ -22,7 +22,6 @@
         "preview": "vitepress preview docs",
         "build:web":"cd web/ && vite build"
     },
-    "packageManager": "pnpm@latest",
     "keywords": [],
     "license": "ISC",
     "dependencies": {
