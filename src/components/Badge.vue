@@ -1,5 +1,5 @@
 <template>
-  <span text-4 bg-blue-100 text-blue-800 p-1 rounded-2 >
+  <span text-3 text-gray-100 bg-blue-500 px-2  rounded-2 select-none>
     <slot></slot>
   </span>
 </template>

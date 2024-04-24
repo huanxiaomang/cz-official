@@ -1,6 +1,5 @@
 <template>
   <div p-10>
-    <div class="pointer-events-none fixed inset-0 select-none bg-top bg-repeat bg"></div>
     <div container m-auto id="memberlist">
       <div v-masonry fit-width="true" transition-duration="0.3s" item-selector=".card" origin-left="false" w-full m-auto
         container>

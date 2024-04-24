@@ -21,7 +21,5 @@ const userList = ref([]);
 </template>
 
 <style scoped>
-.bg{
-  background-image: url(grid-black.svg);
-}
+
 </style>
