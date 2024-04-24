@@ -7,7 +7,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {
-      "#/":["types/*"],
+      "#/*":["types/*"],
       "~/*": ["src/*"]
     },
     "resolveJsonModule": true,
@@ -20,7 +20,7 @@
     "allowJs": true,
     "strict": true,
     "strictNullChecks": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
@@ -31,13 +31,15 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
+    "src/**/**/*.vue",
     "types/**/*.d.ts",
     "types/**/*.ts",
     "build/**/*.ts",
     "build/**/*.d.ts",
     "mock/**/*.ts",
-    "vite.config.ts"
+    "vite.config.ts",
   ],
+
   "exclude": [
     "dist",
     "node_modules",

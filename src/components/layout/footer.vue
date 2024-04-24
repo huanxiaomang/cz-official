@@ -1,5 +1,5 @@
 <template>
-  <nav absolute bottom-2 left-0 items-center w-full border-t-1 border-b-bluegray h-50  text-gray-300 flex
+  <nav absolute bottom-0 left-0 items-center w-full border-t-1 border-b-bluegray h-50  text-gray-300 flex
     justify-center gap-8 select-none>
     <img src="./../../assets/icon/cz_ba-style.png" alt="logo" h-25>
     <div text-left>
@@ -10,6 +10,7 @@
       </div>
       <div>Released under the MIT License.</div>
       <div>Copyright © 2023-present 创智工作室</div>
+      <!--TODO: 换白字logo-->
         <img src="./../../assets/icon/beihua-remove.png" alt="北华大学" h-8 mt-2>
 
 
