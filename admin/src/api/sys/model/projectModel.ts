@@ -13,6 +13,7 @@ export interface ProjectParams {
  * @description: Project interface return value
  */
 export interface ProjectResultModel {
+  data: [];
   id: number;
   title: string;
   content: string;

@@ -30,7 +30,7 @@
                         class="ml-auto !block cursor-pointer text-blue-700/80 hover:text-blue-700/100 transition-all ease-in-out"
                         @click="handleEdit(p.id)">
                     </Icon>
-                    <Popconfirm title="确定删除此项目吗?‭(ノ_<。) ‬" ok-text="Yes" cancel-text="No" @confirm="handleRemove(p.id)">
+                    <Popconfirm title="确定删除此项目吗?(ノ_<。) " ok-text="Yes" cancel-text="No" @confirm="handleRemove(p.id)">
                         <Icon icon="material-symbols:delete" size="24"
                             class="ml-auto !block cursor-pointer text-blue-700/80 hover:text-blue-700/100 transition-all ease-in-out">
                         </Icon>
@@ -81,7 +81,7 @@ import { ref } from "vue";
 import Icon from "@/components/Icon/Icon.vue";
 import { useMessage } from "@/hooks/web/useMessage";
 import { sortByUpdate } from "@/utils/sortByUpdate";
-const { notification, createErrorModal } = useMessage();
+const { notification, /*createErrorModal*/ } = useMessage();    //createErrorModal未被使用，故注掉  --boli77
 
 let projData = ref([]);
 let showProjData = computed(() => sortByUpdate(projData.value));
@@ -93,7 +93,7 @@ onMounted(async() => {
     
     
 })
-const modalText = ref<string>('Content of the modal');
+//const modalText = ref<string>('Content of the modal');   //modalText未被使用，故注掉  --boli77
 const open = ref<boolean>(false);
 const confirmLoading = ref<boolean>(false);
 const editingId = ref<number>();
@@ -145,7 +145,7 @@ const handleOk = async () => {
                     duration: 3,
                 });
             }, 200); // 加钱提速
-            await updateProjApi(editingId.value, formState);
+            await updateProjApi(editingId.value as number, formState);
             projData.value = (await getProjApi()).data;
         } else {
             confirmLoading.value = true;
@@ -167,15 +167,18 @@ const handleOk = async () => {
 }
 
 function handleEdit(id: number) {
-    const info = projData.value.find((p) => p.id === id);
-    formState.content = info.content;
-    formState.title = info.title;
-    formState.stack = info.stack;
-    formState.members = info.members;
-    editingId.value = info.id;
-    isEditingNotAdd = true;
+    const info = projData.value.find((p) => p[id] === id);
+    if(info){
+        formState.content = info['content'];
+        formState.title = info['title'];
+        formState.stack = info['stack'];
+        formState.members = info['members'];
+        editingId.value = info['id'];
+        isEditingNotAdd = true;
 
-  showModal();
+        showModal();
+    }
+    
 }
 
 
@@ -185,7 +188,7 @@ async function handleRemove(id) {
   
     notification.success({
         message: `已删除 (,,•́ . •̀,,) `,
-        description: `${proj.title} 再也没有了`,
+        description: `${proj['title']} 再也没有了`,
         duration: 3,
     });
 

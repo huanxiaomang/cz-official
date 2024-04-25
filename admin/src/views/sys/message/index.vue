@@ -26,7 +26,7 @@
                         class="ml-auto !block cursor-pointer text-blue-700/80 hover:text-blue-700/100 transition-all ease-in-out"
                         @click="handleEdit(p.id)">
                     </Icon>
-                    <Popconfirm title="确定删除此通知吗?‭(ノ_<。) ‬" ok-text="Yes" cancel-text="No" @confirm="handleRemove(p.id)">
+                    <Popconfirm title="确定删除此通知吗?(ノ_<。)" ok-text="Yes" cancel-text="No" @confirm="handleRemove(p.id)">
                         <Icon icon="material-symbols:delete" size="24"
                             class="ml-auto !block cursor-pointer text-blue-700/80 hover:text-blue-700/100 transition-all ease-in-out">
                         </Icon>
@@ -60,7 +60,7 @@ import { ref } from "vue";
 import Icon from "@/components/Icon/Icon.vue";
 import { useMessage } from "@/hooks/web/useMessage";
 import { sortByUpdate } from "@/utils/sortByUpdate";
-const { notification, createErrorModal } = useMessage();
+const { notification, /*createErrorModal*/ } = useMessage();
 
 let msgData = ref([]);
 let showMsgData = computed(() => sortByUpdate(msgData.value));
@@ -141,23 +141,25 @@ const handleOk = async () => {
 }
 
 function handleEdit(id: number) {
-    const info = msgData.value.find((p) => p.id === id);
-    formState.content = info.content;
-    formState.title = info.title;
-    editingId.value = info.id;
-    isEditingNotAdd = true;
+    const info = msgData.value.find((p) => p[id] === id);
+    if(info){
+        formState.content = info["content"];
+        formState.title = info["title"];
+        editingId.value = info["id"];
+        isEditingNotAdd = true;
 
-    showModal();
+        showModal();
+    }
 }
 
 
 async function handleRemove(id) {
     const msg = (await removeMsgApi(id)).data;
     msgData.value = (await getMsgApi()).data;
-
+ 
     notification.success({
         message: `已删除 (,,•́ . •̀,,) `,
-        description: `${msg.title} 再也没有了`,
+        description: `${msg["title"]} 再也没有了`,
         duration: 3,
     });
 

@@ -5,6 +5,7 @@ export interface MessageParams {
 }
 
 export interface MessageResultModel {
+    data: [];
     id: number;
     title: string;
     content: string;
