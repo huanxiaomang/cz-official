@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "course/about/README.md",
+                "file": "course/my/我的网站收藏.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "course/about/README.md",
+                "file": "course/my/我的网站收藏.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "course/about/README.md",
+                "file": "course/my/我的网站收藏.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "course/about/README.md"
+                "file": "course/my/我的网站收藏.md"
               }
             }
           }
@@ -146,14 +146,15 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "f79cf8b118dcdb8e",
+  "active": "89d2391a39065e2f",
   "lastOpenFiles": [
+    "course/my/我的项目.md",
+    "course/about/README.md",
     "course/main/前端速通指南.md",
     "course/3-JS-Array-Object.md",
     "course/2-HTML+CSS.md",
     "course/1-introduction.md",
     "course/my/4月.md",
-    "course/my/我的项目.md",
     "course/my/我的网站收藏.md",
     "guide/前端速通指南 copy.md",
     "guide/前端速通指南.md",
