@@ -1,15 +1,15 @@
 <template>
-  <div shadow-sm rounded-3xl flex w-110 flex-col items-center m-5 bg-white class="card">
-    <img :src="bg" alt="" srcset="" w-full rounded-t-3xl h-30 object-cover>
+  <div shadow-md rounded-2xl flex w-110 flex-col items-center m-5 pb-3 bg-white class="card">
+    <img :src="bg" alt="用户背景图"  w-full rounded-t-2xl h-30 object-cover>
     <img :src="avatar" alt="用户头像" w-30 h-30 object-cover rounded-full class="mt-[-3.75rem]">
 
-    <div class="color-[#1f2329]" mt-2 text-5.5>{{ userInfo.username }}</div>
+    <div  mt-2 text-5.5 :class="userInfo.role === 'ADMIN' ? 'text-yellow-500':'text-blue-500'">{{ userInfo.username }}</div>
     <div mt-1 text-3.5>{{ userInfo.major }} - 大{{ gradeToCN(userInfo.grade) }}</div>
     <div gap-2 mt-2 flex v-if="userInfo.badge">
       <Badge v-for="b of userInfo.badge.split(',') " :key="b">{{ b }}</Badge>
     </div>
-    <div px-10 mt-2 text-3.5 class="color-[#646a73] w-[70%]">{{ userInfo.description }}</div>
-    <div mt-10 mb-3 flex items-center>
+    <div px-10 mt-2 text-3.5 text-center class="color-[#646a73] w-[70%]">{{ userInfo.description }}</div>
+    <div mt-10 flex items-center v-if="userInfo.github">
       <a i-carbon-logo-github icon-btn hover:text-blue-500 rel="noreferrer" :href="userInfo.github" target="_blank"
         title="GitHub" text-black text-5 ml-auto mr-4 />
       <a i-eva:email-fill icon-btn hover:text-blue-500 rel="noreferrer" @click="copyToClipboard(userInfo.email)"
