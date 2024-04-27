@@ -16,6 +16,7 @@ import { joinTimestamp, formatRequestDate } from "./helper";
 import { AxiosRetry } from "./axiosRetry";
 import axios from "axios";
 import { useGlobSetting } from "./../../hooks/setting/useGlobSetting";
+import { useUserStore } from "~/store/user";
 
 
 
@@ -86,10 +87,10 @@ const transform: AxiosTransform = {
     let timeoutMsg = "";
     switch (code) {
       case ResultEnum.TIMEOUT:
-        // timeoutMsg = t("sys.api.timeoutMessage");
-        // const userStore = useUserStoreWithOut();
-        // // 被动登出，带redirect地址
-        // userStore.logout(false);
+        timeoutMsg = `Timeout`;
+        const userStore = useUserStore();
+        // 被动登出，带redirect地址
+        userStore.logout(false);
         break;
       default:
         if (messages) {
@@ -178,16 +179,15 @@ const transform: AxiosTransform = {
    * @description: 请求拦截器处理
    */
   requestInterceptors: (config, options) => {
-    // 请求之前处理config
-    // TODO:
-    // const token = getToken();
-    // if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
-    //   // jwt token
-    //   (config as Recordable).headers.Authorization =
-    //     options.authenticationScheme
-    //       ? `${options.authenticationScheme} ${token}`
-    //       : `Bearer ${token}`;
-    // }
+
+    const token = useUserStore().getToken;
+    if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
+      // jwt token
+      (config as Recordable).headers.Authorization =
+        options.authenticationScheme
+          ? `${options.authenticationScheme} ${token}`
+          : `Bearer ${token}`;
+    }
     return config;
   },
 

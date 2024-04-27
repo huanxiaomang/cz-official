@@ -17,17 +17,20 @@ import axios from 'axios';
 import { getAllUser } from '~/api/user'
 import { UserInfo } from "#/data";
 import { loginApi } from '~/api/user';
+import { useUserStore } from '~/store/user';
 
 const userList = ref<UserInfo[]>([]);
 
 onMounted(async () => {
   console.log((await getAllUser()));
-  userList.value = (await getAllUser());
-  const u = await loginApi({
-    email: 'atri2022@163.com',
-    password: '123456'
-  })
-  console.log(u);
+  // userList.value = (await getAllUser());
+  // const u = await loginApi({
+  //   email: 'atri2022@163.com',
+  //   password: '123456'
+  // })
+  const i = useUserStore();
+
+  console.log(i);
 
 })
 </script>

@@ -5,6 +5,7 @@ import { defineStore } from "pinia";
 import { h } from "vue";
 import { GetUserInfoModel, LoginParams, doLogout, getUserInfo, loginApi } from "~/api/user";
 import { useMessage } from "~/hooks/web/useMessage";
+import { router } from "~/utils/router";
 
 
 interface UserState {
@@ -131,6 +132,10 @@ export const useUserStore = defineStore({
       this.setToken(undefined);
       this.setSessionTimeout(false);
       this.setUserInfo(null);
+      if (goLogin) {
+        // 直接回登陆页
+        router.replace('/login');
+      }
     },
 
     /**
