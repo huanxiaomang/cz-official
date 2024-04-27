@@ -19,6 +19,7 @@ interface UserState {
 
 export const useUserStore = defineStore({
   id: "app-user",
+  persist: true,
   state: (): UserState => ({
     // user info
     userInfo: null,
@@ -54,6 +55,8 @@ export const useUserStore = defineStore({
     },
     setUserInfo(info: UserInfo | null) {
       this.userInfo = info;
+      console.log(info,this.userInfo);
+
       this.lastUpdateTime = new Date().getTime();
     },
     setSessionTimeout(flag: boolean) {

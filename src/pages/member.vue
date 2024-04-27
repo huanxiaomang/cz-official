@@ -24,10 +24,11 @@ const userList = ref<UserInfo[]>([]);
 onMounted(async () => {
   console.log((await getAllUser()));
   // userList.value = (await getAllUser());
-  // const u = await loginApi({
+  // const u = await useUserStore().login({
   //   email: 'atri2022@163.com',
   //   password: '123456'
   // })
+  // console.log(u);
   const i = useUserStore();
 
   console.log(i);
