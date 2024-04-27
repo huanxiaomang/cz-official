@@ -14,14 +14,20 @@
 <script setup lang='ts'>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
+import { getAllUser } from '~/api/user'
+import { UserInfo } from "#/data";
+import { loginApi } from '~/api/user';
 
-const userList = ref([]);
+const userList = ref<UserInfo[]>([]);
 
 onMounted(async () => {
-  axios.get('http://1.92.82.236:3000/api/cz').then(({ data }) => {
-    userList.value = data.result;
-  });
-
+  console.log((await getAllUser()));
+  userList.value = (await getAllUser());
+  const u = await loginApi({
+    email: 'atri2022@163.com',
+    password: '123456'
+  })
+  console.log(u);
 
 })
 </script>
