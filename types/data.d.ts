@@ -14,6 +14,25 @@ export interface UserInfo {
   createdAt: string;
 }
 
+export interface MsgInfo {
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ProjInfo {
+  id: number;
+  title: string;
+  content: string;
+  stack: string;
+  members: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+
 export enum RoleEnum {
   ADMIN = 'ADMIN',
   CZ_MEMBER = 'CZ_MEMBER',
