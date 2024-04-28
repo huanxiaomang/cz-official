@@ -8,10 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Badge: typeof import('./src/components/Badge.vue')['default']
-    CZMemberCards: typeof import('./src/components/view/CZMemberCards.vue')['default']
     Footer: typeof import('./src/components/layout/footer.vue')['default']
     Header: typeof import('./src/components/layout/header.vue')['default']
+    IndexPage: typeof import('./src/components/IndexPage.vue')['default']
     MemberCard: typeof import('./src/components/MemberCard.vue')['default']
+    RandomWord: typeof import('./src/components/RandomWord.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheCounter: typeof import('./src/components/TheCounter.vue')['default']
