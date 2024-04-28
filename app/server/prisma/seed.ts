@@ -15,7 +15,7 @@ async function run() {
       github: 'https://github.com/huanxiaomang',
           background: 'https://s21.ax1x.com/2024/04/18/pFzIWnJ.png',
           description: Random.cparagraph(30, 50),
-          major: '软件工程',
+          major: '前端开发',
           grade: 2,
           badge: '蓝桥杯国三,创智开发者',
 
@@ -31,7 +31,7 @@ async function run() {
       github: 'https://github.com/huanxiaomang',
       background: 'https://i1.hdslb.com/bfs/face/6bc5d59334e3430ebc019d4fecd463e4df028e8c.jpg@240w_240h_1c_1s_!web-avatar-nav.avif',
           description: Random.cparagraph(30, 50),
-          major: '软件工程',
+          major: '后端开发',
           grade: 2,
           badge: '蓝桥杯省二,创智开发者',
     },

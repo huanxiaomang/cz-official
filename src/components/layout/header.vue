@@ -23,11 +23,6 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
-watch(route, (newValue, oldValue) => {
-  console.log(newValue.path);
-},
-  { immediate: true }
-);
 
 </script>
 

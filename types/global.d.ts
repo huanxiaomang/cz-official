@@ -10,3 +10,4 @@ declare type Writable<T> = {
 
 // keyof any == string | number | symbol
 declare type Recordable<T = any> = Record<keyof any, T>;
+declare type Nullable<T> = T | null;

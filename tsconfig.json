@@ -23,7 +23,9 @@
     "noUnusedLocals": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
   },
     "include": [
     "tests/**/*.ts",
