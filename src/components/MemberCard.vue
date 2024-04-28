@@ -1,9 +1,11 @@
 <template>
-  <div shadow-md rounded-2xl flex w-110 flex-col items-center m-5 pb-3 bg-white class="card">
-    <img :src="bg" alt="用户背景图"  w-full rounded-t-2xl h-30 object-cover>
+  <div shadow-md rounded-2xl flex w-110 flex-col items-center m-5 pb-3 bg-white hover:scale-105 transition-all
+    animate-ease-in-out class="card">
+    <img :src="bg" alt="用户背景图" w-full rounded-t-2xl h-30 object-cover>
     <img :src="avatar" alt="用户头像" w-30 h-30 object-cover rounded-full class="mt-[-3.75rem]">
 
-    <div  mt-2 text-5.5 :class="userInfo.role === 'ADMIN' ? 'text-yellow-500':'text-blue-500'">{{ userInfo.username }}</div>
+    <div mt-2 text-5.5 :class="userInfo.role === 'ADMIN' ? 'text-yellow-500':'text-blue-500'">{{ userInfo.username }}
+    </div>
     <div mt-1 text-3.5>{{ userInfo.major }} - 大{{ gradeToCN(userInfo.grade) }}</div>
     <div gap-2 mt-2 flex v-if="userInfo.badge">
       <Badge v-for="b of userInfo.badge.split(',') " :key="b">{{ b }}</Badge>
@@ -29,7 +31,7 @@ import { copyToClipboard } from '~/utils/copyToClipboard';
 const avatar = ref(DefaultAvatar);
 const bg = ref(DefaultBg);
 
-const gradeToCN = (n: string) => ({
+const gradeToCN = (n: number) => ({
   1: '一',
   2: '二',
   3: '三',

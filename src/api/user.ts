@@ -89,7 +89,7 @@ export function getAllUser() {
   );
 }
 
-export function getUserInfoById(userId: number) {
+export function getUserInfoById(userId: string) {
 
 
   return defHttp.get<GetUserInfoModel>(
