@@ -1,5 +1,5 @@
 <template>
-  <nav absolute bottom-0 left-0 items-center w-full border-t-1 border-b-bluegray h-50  text-gray-300 flex
+  <nav items-center w-full border-t-1 border-b-bluegray h-50  text-gray-300 flex
     justify-center gap-8 select-none>
     <img src="./../../assets/icon/cz_ba-style.png" alt="logo" h-25>
     <div text-left>
