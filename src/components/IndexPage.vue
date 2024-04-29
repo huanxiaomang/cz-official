@@ -8,9 +8,9 @@
             <div class="title-container">
                 <RandomWord :TextContent = "CN_title"></RandomWord>
                 <RandomWord class="title-container-EN"
-                            :TextContent = "EN_title" 
-                            :randomWordCount="3" 
-                            :IsInterval="false" 
+                            :TextContent = "EN_title"
+                            :randomWordCount="3"
+                            :IsInterval="false"
                             :relWordTime="50"
                             randomWordColor="#666"
                 ></RandomWord>
@@ -37,12 +37,12 @@ let EN_title = "Wisdom converges here, and innovation bursts out here";
         width: 100%; height: 100vh;
         .video{
             position: absolute;
-            left: 50%;					
+            left: 50%;
             top: 50%;
-            transform: translate(-50%, -50%);		
+            transform: translate(-50%, -50%);
             width: 100%;
             height: 100vh;
-            object-fit: cover;			
+            object-fit: cover;
             min-height: 800px;
             z-index: 1;
         }
@@ -64,7 +64,7 @@ let EN_title = "Wisdom converges here, and innovation bursts out here";
             }
         }
     }
-    
+
 }
 
 </style>

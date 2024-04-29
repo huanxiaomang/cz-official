@@ -14,8 +14,6 @@ defineOptions({
 })
 
 
-const userList = ref([]);
-
 </script>
 
 <style scoped>

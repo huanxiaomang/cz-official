@@ -1,15 +1,15 @@
 <template>
     <span class="text">{{ text }}
         <span class="point">{{ point }}
-            <span :class="randomWordClass" 
-                    :style="{color: mainValue.randomWordColor}" 
+            <span :class="randomWordClass"
+                    :style="{color: mainValue.randomWordColor}"
                     v-if="mainValue.randomWordCount === 1">
                     {{ randomWord }}
             </span>
-            <span :class="randomWordClass" 
-                    :style="{color: mainValue.randomWordColor}" 
-                    v-else 
-                    v-for="i in randomWordCount" 
+            <span :class="randomWordClass"
+                    :style="{color: mainValue.randomWordColor}"
+                    v-else
+                    v-for="i in randomWordCount"
                     :key="i">
                     {{ randomWord === "end" ? "": randomList[Math.floor(Math.random() * randomList.length)] }}
             </span>
@@ -20,18 +20,18 @@
 <script setup lang='ts'>
 import { ref , withDefaults } from 'vue';
 let mainValue = withDefaults(defineProps<{
-    randomWordTime?: number , 
-    relWordTime?: number , 
-    TextContent: string , 
+    randomWordTime?: number ,
+    relWordTime?: number ,
+    TextContent: string ,
     IsInterval?: boolean,
-    randomWordCount?: number , 
+    randomWordCount?: number ,
     randomWordColor?: string,
 }>(),{
     randomWordTime: 50,
     relWordTime: 150,
     IsInterval: true,
     randomWordCount: 1,
-    randomWordColor: "orange"
+  randomWordColor: "orange"
 })
 /////只要不动下面的屎山，那它就是好代码  ----hakurei77
 let randomList = "!@#$%^&*()_+-=[]{}|;':\",.<>/?~`";//随机字列表    (不用动这一段代码)
@@ -39,13 +39,13 @@ let randomList = "!@#$%^&*()_+-=[]{}|;':\",.<>/?~`";//随机字列表    (不用
 let text = ref("");
 let point = ref(".");
 let randomWord = ref();
-let randomWordClass = ref("randomWord")      
+let randomWordClass = ref("randomWord")
 /**
  * @param random_word_time 随机字每秒闪烁次数
  * @param rel_word_time 真实字每秒显示次数
  * @param underline_presistent_time 随机字闪烁持续时间
  * @param random_persistent_time 真实字闪烁持续时间
- */            
+ */
 let randomDisplay = ( random_word_time:number , rel_word_time:number , underline_presistent_time = 4500 , random_persistent_time = 1000) => {
     let index = 0;
     let wordTimer = setInterval(() => { //随机抽字函数
@@ -55,7 +55,7 @@ let randomDisplay = ( random_word_time:number , rel_word_time:number , underline
         else{
             randomWord.value = "";
         }
-    }, random_word_time)   
+    }, random_word_time)
     let textTimer = setInterval(() => {
         if (index < mainValue.TextContent.length) {
             let letter = mainValue.TextContent[index];
@@ -72,7 +72,7 @@ let randomDisplay = ( random_word_time:number , rel_word_time:number , underline
                 setInterval(() => {
                     randomWordClass.value = "randomWord";
                     let wordTimer = setInterval(() => {
-                        randomWord.value = randomList[Math.floor(Math.random() * randomList.length)];                   
+                        randomWord.value = randomList[Math.floor(Math.random() * randomList.length)];
                     },50)
                     setTimeout(() => {
                         clearInterval(wordTimer);
@@ -114,5 +114,5 @@ randomDisplay(mainValue.randomWordTime, mainValue.relWordTime);
     100% {
         opacity: 0;
     }
-}    
+}
 </style>
