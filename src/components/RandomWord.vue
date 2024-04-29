@@ -31,7 +31,7 @@ let mainValue = withDefaults(defineProps<{
     relWordTime: 150,
     IsInterval: true,
     randomWordCount: 1,
-  randomWordColor: "orange"
+  randomWordColor: "#FF6C05"
 })
 /////只要不动下面的屎山，那它就是好代码  ----hakurei77
 let randomList = "!@#$%^&*()_+-=[]{}|;':\",.<>/?~`";//随机字列表    (不用动这一段代码)

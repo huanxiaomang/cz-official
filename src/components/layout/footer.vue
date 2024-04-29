@@ -1,7 +1,7 @@
 <template>
   <nav items-center w-full border-t-1 border-b-bluegray h-50 text-gray-300 flex justify-center gap-8 select-none
     :class="route.path === '/' ? '' :' absolute bottom-0 left-0'">
-    <img src="./../../assets/icon/cz_ba-style.png" alt="logo" h-25>
+    <img src="./../../assets/icon/cz_ba-style_white.png" alt="logo" h-25>
     <div text-left>
       <div class="cn" pb-2>
         <span cursor-pointer hover:underline>隐私政策</span> |
