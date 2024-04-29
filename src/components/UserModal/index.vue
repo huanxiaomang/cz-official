@@ -9,7 +9,7 @@
             <img :src="showBg" alt="用户背景图" class="h-[10rem] w-[100%] sm:h-[15rem] rounded-t-lg object-cover ">
             <img :src="showAvatar" alt="用户头像"
                 class="w-[5rem] h-[5rem] sm:w-[8rem] sm:h-[8rem] rounded-full flex items-center justify-center object-cover mt-[-2.5rem] sm:mt-[-4rem] border-2 border-solid border-gray-300 brightness-105">
-            <div class="text-3xl text-center mt-[20px]" :class="getUsernameClassByRole(state.showUserInfo.role)">
+            <div class="text-2xl text-center mt-[20px]" :class="getUsernameClassByRole(state.showUserInfo.role)">
                 {{ state.showUserInfo.username }}
             </div>
             <div class="p-5 text-[14px] text-center mt-[10px] max-w-[40rem] line-height-snug">
