@@ -119,7 +119,7 @@ const Theme = defineConfig({
         footer: {
             message: 'Released under the MIT License.',
             copyright:
-                'Copyright © 2023-present <a href="https://github.com/Depazer/depazer">创智工作室</a>'
+                'Copyright © 2023-present <a href="http://1.92.82.236:7001/">创智工作室</a>'
         },
         editLink: {
             pattern: 'https://github.com/huanxiaomang',

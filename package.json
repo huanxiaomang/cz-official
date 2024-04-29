@@ -24,8 +24,8 @@
     "preview": "vitepress preview docs",
     "test": "vitest",
     "up": "taze major -I",
-    "dev:docs": "node scripts/loadLocalImages.js && vitepress dev docs",
-    "build:docs": "node scripts/loadLocalImages.js && vitepress build docs"
+    "docs:dev": "node scripts/loadLocalImages.cjs && vitepress dev docs",
+    "docs:build": "node scripts/loadLocalImages.cjs && vitepress build docs"
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",
@@ -34,6 +34,7 @@
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
+    "vitepress": "^1.1.4",
     "vue": "^3.4.21",
     "vue-masonry": "^0.16.0",
     "vue-router": "^4.3.0"

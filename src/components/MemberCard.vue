@@ -1,5 +1,5 @@
 <template>
-  <div shadow-md rounded-md flex w-110 flex-col items-center m-5 pb-3 bg-white hover:scale-105 transition-all
+  <div shadow-md rounded-md flex sm:w-110 flex-col items-center m-5 pb-3 bg-white hover:scale-105 transition-all
     animate-ease-in-out class="card">
     <img :src="bg" alt="用户背景图" w-full rounded-t-md h-30 object-cover>
     <img :src="avatar" alt="用户头像" w-30 h-30 object-cover rounded-full class="mt-[-3.75rem]">

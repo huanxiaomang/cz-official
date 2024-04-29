@@ -29,7 +29,7 @@ features:
   - icon: 🌐
     details: 掌握优秀的开发思想、编程习惯，理解模块化、DRY原则与KISS原则等。
   - icon: 🌍
-    details: 冲大厂！╰（￣▽￣）╭ 
+    details: 冲大厂！╰（￣▽￣）╭
 ---
 
 
@@ -41,23 +41,23 @@ window.created = true;
 
 
 function createImage() {
-    const img = document.createElement('img');
-    img.src = '/dls.jpg';
-// const el = document.querySelector('.content-body');
-// const { width, right } = el ? el.getBoundingClientRect() : { width: 0, right: 50 };
-// const pos = right - width;
+//     const img = document.createElement('img');
+//     img.src = '/dls.jpg';
+// // const el = document.querySelector('.content-body');
+// // const { width, right } = el ? el.getBoundingClientRect() : { width: 0, right: 50 };
+// // const pos = right - width;
 
-    
-    Object.assign(img.style, {
-        position: 'fixed',
-        bottom: '0px',
-        right: '20px',
-        width: '100px',  
-        height: 'auto',   
-        zIndex: '10000',
-        transform: 'rotateY(180deg)'
-    });
-    document.body.appendChild(img);
+
+//     Object.assign(img.style, {
+//         position: 'fixed',
+//         bottom: '0px',
+//         right: '20px',
+//         width: '100px',
+//         height: 'auto',
+//         zIndex: '10000',
+//         transform: 'rotateY(180deg)'
+//     });
+//     document.body.appendChild(img);
 }
 
 

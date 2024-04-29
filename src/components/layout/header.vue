@@ -25,7 +25,7 @@
           target="_blank" title="GitHub" text-black text-5 />
 
       </div>
-      <div m-auto font-bold text-blue-500>创智工作室</div>
+      <div m-auto font-bold class="title">创智工作室</div>
       <a i-eva:menu-fill rel="noreferrer" target="_blank" @click="toggleMenu" title="GitHub" text-black text-5 ml-auto
         mr-8 />
     </div>
@@ -34,14 +34,14 @@
     </Transition>
     <Transition name="slide2">
       <div v-show="isMenuOpen" class=" top-13 fixed z-100 w-full flex flex-col bg-white">
-        <router-link to="/" class="phone-link" :class="{ 'active': route.path === '/' }" cursor-pointer h-12 flex items-center pl-8 @click="closeMenu"
-          border-b>主页</router-link>
+        <router-link to="/" class="phone-link" :class="{ 'active': route.path === '/' }" cursor-pointer h-12 flex
+          items-center pl-8 @click="closeMenu" border-b>主页</router-link>
         <router-link to="/project" class="phone-link" :class="{ 'active': route.path === '/project' }" cursor-pointer
-          h-12 flex items-center pl-8 @click="closeMenu"  border-b>项目</router-link>
-        <router-link to="/notify" class="phone-link" :class="{ 'active': route.path === '/notify' }" cursor-pointer h-12 flex items-center pl-8 @click="closeMenu"
-          border-b>通知</router-link>
-        <router-link to="/member" class="phone-link" :class="{ 'active': route.path === '/member' }" cursor-pointer
-          h-12 flex items-center pl-8 @click="closeMenu" >成员</router-link>
+          h-12 flex items-center pl-8 @click="closeMenu" border-b>项目</router-link>
+        <router-link to="/notify" class="phone-link" :class="{ 'active': route.path === '/notify' }" cursor-pointer h-12
+          flex items-center pl-8 @click="closeMenu" border-b>通知</router-link>
+        <router-link to="/member" class="phone-link" :class="{ 'active': route.path === '/member' }" cursor-pointer h-12
+          flex items-center pl-8 @click="closeMenu">成员</router-link>
       </div>
     </Transition>
   </div>
@@ -123,10 +123,16 @@ div.header {
   }
 }
 
-.phone-link.active{
-      color: #3370ff;
+.title {
+  color: transparent;
+  background-clip: text !important;
+  background: -webkit-linear-gradient(to right,#6991c7 0%,#a3bded 100%);
+  background: linear-gradient(to right, #6991c7 0%,#a3bded 100%);
 }
 
+.phone-link.active {
+  color: #3370ff;
+}
 .slide-enter-active,
 .slide-leave-active {
   transition: transform 0.3s ease;
@@ -172,5 +178,4 @@ div.header {
 .fade-enter-to,
 .fade-leave-from {
   opacity: 0.5;
-}
-</style>
+}</style>
