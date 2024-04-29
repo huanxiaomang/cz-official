@@ -5,7 +5,6 @@
         container>
         <MemberCard v-masonry-tile v-for="user of [...userList, ...userList, ...userList, ...userList]" :userInfo="user"
           class="card"></MemberCard>
-
       </div>
     </div>
   </div>
@@ -22,6 +21,8 @@ import { useUserStore } from '~/store/user';
 const userList = ref<UserInfo[]>([]);
 
 onMounted(async () => {
+  const res = await getAllUser();
+  userList.value = res;
   // const u = await useUserStore().login({
   //   email: 'atri2022@163.com',
   //   password: '123456'

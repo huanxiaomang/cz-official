@@ -1,19 +1,16 @@
 <template>
-  <nav items-center w-full border-t-1 border-b-bluegray h-50 text-gray-300 flex justify-center gap-8 select-none
-    :class="route.path === '/' ? '' :' absolute bottom-0 left-0'">
-    <img src="./../../assets/icon/cz_ba-style_white.png" alt="logo" h-25>
-    <div text-left>
+  <nav items-center w-full border-t-1 border-b-bluegray h-55 sm:h-50 text-gray-300 flex flex-col sm:flex-row
+    justify-center gap-1 sm:gap-8 select-none absolute :class="route.path === '/' ? '' :'  bottom-0 left-0'">
+    <img src="./../../assets/icon/cz_ba-style_white.png" alt="logo" h-20 sm:h-25>
+    <div text-center sm:text-left>
       <div class="cn" pb-2>
         <span cursor-pointer hover:underline>隐私政策</span> |
         <span cursor-pointer hover:underline>联系我们</span> |
         <span cursor-pointer hover:underline>加入我们</span>
       </div>
-      <div>Released under the MIT License.</div>
       <div>Copyright © 2023-present 创智工作室</div>
-      <!--TODO: 换白字logo-->
-      <img src="./../../assets/icon/beihua-remove.png" alt="北华大学" h-8 mt-2>
-
-
+      <div>Released under the MIT License.</div>
+      <img src="./../../assets/icon/beihua-remove.png" alt="北华大学" h-4 sm:h-8 mt-2 invisible sm:visible>
     </div>
 
   </nav>

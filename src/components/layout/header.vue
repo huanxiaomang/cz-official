@@ -32,10 +32,8 @@ window.addEventListener('scroll', () => {
   const currentScrollPosition = window.pageYOffset;
 
   if (currentScrollPosition > lastScrollPosition && !isHeaderHidden.value) {
-    // Scroll down, hide header
     isHeaderHidden.value = true;
   } else if (currentScrollPosition < lastScrollPosition && isHeaderHidden.value) {
-    // Scroll up, show header
     isHeaderHidden.value = false;
   }
 

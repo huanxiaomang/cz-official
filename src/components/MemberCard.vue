@@ -10,7 +10,9 @@
     <div gap-2 mt-2 flex v-if="userInfo.badge">
       <Badge v-for="b of userInfo.badge.split(',') " :key="b">{{ b }}</Badge>
     </div>
-    <div px-10 mt-2 text-3.5 text-center class="color-[#646a73] w-[70%]">{{ userInfo.description }}</div>
+    <div px-10 mt-2 mb-1 text-3.5 text-center whitespace-pre-wrap class="color-[#646a73] w-[70%]">
+      {{ userInfo.description }}
+    </div>
     <div mt-10 flex items-center v-if="userInfo.github">
       <a i-carbon-logo-github icon-btn hover:text-blue-500 rel="noreferrer" :href="userInfo.github" target="_blank"
         title="GitHub" text-black text-5 ml-auto mr-4 />
