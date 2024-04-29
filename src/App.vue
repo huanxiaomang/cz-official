@@ -1,7 +1,7 @@
 <template>
   <main font-sans text="center" w-full class=" min-h-[100vh]" relative>
     <Header></Header>
-    <RouterView pt-20 pb-80 v-slot="{ Component }">
+    <RouterView sm:pt-20 pb-80 v-slot="{ Component }">
       <KeepAlive>
         <Transition name="fade" mode="out-in">
           <component :is="Component" />
