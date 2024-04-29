@@ -31,7 +31,6 @@ onMounted(async () => {
   projList.value = projs.toSorted((a: ProjInfo, b: ProjInfo) => {
     return splitDate(b.createdAt).timestamp - splitDate(a.createdAt).timestamp
   });
-    console.log(projList.value);
 
 
 

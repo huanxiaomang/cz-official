@@ -21,11 +21,13 @@
   <div v-if="isMobile" mb-20>
     <div class="header w-full h-13 flex top-0 bg-white" flex="items-center row" fixed z-100 border-b>
       <div mr-auto ml-8 h-full items-center flex gap-2>
-        <a i-carbon-logo-github icon-btn rel="noreferrer" href="https://github.com/huanxiaomang/cz-official"
+        <a i-carbon-logo-github  rel="noreferrer" href="https://github.com/huanxiaomang/cz-official"
           target="_blank" title="GitHub" text-black text-5 />
 
       </div>
-      <div m-auto font-bold class="title">创智工作室</div>
+      <div m-auto font-bold class="title">
+        <router-link to="/">创智工作室</router-link>
+      </div>
       <a i-eva:menu-fill rel="noreferrer" target="_blank" @click="toggleMenu" title="GitHub" text-black text-5 ml-auto
         mr-8 />
     </div>
