@@ -3,7 +3,7 @@
     <div container m-auto id="memberlist">
       <div v-masonry fit-width="true" transition-duration="0s" origin-left="false" w-full m-auto
         container>
-        <MemberCard v-masonry-tile v-for="user of [...userList, ...userList, ...userList, ...userList]" :userInfo="user"
+        <MemberCard v-masonry-tile v-for="user of userList" :userInfo="user"
           class="card"></MemberCard>
       </div>
     </div>
