@@ -2,7 +2,7 @@
   <span class="text" whitespace-pre-line text-left sm:text-center select-none>
     {{ text }}
 
-    <span class="point">{{ point }}
+    <span class="point" w-10 inline-block>{{ point }}
       <span :class="randomWordClass" :style="{color: mainValue.randomWordColor}" v-if="mainValue.randomWordCount === 1">
         {{ randomWord }}
       </span>
