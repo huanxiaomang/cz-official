@@ -1,7 +1,7 @@
 <template>
   <div class="video-container" h-100vh w-full relative>
     <video autoplay loop muted class="video" h-full w-full object-cover z-1
-      poster="../../assets/images/bg-first-frame.jpg">
+      poster="../../assets/video/bg-first-frame.jpg">
       <source src="../../assets/video/bg.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -13,7 +13,7 @@
         </RandomWord>
         <RandomWord class="title-en" :TextContent="deviceType === 'mobile' ? EN_titleWithBR : EN_title"
           :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" font-300 sm:text-xl
-          tracking-wide >
+          tracking-wide>
         </RandomWord>
       </div>
 

@@ -11,7 +11,6 @@ declare module 'vue' {
     CZAvatar: typeof import('./src/components/CZAvatar.vue')['default']
     Footer: typeof import('./src/components/layout/footer.vue')['default']
     Header: typeof import('./src/components/layout/header.vue')['default']
-    IndexPage: typeof import('./src/components/IndexPage.vue')['default']
     IndexVideo: typeof import('./src/components/view/IndexVideo.vue')['default']
     MemberCard: typeof import('./src/components/MemberCard.vue')['default']
     RandomWord: typeof import('./src/components/RandomWord.vue')['default']
