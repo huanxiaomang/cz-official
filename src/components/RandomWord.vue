@@ -58,7 +58,10 @@ let randomDisplay = ( random_word_time:number , rel_word_time:number , underline
     }, random_word_time)
     let textTimer = setInterval(() => {
         if (index < mainValue.TextContent.length) {
-            let letter = mainValue.TextContent[index];
+          let letter = mainValue.TextContent[index];
+          if (letter + mainValue.TextContent[index+1] === `\n`){
+              console.log(1);
+            }
             text.value += letter;
             index++;
         } else {
@@ -89,16 +92,7 @@ randomDisplay(mainValue.randomWordTime, mainValue.relWordTime);
 </script>
 
 <style scoped lang="scss">
-.text{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    text-align: left;
-}
-.point{
-    width:5px;
-    display: flex;
-}
+
 .underline {
     animation: blink 1.5s steps(1) infinite;
 }

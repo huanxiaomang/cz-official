@@ -18,11 +18,11 @@
       </div>
     </transition>
   </div>
-  <div v-if="isMobile" mb-20>
+  <div v-if="isMobile" :class="{ 'mb-20': route.path !== '/' }">
     <div class="header w-full h-13 flex top-0 bg-white" flex="items-center row" fixed z-100 border-b>
       <div mr-auto ml-8 h-full items-center flex gap-2>
-        <a i-carbon-logo-github  rel="noreferrer" href="https://github.com/huanxiaomang/cz-official"
-          target="_blank" title="GitHub" text-black text-5 />
+        <a i-carbon-logo-github rel="noreferrer" href="https://github.com/huanxiaomang/cz-official" target="_blank"
+          title="GitHub" text-black text-5 />
 
       </div>
       <div m-auto font-bold class="title">
