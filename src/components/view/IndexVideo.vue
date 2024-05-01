@@ -7,14 +7,13 @@
     </video>
     <div
       class="title-container w-full z-2 absolute flex items-center justify-center flex-col top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-      <div>
+      <div flex flex-col gap-1>
         <RandomWord class="title-cn" :TextContent="deviceType === 'mobile' ? CN_titleWithBR : CN_title" sm:text-5xl
           text-3xl font-bold>
         </RandomWord>
-        <br>
         <RandomWord class="title-en" :TextContent="deviceType === 'mobile' ? EN_titleWithBR : EN_title"
           :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" font-300 sm:text-xl
-          tracking-wide mt-2>
+          tracking-wide >
         </RandomWord>
       </div>
 

@@ -2,7 +2,7 @@
   <span class="text" whitespace-pre-line text-left sm:text-center select-none>
     {{ text }}
 
-    <span class="point" w-10 inline-block>{{ point }}
+    <span class="point" inline-block :class="isEnd ? 'w-10' : ''">{{ point }}
       <span :class="randomWordClass" :style="{color: mainValue.randomWordColor}" v-if="mainValue.randomWordCount === 1">
         {{ randomWord }}
       </span>
@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang='ts'>
-import { ref , withDefaults } from 'vue';
+import { ref , watchEffect, withDefaults } from 'vue';
 let mainValue = withDefaults(defineProps<{
     randomWordTime?: number,
     relWordTime?: number,
@@ -36,7 +36,8 @@ let randomList = "!@#$%^&*()_+-=[]{}|;':\",.<>/?~`";//随机字列表    (不用
 let text = ref("");
 let point = ref(".");
 let randomWord = ref();
-let randomWordClass = ref("randomWord")
+let randomWordClass = ref("randomWord");
+const isEnd = ref(false);
 /**
  * @param random_word_time 随机字每秒闪烁次数
  * @param rel_word_time 真实字每秒显示次数
@@ -63,7 +64,8 @@ let randomDisplay = ( random_word_time:number , rel_word_time:number , underline
             text.value += letter;
             index++;
           }
-        } else {
+      } else {
+          isEnd.value = true;
             randomWordClass.value = "randomWord underline";
             clearInterval(wordTimer);
             clearInterval(textTimer);
