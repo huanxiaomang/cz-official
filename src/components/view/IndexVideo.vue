@@ -1,7 +1,8 @@
 <template>
   <div class="video-container" h-100vh w-full relative>
-    <video autoplay loop muted class="video" h-full w-full object-cover z-1>
-      <source src="../../assets/video/main.mp4" type="video/mp4">
+    <video autoplay loop muted class="video" h-full w-full object-cover z-1
+      poster="../../assets/images/bg-first-frame.jpg">
+      <source src="../../assets/video/bg.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     <div

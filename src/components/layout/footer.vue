@@ -1,6 +1,6 @@
 <template>
   <nav items-center w-full border-t-1 border-b-bluegray h-55 sm:h-50 text-gray-300 flex flex-col sm:flex-row
-    justify-center gap-1 sm:gap-8 select-none absolute :class="/**route.path === '/' ? '' :**/'  bottom-0 left-0'">
+    justify-center gap-1 sm:gap-8 select-none absolute bottom-0 left-0>
     <img src="./../../assets/icon/cz_ba-style_white.png" alt="logo" h-20 sm:h-25>
     <div text-center sm:text-left>
       <div class="cn" pb-2>
@@ -19,7 +19,6 @@
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-console.log(route.path);
 
 </script>
 <style lang="scss" scoped>
