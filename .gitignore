@@ -14,5 +14,6 @@ dist
 .turbo
 
 app/server/.vscode/sftp.json
+.build/.vscode/sftp.json
 .vitepress
 docs/.vitepress/cache

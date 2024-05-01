@@ -5,7 +5,7 @@
   </Transition>
   <Transition>
     <div
-      class=" container w-80vw h-60vh sm:w-3xl sm:h-4xl bg-white rounded-lg fixed flex flex-col items-center z-9999 m-auto inset-0"
+      class=" container w-80vw h-60vh md:w-xl md:h-2xl  bg-white rounded-lg fixed flex flex-col items-center z-9999 m-auto inset-0"
       v-show="state.isShowingUserModal">
       <img :src="showBg" alt="用户背景图" class="h-[10rem] w-[100%] sm:h-[15rem] rounded-t-lg object-cover ">
       <img :src="showAvatar" alt="用户头像"
