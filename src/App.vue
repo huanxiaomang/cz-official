@@ -8,9 +8,8 @@
         </Transition>
       </KeepAlive>
     </RouterView>
-      <Footer />
-
-    <div class="pointer-events-none fixed inset-0 z-[-1] select-none bg-top bg-repeat bg"></div>
+    <Footer />
+    <div class="bg pointer-events-none fixed inset-0 z-[-1] select-none bg-top bg-repeat"></div>
 
   </main>
 </template>
