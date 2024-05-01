@@ -1,37 +1,34 @@
 <template>
-    <span class="text">{{ text }}
-        <span class="point">{{ point }}
-            <span :class="randomWordClass"
-                    :style="{color: mainValue.randomWordColor}"
-                    v-if="mainValue.randomWordCount === 1">
-                    {{ randomWord }}
-            </span>
-            <span :class="randomWordClass"
-                    :style="{color: mainValue.randomWordColor}"
-                    v-else
-                    v-for="i in randomWordCount"
-                    :key="i">
-                    {{ randomWord === "end" ? "": randomList[Math.floor(Math.random() * randomList.length)] }}
-            </span>
-        </span>
+  <span class="text" whitespace-pre-line text-left sm:text-center select-none>
+    {{ text }}
+
+    <span class="point">{{ point }}
+      <span :class="randomWordClass" :style="{color: mainValue.randomWordColor}" v-if="mainValue.randomWordCount === 1">
+        {{ randomWord }}
+      </span>
+      <span :class="randomWordClass" :style="{color: mainValue.randomWordColor}" v-else v-for="i in randomWordCount"
+        :key="i">
+        {{ randomWord === "end" ? "": randomList[Math.floor(Math.random() * randomList.length)] }}
+      </span>
     </span>
+  </span>
 </template>
 
 <script setup lang='ts'>
 import { ref , withDefaults } from 'vue';
 let mainValue = withDefaults(defineProps<{
-    randomWordTime?: number ,
-    relWordTime?: number ,
-    TextContent: string ,
+    randomWordTime?: number,
+    relWordTime?: number,
+    TextContent: string,
     IsInterval?: boolean,
-    randomWordCount?: number ,
-    randomWordColor?: string,
+    randomWordCount?: number,
+  randomWordColor?: string,
 }>(),{
     randomWordTime: 50,
     relWordTime: 150,
     IsInterval: true,
     randomWordCount: 1,
-  randomWordColor: "#FF6C05"
+  randomWordColor: "#FF6C05",
 })
 /////只要不动下面的屎山，那它就是好代码  ----hakurei77
 let randomList = "!@#$%^&*()_+-=[]{}|;':\",.<>/?~`";//随机字列表    (不用动这一段代码)
@@ -57,13 +54,15 @@ let randomDisplay = ( random_word_time:number , rel_word_time:number , underline
         }
     }, random_word_time)
     let textTimer = setInterval(() => {
-        if (index < mainValue.TextContent.length) {
+      if (index < mainValue.TextContent.length) {
           let letter = mainValue.TextContent[index];
-          if (letter + mainValue.TextContent[index+1] === `\n`){
-              console.log(1);
-            }
+          if (letter + mainValue.TextContent.slice(index + 1, index + 4) === `<br>`){
+              text.value += `\n`;
+              index += 4;
+          } else {
             text.value += letter;
             index++;
+          }
         } else {
             randomWordClass.value = "randomWord underline";
             clearInterval(wordTimer);
@@ -92,6 +91,9 @@ randomDisplay(mainValue.randomWordTime, mainValue.relWordTime);
 </script>
 
 <style scoped lang="scss">
+.letter{
+
+}
 
 .underline {
     animation: blink 1.5s steps(1) infinite;

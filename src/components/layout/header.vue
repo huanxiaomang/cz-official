@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isMobile">
+  <div v-if="deviceType !== 'mobile'">
     <Transition name="slide">
       <div class="header w-full h-18 flex" flex="items-center row" fixed z-100 v-show="!isHeaderHidden">
         <img src="./../../assets/icon/cz_ba-style.png" alt="logo" h-15 ml-10>
@@ -18,7 +18,7 @@
       </div>
     </transition>
   </div>
-  <div v-if="isMobile" :class="{ 'mb-20': route.path !== '/' }">
+  <div v-if="deviceType === 'mobile'" :class="{ 'mb-20': route.path !== '/' }">
     <div class="header w-full h-13 flex top-0 bg-white" flex="items-center row" fixed z-100 border-b>
       <div mr-auto ml-8 h-full items-center flex gap-2>
         <a i-carbon-logo-github rel="noreferrer" href="https://github.com/huanxiaomang/cz-official" target="_blank"
@@ -53,6 +53,7 @@
 <script setup lang='ts'>
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { useDeviceType } from '~/hooks/useDeviceType';
 
 const route = useRoute();
 const isHeaderHidden = ref(false);
@@ -70,7 +71,8 @@ window.addEventListener('scroll', () => {
   lastScrollPosition = currentScrollPosition;
 });
 
-const isMobile = window.innerWidth < 768;
+const deviceType = useDeviceType();
+
 
 const isMenuOpen = ref(false);
 const toggleMenu = () => {
