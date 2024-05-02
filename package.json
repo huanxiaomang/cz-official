@@ -37,7 +37,8 @@
     "vitepress": "^1.1.4",
     "vue": "^3.4.21",
     "vue-masonry": "^0.16.0",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "gsap": "^3.12.5"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.4",

@@ -15,20 +15,22 @@
 </template>
 
 <script setup lang='ts'>
-import { ref , watchEffect, withDefaults } from 'vue';
+import { ref , withDefaults } from 'vue';
 let mainValue = withDefaults(defineProps<{
     randomWordTime?: number,
     relWordTime?: number,
     TextContent: string,
     IsInterval?: boolean,
     randomWordCount?: number,
-  randomWordColor?: string,
+    randomWordColor?: string,
+    startY?: number
 }>(),{
     randomWordTime: 50,
     relWordTime: 150,
     IsInterval: true,
     randomWordCount: 1,
-  randomWordColor: "#FF6C05",
+    randomWordColor: "#FF6C05",
+    startY: 0
 })
 /////只要不动下面的屎山，那它就是好代码  ----hakurei77
 let randomList = "!@#$%^&*()_+-=[]{}|;':\",.<>/?~`";//随机字列表    (不用动这一段代码)
@@ -37,6 +39,7 @@ let text = ref("");
 let point = ref(".");
 let randomWord = ref();
 let randomWordClass = ref("randomWord");
+let time = 0; //让字体只执行一次该函数
 const isEnd = ref(false);
 /**
  * @param random_word_time 随机字每秒闪烁次数
@@ -89,14 +92,25 @@ let randomDisplay = ( random_word_time:number , rel_word_time:number , underline
     }, rel_word_time);    //字刷新事件
 };
 // 开始逐个显示字母
-randomDisplay(mainValue.randomWordTime, mainValue.relWordTime);
+function howToStart(){
+  if(mainValue.startY === 0){
+    randomDisplay(mainValue.randomWordTime, mainValue.relWordTime);
+  }
+  else{
+    window.addEventListener('scroll', function() {
+        // 当滚动距离大于或等于100vh时执行代码
+        if (window.scrollY >= mainValue.startY && time === 0) {
+            // 执行你的函数
+            randomDisplay(mainValue.randomWordTime, mainValue.relWordTime);
+            time++;
+        }
+    });
+  }
+}
+howToStart();
 </script>
 
 <style scoped lang="scss">
-.letter{
-
-}
-
 .underline {
     animation: blink 1.5s steps(1) infinite;
 }
