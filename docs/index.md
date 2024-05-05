@@ -64,6 +64,7 @@ function createImage() {
 const authorMap = {
     'course': 'Huanxiaomang',
     'jx': 'Huanxiaomang hakurei77',
+    '3-vue3': 'hakurei77',
 
 }
 

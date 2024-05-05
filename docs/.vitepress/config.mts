@@ -1,5 +1,4 @@
 import { defineConfig } from "vitepress";
-import { useLive2d } from 'vitepress-theme-website'
 
 function getLocation() {
     return window.location;
@@ -53,20 +52,20 @@ const Theme = defineConfig({
                 base: "/course/",
                 items: [
 
-                    { text: '前置-Node', link: '前置-Node' },
-                    { text: '前置-前后端分离', link: '前置-前后端分离' },
-                    { text: '教学大纲', link: '教学大纲' },
-                    { text: '1- introduction', link: '1-introduction' },
-                    { text: '2- HTML&CSS', link: '2-HTML+CSS' },
-                    { text: '3- JS核心', link: '3-JS-Array-Object' },
-                    { text: '4- JS cases', link: '4-JS-cases' },
-                    { text: '5- DOM&BOM', link: '5-DOM+BOM' },
-                    { text: '6- Axios-JSON-Promise', link: '6-Axios-JSON-Promise' },
-                    {
-                        text: '7- skills&program design',
-                        link: '7-skills+program-design'
-                    },
-                    { text: '8- Vue3', link: '8-Vue3' },
+                    // { text: '前置-Node', link: '前置-Node' },
+                    // { text: '前置-前后端分离', link: '前置-前后端分离' },
+                    // { text: '教学大纲', link: '教学大纲' },
+                    // { text: '1- introduction', link: '1-introduction' },
+                    { text: '1- HTML&CSS', link: '2-HTML+CSS' },
+                    { text: '2- JS数组与对象', link: '3-JS-Array-Object' },
+                    // { text: '4- JS cases', link: '4-JS-cases' },
+                    // { text: '5- DOM&BOM', link: '5-DOM+BOM' },
+                    // { text: '6- Axios-JSON-Promise', link: '6-Axios-JSON-Promise' },
+                    // {
+                    //     text: '7- skills&program design',
+                    //     link: '7-skills+program-design'
+                    // },
+                  { text: '3- vue3基础语法', link: '3-vue3语法' },
                 ],
             },
             {
@@ -82,30 +81,30 @@ const Theme = defineConfig({
 
                 ],
             },
-            {
-                text: "绩效项目实战",
-                base: "/jx/",
-                items: [
+            // {
+            //     text: "绩效项目实战",
+            //     base: "/jx/",
+            //     items: [
 
-                    { text: '0- 目标', link: '0-目标' },
-                    { text: '1- git标准流程(大厂)', link: '1-git' },
-                    { text: '2- typescript', link: '2-typescript入门' },
-                    { text: '3- vue3语法', link: '3-vue3语法' },
-                    { text: '4- vue-router', link: '4-vue-router' },
-                    { text: '5- elementUI', link: '5-elementUI' },
-                    { text: '6- Promise-axios', link: '6-Promise-axios' },
-                    { text: '7- node-express', link: '7-node-express' },
-                    { text: '8- pinia', link: '8-pinia' },
-                    { text: '9- nodeJWT', link: '9-nodeJWT' },
-                    { text: '10- node中间层', link: '10-node中间层' },
+            //         { text: '0- 目标', link: '0-目标' },
+            //         { text: '1- git标准流程(大厂)', link: '1-git' },
+            //         { text: '2- typescript', link: '2-typescript入门' },
+            //         { text: '3- vue3语法', link: '3-vue3语法' },
+            //         { text: '4- vue-router', link: '4-vue-router' },
+            //         { text: '5- elementUI', link: '5-elementUI' },
+            //         { text: '6- Promise-axios', link: '6-Promise-axios' },
+            //         { text: '7- node-express', link: '7-node-express' },
+            //         { text: '8- pinia', link: '8-pinia' },
+            //         { text: '9- nodeJWT', link: '9-nodeJWT' },
+            //         { text: '10- node中间层', link: '10-node中间层' },
 
-                ],
-            },
+            //     ],
+            // },
 
             {
                 text: "其他",
                 base: "/other/",
-                items: [{ text: "一些例子", link: "我收集的一些js例子" },
+                items: [{ text: "学习笔记", link: "我收集的一些js例子" },
                 { text: "常见问题", link: "新手常见问题篇" },
 
                 ],
