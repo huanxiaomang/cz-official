@@ -11,6 +11,9 @@
             cursor-pointer>通知</router-link>
           <router-link to="/member" class="item" :class="{ 'active': route.path === '/member' }"
             cursor-pointer>成员</router-link>
+          <a class="item" href="http://1.92.82.236:5173/" target="_blank" flex items-center>文档<div inline-block
+              i-ri:share-box-fill text-4 ml-1>
+            </div></a>
         </div>
         <a i-carbon-logo-github icon-btn hover:text-blue-500 rel="noreferrer"
           href="https://github.com/huanxiaomang/cz-official" target="_blank" title="GitHub" text-black text-5 ml-auto
@@ -44,6 +47,8 @@
           flex items-center pl-8 @click="closeMenu" border-b>通知</router-link>
         <router-link to="/member" class="phone-link" :class="{ 'active': route.path === '/member' }" cursor-pointer h-12
           flex items-center pl-8 @click="closeMenu">成员</router-link>
+        <a class="item" href="http://1.92.82.236:5173/" target="_blank" flex items-center cursor-pointer h-12 pl-8>文档<div inline-block i-ri:share-box-fill text-4 ml-1 text-gray-7>
+          </div></a>
       </div>
     </Transition>
   </div>

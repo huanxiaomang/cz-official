@@ -31,19 +31,20 @@
     "@vueuse/core": "^10.9.0",
     "ant-design-vue": "4.x",
     "axios": "^1.6.8",
+    "gsap": "^3.12.5",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "vitepress": "^1.1.4",
     "vue": "^3.4.21",
     "vue-masonry": "^0.16.0",
-    "vue-router": "^4.3.0",
-    "gsap": "^3.12.5"
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.4",
     "@iconify-json/carbon": "^1.1.30",
     "@iconify-json/eva": "^1.1.10",
+    "@iconify-json/ri": "^1.1.20",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.11.23",
     "@unocss/eslint-config": "^0.58.5",

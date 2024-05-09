@@ -1,6 +1,6 @@
 <template>
   <div class="INDEXPAGE" style="padding-top: 0;">
-    <IndexVideo></IndexVideo>
+    <IndexVideo/>
   </div>
 </template>
 
@@ -12,9 +12,5 @@ import IndexVideo from "../components/view/IndexVideo.vue"
 defineOptions({
   name: 'IndexPage',
 })
-
-
 </script>
 
-<style scoped>
-</style>

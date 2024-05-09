@@ -51,6 +51,9 @@ importers:
       '@iconify-json/eva':
         specifier: ^1.1.10
         version: 1.1.10
+      '@iconify-json/ri':
+        specifier: ^1.1.20
+        version: 1.1.20
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
@@ -1865,6 +1868,12 @@ packages:
 
   /@iconify-json/eva@1.1.10:
     resolution: {integrity: sha512-2mLBnkAXJJAOwZK7vJ62d+ZMMEeG6ch8sJkJu1/gweYLxxXD9npGutF/LtSpoVYhIf0WGl6c85G0ez8TvMyawQ==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
+  /@iconify-json/ri@1.1.20:
+    resolution: {integrity: sha512-yScIGjLFBCJKWKskQTWRjNI2Awoq+VRDkRxEsCQvSfdz41n+xkRtFG2K6J1OVI90ClRHfjFC8VJ2+WzxxyFjTQ==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: true
