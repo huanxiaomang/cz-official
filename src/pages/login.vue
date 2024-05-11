@@ -16,7 +16,7 @@
         </a-form-item>
 
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-          <a-button type="default" html-type="submit" color="black" :loading="loading">Submit</a-button>
+          <a-button type="default" html-type="submit" color="black" :loading="loading">登录</a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive , ref } from 'vue';
+import { inject, reactive , ref } from 'vue';
 import { message } from 'ant-design-vue';
 import { LoginParams } from '~/api/user';
 import { useUserStore } from '~/store/user';
@@ -58,18 +58,20 @@ const onFinish = (values: any) => {
     if(userInfo) {
       const { notification } = useMessage();
       notification.success({
-        message: '注册成功o(^▽^)o',
-        description: '欢迎加入',
+        message: '登录成功o(^▽^)o',
+        description: '欢迎进入',
         duration: 3,
       });
-      router.push('/');
+
+      await router.replace('/');
+      router.go(0);
+
     }
-  }, 500);
+  }, 300);
 };
 
 const onFinishFailed = (errorInfo: any) => {
   const hide = message.loading('正在登录..', 0);
-
   setTimeout(hide, 500);
 };
 </script>

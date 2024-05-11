@@ -157,7 +157,7 @@ export const useUserStore = defineStore({
       this.setUserInfo(null);
       if (goLogin) {
         // 直接回登陆页
-        router.replace('/login');
+        router.replace('/');
       }
     },
 

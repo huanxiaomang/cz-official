@@ -15,11 +15,19 @@
               i-ri:share-box-fill text-4 ml-1>
             </div></a>
         </div>
-        <div mr-4>
+        <div mr-4 v-if="!isLogin">
           <router-link to="/register" class="hover:text-blue-5" cursor-pointer>注册 </router-link>|
           <router-link to="/login" class="hover:text-blue-5" cursor-pointer>登录</router-link>
         </div>
-        <a i-carbon-logo-github icon-btn hover:text-blue-500 rel="noreferrer"
+        <div v-else class="group" mr-8 flex items-center cursor-pointer max-w-md relative>
+          <CZAvatar :user-id="userStore.userInfo?.userId!" :click-fn="()=>void 0"></CZAvatar>
+          <div absolute bg-white text-gray-7 text-sm top-12 right-0 ring-1 ring-gray-8 ring-opacity-5 rounded-md w-40
+            px-2 py-2 scale-0 group-hover:scale-100 duration-300 origin-top-right shadow-lg>
+            <router-link to="/updateInfo" block px-5 py-2 hover:bg-gray-100 text-left rounded-md>修改信息</router-link>
+            <div @click="handleLogout" px-5 py-2 hover:bg-gray-100 text-left rounded-md>退出登录</div>
+          </div>
+        </div>
+        <a i-carbon-logo-github icon-btn v-if="!isLogin" hover:text-blue-500 rel="noreferrer"
           href="https://github.com/huanxiaomang/cz-official" target="_blank" title="GitHub" text-black text-5 ml-auto
           mr-8 />
       </div>
@@ -64,11 +72,14 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { inject, onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useDeviceType } from '~/hooks/useDeviceType';
+import { useUserStore } from '~/store/user';
+import CZAvatar from '../CZAvatar.vue';
 
 const route = useRoute();
+
 const isHeaderHidden = ref(false);
 let lastScrollPosition = 0;
 
@@ -86,7 +97,6 @@ window.addEventListener('scroll', () => {
 
 const deviceType = useDeviceType();
 
-
 const isMenuOpen = ref(false);
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
@@ -101,10 +111,21 @@ const toggleMenu = () => {
 const closeMenu = () => {
   isMenuOpen.value = false;
   document.body.style.overflow = '';
-
 };
 
+const userStore = useUserStore();
+const isLogin = !!userStore.userInfo;
+const router = useRouter();
+
+const handleLogout = () => {
+  userStore.logout();
+  router.go(0);
+};
+
+
+
 </script>
+
 
 <style lang="scss" scoped>
 div.header {

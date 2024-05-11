@@ -28,6 +28,7 @@ declare module 'vue' {
     StackIcon: typeof import('./src/components/StackIcon.vue')['default']
     TheCounter: typeof import('./src/components/TheCounter.vue')['default']
     TheInput: typeof import('./src/components/TheInput.vue')['default']
+    User: typeof import('./src/components/User.vue')['default']
     UserModal: typeof import('./src/components/UserModal/index.vue')['default']
   }
 }

@@ -27,7 +27,6 @@
           <a-select v-model:value="modelRef.major" placeholder="学习方向">
             <a-select-option value="前端开发">前端开发</a-select-option>
             <a-select-option value="后端开发">后端开发</a-select-option>
-            <a-select-option value="3">大三</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 14, offset: 4 }">

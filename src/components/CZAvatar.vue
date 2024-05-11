@@ -4,7 +4,7 @@
     </Avatar>
 </template>
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { PropType, onMounted } from 'vue';
 import { getUserInfoById } from '~/api/user'
 import { ref } from 'vue';
 import {Avatar } from 'ant-design-vue';
@@ -15,7 +15,16 @@ import { UserInfo } from '#/data';
 
 defineOptions({ name: "CZAvatar" });
 
-const props = defineProps<{ userId: string }>();
+const props = defineProps({
+  userId: {
+    type: String,
+    required: true,
+  },
+  clickFn: {
+    type: Function as PropType<()=>void>,
+    default: null
+  }
+});
 
 let userInfo = ref<UserInfo>({
   createdAt: '',
@@ -31,7 +40,12 @@ let userInfo = ref<UserInfo>({
 let showAvatar = ref(DefaultAvatar);
 
 function handleClick() {
+  if(props.clickFn !== null){
+    props.clickFn();
+  } else {
     showUserModal(userInfo.value as any);
+
+  }
 }
 
 onMounted(async() => {

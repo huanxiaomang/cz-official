@@ -1,7 +1,7 @@
 <template>
   <main font-sans text="center" w-full class=" min-h-[100vh]" relative>
     <Header></Header>
-    <RouterView sm:pt-20 pb-80 v-slot="{ Component }">
+    <RouterView sm:pt-20 pb-80 v-slot="{ Component }" v-if="isRouterActive">
       <KeepAlive>
         <Transition name="fade" mode="out-in">
           <component :is="Component" />
@@ -13,6 +13,15 @@
 
   </main>
 </template>
+<script setup lang="ts">
+import { usePageStore } from "./store/page";
+const pageStore = usePageStore();
+const isRouterActive = pageStore.isRouterActive;
+
+
+
+
+</script>
 <style lang="scss">
 .bg {
   background-image: url(grid-black.svg);
