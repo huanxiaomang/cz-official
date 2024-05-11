@@ -3,7 +3,7 @@ import { RoleEnum, UserInfo } from "#/data";
 import { isArray } from "lodash-es";
 import { defineStore } from "pinia";
 import { h } from "vue";
-import { GetUserInfoModel, LoginParams, doLogout, getUserInfo, loginApi } from "~/api/user";
+import { GetUserInfoModel, LoginParams, RegisterParams, doLogout, getUserInfo, loginApi, registerApi } from "~/api/user";
 import { useMessage } from "~/hooks/web/useMessage";
 import { router } from "~/utils/router";
 
@@ -67,6 +67,26 @@ export const useUserStore = defineStore({
       this.token = "";
       this.roleList = [];
       this.sessionTimeout = false;
+    },
+    async register(
+      params: RegisterParams & {
+        goHome?: boolean;
+        mode?: ErrorMessageMode;
+      },
+    ): Promise<GetUserInfoModel | null> {
+      try {
+        const { goHome = true, mode, ...loginParams } = params;
+        const data = await registerApi(loginParams, mode);
+        const { token } = data;
+
+        // save token
+        this.setToken(token);
+        this.setUserInfo(data);
+
+        return this.userInfo;
+      } catch (error) {
+        return Promise.reject(error);
+      }
     },
     /**
      * @description: login

@@ -41,6 +41,22 @@ enum Api {
   SetUserRole = "/setUserRole",
 }
 
+export function registerApi(
+  params: RegisterParams,
+  mode: ErrorMessageMode = "modal",
+) {
+
+  return defHttp.post<LoginResultModel>(
+    {
+      url: Api.Register,
+      data: params
+
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
 
 export function loginApi(
   params: LoginParams,
