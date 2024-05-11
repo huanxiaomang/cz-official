@@ -11,6 +11,8 @@ import VueRouter from 'unplugin-vue-router/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
 import vueJsx from '@vitejs/plugin-vue-jsx';
 
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+
 export default defineConfig({
   resolve: {
     alias: {
@@ -57,6 +59,11 @@ export default defineConfig({
     // https://github.com/antfu/vite-plugin-components
     Components({
       dts: true,
+      resolvers: [
+        AntDesignVueResolver({
+          importStyle: false, // css in js
+        }),
+      ],
     }),
 
     // https://github.com/antfu/unocss
