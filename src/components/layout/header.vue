@@ -15,6 +15,10 @@
               i-ri:share-box-fill text-4 ml-1>
             </div></a>
         </div>
+        <div mr-4>
+          <router-link to="/register" class="hover:text-blue-5" cursor-pointer>注册 </router-link>|
+          <router-link to="/login" class="hover:text-blue-5" cursor-pointer>登录</router-link>
+        </div>
         <a i-carbon-logo-github icon-btn hover:text-blue-500 rel="noreferrer"
           href="https://github.com/huanxiaomang/cz-official" target="_blank" title="GitHub" text-black text-5 ml-auto
           mr-8 />
@@ -47,8 +51,12 @@
           flex items-center pl-8 @click="closeMenu" border-b>通知</router-link>
         <router-link to="/member" class="phone-link" :class="{ 'active': route.path === '/member' }" cursor-pointer h-12
           flex items-center pl-8 @click="closeMenu">成员</router-link>
-        <a class="item" href="http://1.92.82.236:5173/" target="_blank" flex items-center cursor-pointer h-12 pl-8>文档<div inline-block i-ri:share-box-fill text-4 ml-1 text-gray-7>
-          </div></a>
+        <a class="item" href="http://1.92.82.236:5173/" target="_blank" flex items-center cursor-pointer h-12 pl-8>文档
+          <div inline-block i-ri:share-box-fill text-4 ml-1 text-gray-7>
+          </div>
+        </a>
+        <router-link to="/login" class="phone-link" :class="{ 'active': route.path === '/member' }" cursor-pointer h-12
+          flex items-center pl-8 @click="closeMenu">登录</router-link>
       </div>
     </Transition>
   </div>
