@@ -1,4 +1,4 @@
-import type { AxiosInstance, AxiosResponse } from "axios";
+import type { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { clone } from "lodash-es";
 import type { RequestOptions, Result } from "#/axios";
 import type { AxiosTransform, CreateAxiosOptions } from "./axiosTransform";
@@ -246,6 +246,21 @@ const transform: AxiosTransform = {
       retryRequest.retry(axiosInstance, error);
     return Promise.reject(error);
   },
+
+  requestCatchHook: (e: Error, options: RequestOptions): Promise<any> => {
+    const { notification } = useMessage();
+
+    const msgObj = ((e as AxiosError).response?.data as Result).messages;
+
+
+      notification.error({
+        message: '错误！',
+        description: JSON.stringify(msgObj),
+        duration: 3,
+      });
+    return Promise.reject(e);
+
+  }
 };
 
 function createAxios(opt?: Partial<CreateAxiosOptions>) {

@@ -55,7 +55,6 @@ export const useUserStore = defineStore({
     },
     setUserInfo(info: UserInfo | null) {
       this.userInfo = info;
-      console.log(info,this.userInfo);
 
       this.lastUpdateTime = new Date().getTime();
     },
@@ -75,7 +74,7 @@ export const useUserStore = defineStore({
       },
     ): Promise<GetUserInfoModel | null> {
       try {
-        const { goHome = true, mode, ...loginParams } = params;
+        const { goHome = true, mode ='message', ...loginParams } = params;
         const data = await registerApi(loginParams, mode);
         const { token } = data;
 
@@ -98,7 +97,7 @@ export const useUserStore = defineStore({
       },
     ): Promise<GetUserInfoModel | null> {
       try {
-        const { goHome = true, mode, ...loginParams } = params;
+        const { goHome = true, mode = 'message', ...loginParams } = params;
         const data = await loginApi(loginParams, mode);
         const { token } = data;
 
@@ -120,6 +119,7 @@ export const useUserStore = defineStore({
       if (sessionTimeout) {
         this.setSessionTimeout(false);
       }
+
       return userInfo;
     },
     async getUserInfoAction(): Promise<UserInfo | null> {
