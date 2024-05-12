@@ -22,11 +22,8 @@ const userList = ref<UserInfo[]>([]);
 
 onMounted(async () => {
   const res = await getAllUser();
-  userList.value = res;
+  userList.value = res.filter((u: UserInfo) => u.role === 'ADMIN' || u.role === 'CZ_MEMBER');
 
-  const i = useUserStore();
-
-  console.log(i);
 
 })
 </script>

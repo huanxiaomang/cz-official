@@ -57,6 +57,7 @@ export class AuthService {
         email: dto.email,
         major: dto.major,
         grade: dto.grade,
+        role: 'COMMON'
       },
     })
     return {
