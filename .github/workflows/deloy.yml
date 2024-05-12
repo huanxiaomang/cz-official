@@ -54,14 +54,18 @@ jobs:
             - name: Build
               run: pnpm build
 
+            - name: Print environment variable
+              run: echo ${{ env.SERVER_HOST }}
+              run: echo ${{ env.env.USER_NAME  }}
+              run: echo ${{ env.PASSWORD }}
             # 上传打包资源
             - name: Deploy
               uses: appleboy/scp-action@master
               with:
-                  source: 'dist/'
+                  source: "dist/"
                   host: ${{ env.SERVER_HOST }}
                   username: ${{ env.USER_NAME }}
                   password: ${{ env.PASSWORD }}
                   port: 22
-                  target: /www/wwwroot/www.czstudio.tech/ # 服务器目标路径
+                  target: "/www/wwwroot/www.czstudio.tech/" # 服务器目标路径
 
