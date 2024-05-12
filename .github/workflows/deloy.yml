@@ -55,8 +55,6 @@ jobs:
               run: pnpm build
 
             - name: Print environment variable
-              run: echo ${{ env.SERVER_HOST }}
-              run: echo ${{ env.env.USER_NAME  }}
               run: echo ${{ env.PASSWORD }}
             # 上传打包资源
             - name: Deploy
