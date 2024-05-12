@@ -105,6 +105,7 @@ const onSubmit = () => {
   validate()
     .then(async () => {
       const data = toRaw(modelRef);
+      data.grade = Number(data.grade);
       const userStore = useUserStore();
       const userInfo = await userStore.register(data);
       if (userInfo) {
