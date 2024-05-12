@@ -56,12 +56,12 @@ jobs:
 
             # 上传打包资源
             - name: Deploy
-              uses: easingthemes/ssh-deploy@v2.0.7
-              env:
-                  SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
-                  ARGS: '-avz --delete'
-                  SOURCE: 'dist/'
-                  REMOTE_HOST: ${{ env.SERVER_HOST }}
-                  REMOTE_USER: ${{ env.USER_NAME }}
-                  TARGET: /www/wwwroot/www.czstudio.tech/ # 服务器目标路径
+              uses: appleboy/scp-action@master
+              with:
+                  source: 'dist/'
+                  host: ${{ env.SERVER_HOST }}
+                  username: ${{ env.USER_NAME }}
+                  password: ${{ env.PASSWORD }}
+                  port: 22
+                  target: /www/wwwroot/www.czstudio.tech/ # 服务器目标路径
 
