@@ -51,11 +51,11 @@ jobs:
               run: pnpm i --no-frozen-lockfile
 
             # 打包
-            - name: Build
+            - name: Build Web
               run: pnpm build
 
             # 上传打包资源
-            - name: Deploy
+            - name: Deploy Web
               uses: appleboy/scp-action@master
               with:
                   source: "dist/*"
@@ -65,13 +65,22 @@ jobs:
                   port: 22
                   target: "/www/wwwroot/www.czstudio.tech/" # 服务器目标路径
 
+            - name: Move files
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.SERVER_HOST }}
+                username: ${{ secrets.USER_NAME }}
+                password: ${{ secrets.PASSWORD }}
+                port: 22
+                script: |
+                  mv /www/wwwroot/www.czstudio.tech/dist/* /www/wwwroot/www.czstudio.tech/
 
             # 打包文档库
-            - name: Build
+            - name: Build Docs
               run: pnpm docs:build
 
             # 上传打包资源
-            - name: Deploy
+            - name: Deploy Docs
               uses: appleboy/scp-action@master
               with:
                   source: "docs/.vitepress/dist/*"
@@ -80,3 +89,13 @@ jobs:
                   password: ${{ secrets.PASSWORD }}
                   port: 22
                   target: "/www/wwwroot/docs.czstudio.tech/" # 服务器目标路径
+
+            - name: Move files
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.SERVER_HOST }}
+                username: ${{ secrets.USER_NAME }}
+                password: ${{ secrets.PASSWORD }}
+                port: 22
+                script: |
+                  mv /www/wwwroot/docs.czstudio.tech/dist/* /www/wwwroot/docs.czstudio.tech/
