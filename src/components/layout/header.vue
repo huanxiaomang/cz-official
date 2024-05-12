@@ -36,8 +36,10 @@
   <div v-if="deviceType === 'mobile'" :class="{ 'mb-20': route.path !== '/' }">
     <div class="header w-full h-13 flex top-0 bg-white" flex="items-center row" fixed z-100 border-b>
       <div mr-auto ml-8 h-full items-center flex gap-2>
-        <a i-carbon-logo-github rel="noreferrer" href="https://github.com/huanxiaomang/cz-official" target="_blank"
-          title="GitHub" text-black text-5 />
+        <a i-carbon-logo-github v-if="!isLogin" rel="noreferrer" href="https://github.com/huanxiaomang/cz-official"
+          target="_blank" title="GitHub" text-black text-5 />
+        <CZAvatar v-else :user-id="userStore.userInfo?.userId!" :click-fn="() => void 0"></CZAvatar>
+
 
       </div>
       <div m-auto font-bold class="title">
@@ -63,8 +65,17 @@
           <div inline-block i-ri:share-box-fill text-4 ml-1 text-gray-7>
           </div>
         </a>
-        <router-link to="/login" class="phone-link" :class="{ 'active': route.path === '/member' }" cursor-pointer h-12
-          flex items-center pl-8 @click="closeMenu">登录</router-link>
+        <div v-if="!isLogin">
+          <router-link to="/login" class="phone-link" cursor-pointer h-12 flex items-center pl-8
+            @click="closeMenu">登录</router-link>
+          <router-link to="/register" class="phone-link" cursor-pointer h-12 flex items-center pl-8
+            @click="closeMenu">注册</router-link>
+        </div>
+        <div v-else>
+          <router-link to="/updateInfo" class="phone-link" cursor-pointer h-12 flex items-center pl-8
+            @click="closeMenu">修改信息</router-link>
+        </div>
+
       </div>
     </Transition>
   </div>
