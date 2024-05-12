@@ -96,13 +96,15 @@ export class AuthService {
         background: dto.background,
         description: dto.description,
         github: dto.github,
-        password: await hash(dto.password),
         major: dto.major,
         grade: dto.grade,
         badge: dto.badge
       },
     })
-    return this.token(user)
+    return {
+      ...await this.serializeUser(user),
+      token: await this.token(user)
+    }
   }
 
   private async token({ userId, username }) {

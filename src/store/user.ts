@@ -3,9 +3,8 @@ import { RoleEnum, UserInfo } from "#/data";
 import { isArray } from "lodash-es";
 import { defineStore } from "pinia";
 import { h } from "vue";
-import { GetUserInfoModel, LoginParams, RegisterParams, doLogout, getUserInfo, loginApi, registerApi } from "~/api/user";
+import { GetUserInfoModel, LoginParams, RegisterParams, UpdateParams, doLogout, getUserInfo, loginApi, registerApi, updateUserInfoApi } from "~/api/user";
 import { useMessage } from "~/hooks/web/useMessage";
-import { router } from "~/utils/router";
 
 
 interface UserState {
@@ -67,6 +66,24 @@ export const useUserStore = defineStore({
       this.roleList = [];
       this.sessionTimeout = false;
     },
+
+    async updateUserInfo(
+      params:UpdateParams
+    ): Promise<GetUserInfoModel | null>{
+      try {
+        const data = await updateUserInfoApi(params);
+        const { token } = data;
+
+        // save token
+        this.setToken(token);
+        this.setUserInfo(data);
+
+        return this.userInfo;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+
     async register(
       params: RegisterParams & {
         goHome?: boolean;
@@ -157,7 +174,6 @@ export const useUserStore = defineStore({
       this.setUserInfo(null);
       if (goLogin) {
         // 直接回登陆页
-        router.replace('/');
       }
     },
 

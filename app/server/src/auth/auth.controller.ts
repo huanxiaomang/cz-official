@@ -12,22 +12,22 @@ export class AuthController {
   @Get('cz')
   getCZMembers() {
     return this.auth.getCZMembers();
-    }
-    @Get('all')
-    getAllMembers() {
-        return this.auth.getAllMembers();
-    }
-    
-  @Get('getUserInfo/:userId')
-  getUserInfo(@Param('userId') userId ) {
-    return this.auth.getUserInfo(userId);
-    }
+  }
+  @Get('all')
+  getAllMembers() {
+    return this.auth.getAllMembers();
+  }
 
-    @Admin()
-    @Get('setUserRole/:userId')
-    setUserRole(@Param('userId') userId,@Query('role') role: string) {
-        return this.auth.setUserRole(userId,role);
-    }
+  @Get('getUserInfo/:userId')
+  getUserInfo(@Param('userId') userId) {
+    return this.auth.getUserInfo(userId);
+  }
+
+  @Admin()
+  @Get('setUserRole/:userId')
+  setUserRole(@Param('userId') userId, @Query('role') role: string) {
+    return this.auth.setUserRole(userId, role);
+  }
   @Post('register')
   register(@Body() dto: RegisterDto) {
     return this.auth.register(dto);

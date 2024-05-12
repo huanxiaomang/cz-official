@@ -1,8 +1,8 @@
 <template>
-  <div class="login-container">
-    <div class="form-container">
-      <a-form :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off"
-        @finish="onFinish" @finishFailed="onFinishFailed">
+  <div class="login-container" w-full h-full>
+    <div class="form-container" pt-10 w-full h-full flex items-center justify-center>
+      <a-form :model="formState" name="basic" autocomplete="off" @finish="onFinish" @finishFailed="onFinishFailed"
+        m-auto :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
         <a-form-item label="邮箱" name="email" :rules="[{ required: true, message: '请输入邮箱!' }]">
           <a-input v-model:value="formState.email" />
         </a-form-item>
@@ -76,17 +76,3 @@ const onFinishFailed = (errorInfo: any) => {
 };
 </script>
 
-<style scoped lang="scss">
-.login-container{
-    width: 100%;    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    .form-container{
-        width:20rem;
-        form{
-            width: 100%;
-        }
-    }
-}
-</style>

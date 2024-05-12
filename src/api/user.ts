@@ -11,12 +11,23 @@ export interface LoginParams {
 }
 
 export interface RegisterParams {
-username: string;
-email: string;
-password: string;
-password_confirm: string;
-major: string;
-grade: number;
+  username: string;
+  email: string;
+  password: string;
+  password_confirm: string;
+  major: string;
+  grade: number;
+}
+
+export interface UpdateParams {
+  username: string;
+  avatar: string;
+  github: string;
+  background: string;
+  description: string;
+  major: string;
+  grade: number;
+  badge: string;
 }
 
 export interface RoleInfo {
@@ -39,6 +50,7 @@ enum Api {
   GetUserInfo = "/getUserInfo",
   GetAllUser = "/all",
   SetUserRole = "/setUserRole",
+  updateUserInfo = "/updateUserInfo",
 }
 
 export function registerApi(
@@ -75,6 +87,23 @@ export function loginApi(
   );
 }
 
+export function updateUserInfoApi(
+  params: UpdateParams,
+  mode: ErrorMessageMode = "modal",
+
+) {
+  return defHttp.post<LoginResultModel>(
+    {
+      url: Api.updateUserInfo,
+      data: params
+
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
 
 export function getUserInfo() {
   const userId = useUserStore().getUserInfo.userId;
@@ -85,7 +114,7 @@ export function getUserInfo() {
   );
 }
 
-export function setUserRole(userId:number, role:string) {
+export function setUserRole(userId: number, role: string) {
 
   return defHttp.get<GetUserInfoModel>(
     {

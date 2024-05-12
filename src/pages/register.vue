@@ -1,20 +1,20 @@
 <template>
   <div class="login-container">
-    <div class="form-container">
-      <a-form :label-col="labelCol" :wrapper-col="wrapperCol">
-        <a-form-item label="请输入您的用户名" v-bind="validateInfos.username">
+    <div class="form-container" pt-10 w-full flex>
+      <a-form m-auto w-120 :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
+        <a-form-item label="用户名" v-bind="validateInfos.username">
           <a-input v-model:value="modelRef.username" />
         </a-form-item>
-        <a-form-item label="请输入您的邮箱" v-bind="validateInfos.email">
+        <a-form-item label="邮箱" v-bind="validateInfos.email">
           <a-input v-model:value="modelRef.email" />
         </a-form-item>
-        <a-form-item label="请输入您的密码" v-bind="validateInfos.password">
+        <a-form-item label="密码" v-bind="validateInfos.password">
           <a-input v-model:value="modelRef.password" />
         </a-form-item>
-        <a-form-item label="二次确认您的密码" v-bind="validateInfos.password_confirm">
+        <a-form-item label="确认密码" v-bind="validateInfos.password_confirm">
           <a-input v-model:value="modelRef.password_confirm" />
         </a-form-item>
-        <a-form-item label="请选择您的年级" v-bind="validateInfos.grade">
+        <a-form-item label="年级" v-bind="validateInfos.grade">
           <a-select v-model:value="modelRef.grade" placeholder="请选择您的年级">
             <a-select-option value="1">大一</a-select-option>
             <a-select-option value="2">大二</a-select-option>
@@ -23,15 +23,14 @@
             <a-select-option value="5">毕业</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="请选择您的学习方向" v-bind="validateInfos.major">
+        <a-form-item label="学习方向" v-bind="validateInfos.major">
           <a-select v-model:value="modelRef.major" placeholder="学习方向">
             <a-select-option value="前端开发">前端开发</a-select-option>
             <a-select-option value="后端开发">后端开发</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+        <a-form-item m-auto>
           <a-button type="primary" @click.prevent="onSubmit" color="black">创建账户</a-button>
-          <a-button style="margin-left: 10px" @click="resetFields">重置表单</a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -48,7 +47,7 @@ import { useMessage } from '~/hooks/web/useMessage';
 const useForm = Form.useForm;
 
 const labelCol = { span: 4 };
-const wrapperCol = { span: 14 };
+const wrapperCol = { span: 8 };
 const modelRef = reactive<RegisterParams>({
   username: '',
   email: '',
@@ -128,18 +127,3 @@ const onSubmit = () => {
     });
 };
 </script>
-
-<style scoped lang="scss">
-.login-container{
-    width: 100%;    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    .form-container{
-        width:55rem;
-        form{
-            width: 100%;
-        }
-    }
-}
-</style>

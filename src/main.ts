@@ -7,11 +7,10 @@ import './styles/main.css'
 import 'uno.css'
 import { setupStore } from "~/store";
 import { VueMasonryPlugin } from 'vue-masonry';
+import { router } from './router';
 const app = createApp(App)
 app.use(VueMasonryPlugin)
 setupStore(app);
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-})
+
 app.use(router)
 app.mount('#app')
