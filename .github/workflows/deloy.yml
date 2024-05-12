@@ -73,7 +73,7 @@ jobs:
                 password: ${{ secrets.PASSWORD }}
                 port: 22
                 script: |
-                  mv /www/wwwroot/www.czstudio.tech/dist/* /www/wwwroot/www.czstudio.tech/
+                  mv /www/wwwroot/www.czstudio.tech/dist/ /www/wwwroot/www.czstudio.tech/
 
             # 打包文档库
             - name: Build Docs
@@ -98,4 +98,4 @@ jobs:
                 password: ${{ secrets.PASSWORD }}
                 port: 22
                 script: |
-                  mv /www/wwwroot/docs.czstudio.tech/dist/* /www/wwwroot/docs.czstudio.tech/
+                  mv /www/wwwroot/docs.czstudio.tech/dist/ /www/wwwroot/docs.czstudio.tech/
