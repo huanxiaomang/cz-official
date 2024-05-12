@@ -98,4 +98,4 @@ jobs:
                 password: ${{ secrets.PASSWORD }}
                 port: 22
                 script: |
-                  rsync -av /www/wwwroot/docs.czstudio.tech/docs/.vitepress/dist /www/wwwroot/docs.czstudio.tech/
+                  rsync -av /www/wwwroot/docs.czstudio.tech/docs/.vitepress/dist/* /www/wwwroot/docs.czstudio.tech/
