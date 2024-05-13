@@ -59,22 +59,24 @@
           h-12 flex items-center pl-8 @click="closeMenu" border-b>项目</router-link>
         <router-link to="/notify" class="phone-link" :class="{ 'active': route.path === '/notify' }" cursor-pointer h-12
           flex items-center pl-8 @click="closeMenu" border-b>通知</router-link>
-        <router-link to="/member" class="phone-link" :class="{ 'active': route.path === '/member' }" cursor-pointer h-12
-          flex items-center pl-8 @click="closeMenu">成员</router-link>
-        <a class="item" href="http://1.92.82.236:5173/" target="_blank" flex items-center cursor-pointer h-12 pl-8>文档
+        <router-link to="/member" class="phone-link" border-b :class="{ 'active': route.path === '/member' }"
+          cursor-pointer h-12 flex items-center pl-8 @click="closeMenu">成员</router-link>
+        <a class="item" href="http://1.92.82.236:5173/" target="_blank" border-b flex items-center cursor-pointer h-12
+          pl-8>文档
           <div inline-block i-ri:share-box-fill text-4 ml-1 text-gray-7>
           </div>
         </a>
         <div v-if="!isLogin">
-          <router-link to="/login" class="phone-link" cursor-pointer h-12 flex items-center pl-8
+          <router-link to="/login" class="phone-link" border-b cursor-pointer h-12 flex items-center pl-8
             @click="closeMenu">登录</router-link>
-          <router-link to="/register" class="phone-link" cursor-pointer h-12 flex items-center pl-8
+          <router-link to="/register" class="phone-link" border-b cursor-pointer h-12 flex items-center pl-8
             @click="closeMenu">注册</router-link>
         </div>
         <div v-else>
-          <router-link to="/updateInfo" class="phone-link" cursor-pointer h-12 flex items-center pl-8
+          <router-link to="/updateInfo" class="phone-link" border-b cursor-pointer h-12 flex items-center pl-8
             @click="closeMenu">修改信息</router-link>
         </div>
+        <div v-if="isLogin" @click="handleLogout" px-5 py-2 hover:bg-gray-100 text-left rounded-md pl-8>退出登录</div>
 
       </div>
     </Transition>
