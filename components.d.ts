@@ -8,16 +8,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AButton: typeof import('ant-design-vue/es')['Button']
-    ACheckbox: typeof import('ant-design-vue/es')['Checkbox']
-    ACheckboxGroup: typeof import('ant-design-vue/es')['CheckboxGroup']
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
-    AInputPassword: typeof import('ant-design-vue/es')['InputPassword']
     ASelect: typeof import('ant-design-vue/es')['Select']
     ASelectOption: typeof import('ant-design-vue/es')['SelectOption']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
-    AUpload: typeof import('ant-design-vue/es')['Upload']
     Badge: typeof import('./src/components/Badge.vue')['default']
     CZAvatar: typeof import('./src/components/CZAvatar.vue')['default']
     Footer: typeof import('./src/components/layout/footer.vue')['default']
@@ -30,7 +26,6 @@ declare module 'vue' {
     StackIcon: typeof import('./src/components/StackIcon.vue')['default']
     TheCounter: typeof import('./src/components/TheCounter.vue')['default']
     TheInput: typeof import('./src/components/TheInput.vue')['default']
-    User: typeof import('./src/components/User.vue')['default']
     UserModal: typeof import('./src/components/UserModal/index.vue')['default']
   }
 }
