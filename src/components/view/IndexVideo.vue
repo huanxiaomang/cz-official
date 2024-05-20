@@ -82,7 +82,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger"; 
 //以下代码均为gsap动画
 onMounted(()=>{
-  //--!!!!!!!--//别动，能跑就行
   gsap.registerPlugin(ScrollTrigger);
   gsap.fromTo(".mainContent-title",
   { fontSize: '40rem', letterSpacing: "500px", paddingBottom: "50rem", paddingTop: "50rem" },
@@ -100,7 +99,6 @@ onMounted(()=>{
         .from(".mainContent-text:nth-child(6)", { x: -500, opacity: 0 })
         .from(".mainContent-text:nth-child(7)", { x: 500, opacity: 0 })
         .from(".mainContent-text:nth-child(8)", { x: -500, opacity: 0 })
-  //--!!!!!!!--//别动，能跑就行
 })
 /*————————————————————————————————————————————————————————————————————————*/
 
