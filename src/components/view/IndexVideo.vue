@@ -20,11 +20,11 @@
   <div w-full relative class="mainContent-container">
     <div class="mainContent">
       <RandomWord class="mainContent-title" :TextContent="mainContentTitle"
-          :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" :startY="500" font-300 sm:text-xl
+          :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" :startY="700" font-300 sm:text-xl
           tracking-wide>
       </RandomWord>
-      <RandomWord class="mainContent-text" v-for="item in mainContent" :TextContent="item"
-          :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" :startY="500" font-300 sm:text-xl
+      <RandomWord class="mainContent-text" v-for="item,i in mainContent" :TextContent="item" :textColor="mainContentColor[i]"
+          :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" :startY="1600" font-300 sm:text-xl
           tracking-wide>
       </RandomWord>
     </div>
@@ -49,9 +49,7 @@
 import { useDeviceType } from '~/hooks/useDeviceType'
 import RandomWord from '../RandomWord.vue';
 import { onMounted } from "vue"
-import gsap from 'gsap';
-import { ScrollTrigger } from "gsap/ScrollTrigger"; 
-gsap.registerPlugin(ScrollTrigger);
+
 
 const deviceType = useDeviceType();
 
@@ -70,102 +68,41 @@ const mainContent = [
   '学生将掌握HTML、CSS、JavaScript等前端技术，',
   '以及Java、Python、Node.js等后端编程语言，学习构建可扩展、高可用的系统。',
 ]
-
+let mainContentColor: string[] = [
+'#FF0000', // 红色
+'#FF3300', // 偏橙红色
+'#FF6600', // 更偏红的橙色
+'#FF9933', // 标准的橙色
+'#FFBF66', // 偏黄的橙色
+'#FFD999', // 较淡的橙色
+'#FFE6CC' // 更淡的橙色
+];
+/*————————————————————————————————————————————————————————————————————————*/
+import gsap from 'gsap';
+import { ScrollTrigger } from "gsap/ScrollTrigger"; 
 //以下代码均为gsap动画
 onMounted(()=>{
   //--!!!!!!!--//别动，能跑就行
-  gsap.fromTo(
-  '.mainContent-title', 
-  { 
-    fontSize: '40rem',
-    letterSpacing: "500px",
-    opacity:0,
-  } , 
-  {
-    fontSize: '20rem',
-    letterSpacing: "100px",
-    opacity:1,
-    scrollTrigger: {
-      trigger:".mainContent-container",
-      scrub: true, 
-      start: "top center",
-      end: "top top", // 到底部再往下滚动100px结束动画
-    }
-  });
-  gsap.fromTo(
-  '.mainContent', 
-  { 
-    opacity:0,
-  } , 
-  {
-    opacity:1,
-    scrollTrigger: {
-      trigger:".mainContent-container",
-      scrub: true, 
-      start: "top center",
-      end: "top top", // 到底部再往下滚动100px结束动画
-    }
-  });
-  ///第一阶段动画
-  gsap.fromTo(
-  '.mainContent', 
-  {},
-  {
-    y:"60vh",
-    scrollTrigger: {
-      trigger:".mainContent",
-      scrub: true, 
-      start: "top top",
-      end: "bottom center", // 到底部再往下滚动100px结束动画
-    }
-  },
-);
-  gsap.fromTo(
-  '.mainContent-title', 
-  { 
-    fontSize: '20rem',
-    letterSpacing: "100px",
-  } , 
-  {
-    fontSize: '1rem',
-    letterSpacing: "0px",
-    scrollTrigger: {
-      trigger:".mainContent",
-      scrub: true, 
-      start: "top top",
-      end: "bottom center", // 到底部再往下滚动100px结束动画
-    }
-  });
-  ///第二阶段动画
-  gsap.fromTo(
-  '.mainContent', 
-  {
-  },
-  {
-    y:"110vh",
-    scrollTrigger: {
-      trigger:".mainVideo",
-      scrub: true, 
-      start: "top center",
-      end: "top top", // 到底部再往下滚动100px结束动画
-    }
-  });
-  //第四阶段动画
-  gsap.fromTo(
-  '.mainContent', 
-  {},
-  {
-    y:"200vh",
-    scrollTrigger: {
-      trigger:".mainVideo",
-      scrub: true, 
-      start: "top top",
-      end: "bottom top", // 到底部再往下滚动100px结束动画
-    }
-  });
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.fromTo(".mainContent-title",
+  { fontSize: '40rem', letterSpacing: "500px", paddingBottom: "50rem", paddingTop: "50rem" },
+  { fontSize: '1rem', letterSpacing: "0px", paddingBottom: "0rem", paddingTop: "0rem",
+    scrollTrigger: { trigger: ".mainContent", start: "top 50%", end: "top 0%", scrub: true },})
+  gsap.from(".mainContent-title",{
+    scrollTrigger: { trigger: ".mainContent", start: "top 0%", end: "top -300%", scrub: true, pin:true },})
+  let textTimeLine = gsap.timeline({
+      scrollTrigger: { trigger: ".mainVideo", start: "top 100%", end: "top 0%", scrub: true }});
+      textTimeLine
+        .from(".mainContent-text:nth-child(2)", { x: -500, opacity: 0 })
+        .from(".mainContent-text:nth-child(3)", { x: 500, opacity: 0 })
+        .from(".mainContent-text:nth-child(4)", { x: -500, opacity: 0 })
+        .from(".mainContent-text:nth-child(5)", { x: 500, opacity: 0 })
+        .from(".mainContent-text:nth-child(6)", { x: -500, opacity: 0 })
+        .from(".mainContent-text:nth-child(7)", { x: 500, opacity: 0 })
+        .from(".mainContent-text:nth-child(8)", { x: -500, opacity: 0 })
   //--!!!!!!!--//别动，能跑就行
 })
-
+/*————————————————————————————————————————————————————————————————————————*/
 
 </script>
 <style lang="scss" scoped>
@@ -189,18 +126,20 @@ onMounted(()=>{
     position: relative;
     z-index: 2;
     width: 100%; 
-    padding-top: 30vh; height: 120vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     .mainContent-title{
       white-space: nowrap;
       font-weight: 600;
     }
     .mainContent-text{
-      font-size: 16px;
+      font-size: 18px;
       margin-top: 10px; margin-bottom: 10px;
       text-align: left;
-      margin-left: 35%;
+      font-weight: 540;
     }
   }
   .mainVideo{
@@ -213,6 +152,7 @@ onMounted(()=>{
 .SecContent-container{
   width: 100%; height: 100vh;
   background-color: white;
+  z-index: 3;
   .title{
     font-size: 40px; 
     padding-top: 30px;

@@ -24,13 +24,15 @@ let mainValue = withDefaults(defineProps<{
     randomWordCount?: number,
     randomWordColor?: string,
     startY?: number
+    textColor?:string
 }>(),{
     randomWordTime: 50,
     relWordTime: 150,
     IsInterval: true,
     randomWordCount: 1,
     randomWordColor: "#FF6C05",
-    startY: 0
+    startY: 0,
+    textColor:"#000"
 })
 /////只要不动下面的屎山，那它就是好代码  ----hakurei77
 let randomList = "!@#$%^&*()_+-=[]{}|;':\",.<>/?~`";//随机字列表    (不用动这一段代码)
@@ -111,6 +113,9 @@ howToStart();
 </script>
 
 <style scoped lang="scss">
+.text{
+    color:v-bind("textColor")
+}
 .underline {
     animation: blink 1.5s steps(1) infinite;
 }
