@@ -8,6 +8,10 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AButton: typeof import('ant-design-vue/es')['Button']
+<<<<<<< HEAD
+=======
+    ACheckbox: typeof import('ant-design-vue/es')['Checkbox']
+>>>>>>> 8e2025677c7c8cc8ccc401f311abd9924e3b0dc9
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
