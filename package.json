@@ -27,7 +27,8 @@
     "preview": "vitepress preview docs",
     "test": "vitest",
     "up": "taze major -I",
-    "build:docs": "node scripts/loadLocalImages.cjs && vitepress build docs"
+    "build:docs": "node scripts/loadLocalImages.cjs && vitepress build docs",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",
@@ -56,6 +57,7 @@
     "@vitejs/plugin-vue-jsx": "^3.1.0",
     "@vue-macros/volar": "^0.18.11",
     "@vue/test-utils": "^2.4.4",
+    "conventional-changelog-cli": "4.1.0",
     "eslint": "^8.57.0",
     "eslint-plugin-format": "^0.1.0",
     "jsdom": "^24.0.0",

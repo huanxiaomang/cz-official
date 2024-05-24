@@ -77,7 +77,7 @@ jobs:
 
             # 打包文档库
             - name: Build Docs
-              run: pnpm docs:build
+              run: pnpm build:docs
 
             # 上传打包资源
             - name: Deploy Docs
