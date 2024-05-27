@@ -23,7 +23,7 @@
           :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" :startY="700" font-300 sm:text-xl
           tracking-wide>
       </RandomWord>
-      <RandomWord class="mainContent-text" v-for="item,i in mainContent" :TextContent="item" :textColor="mainContentColor[i]"
+      <RandomWord class="mainContent-text" v-for="item,i in mainContent" :TextContent="item" :textColor="textColor"
           :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" :startY="1600" font-300 sm:text-xl
           tracking-wide>
       </RandomWord>
@@ -50,6 +50,12 @@ import { useDeviceType } from '~/hooks/useDeviceType'
 import RandomWord from '../RandomWord.vue';
 import { onMounted } from "vue"
 
+import { withDefaults } from 'vue';
+withDefaults(defineProps<{
+  textColor?:string
+}>(), {
+  textColor:"#373737"
+})
 
 const deviceType = useDeviceType();
 
@@ -68,15 +74,7 @@ const mainContent = [
   '学生将掌握HTML、CSS、JavaScript等前端技术，',
   '以及Java、Python、Node.js等后端编程语言，学习构建可扩展、高可用的系统。',
 ]
-let mainContentColor: string[] = [
-'#FF0000', // 红色
-'#FF3300', // 偏橙红色
-'#FF6600', // 更偏红的橙色
-'#FF9933', // 标准的橙色
-'#FFBF66', // 偏黄的橙色
-'#FFD999', // 较淡的橙色
-'#FFE6CC' // 更淡的橙色
-];
+
 /*————————————————————————————————————————————————————————————————————————*/
 import gsap from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger"; 
