@@ -80,6 +80,14 @@ import gsap from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger"; 
 //以下代码均为gsap动画
 onMounted(()=>{
+  let a = document.querySelectorAll(".mainContent-text")
+  const screenWidth = window.innerWidth;
+  // 根据屏幕宽度设置字体大小
+  if (screenWidth < 640) {
+    a.forEach((item :any) => {
+      item.style.display = "none"
+    });
+  } 
   gsap.registerPlugin(ScrollTrigger);
   gsap.fromTo(".mainContent-title",
   { fontSize: '40rem', letterSpacing: "500px", paddingBottom: "50rem", paddingTop: "50rem" },
@@ -132,7 +140,7 @@ onMounted(()=>{
       font-weight: 600;
     }
     .mainContent-text{
-      font-size: 18px;
+      text-align: center;
       margin-top: 10px; margin-bottom: 10px;
       text-align: left;
       font-weight: 540;
