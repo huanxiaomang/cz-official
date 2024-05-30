@@ -36,7 +36,17 @@
       </video>
     </div>
   </div>
-  <div h-100vh w-full relative class="SecContent-container">
+  <div h-80vh w-full relative class="SecContent-container">
+    <Introduce 
+            :title="'创智工作室介绍'" 
+            :companyLogo=CompanyLogo 
+            :companyName="'包容, 多元, 创新, 精进'"
+            :video-poster="videoPoster"
+            :video-left-poster="videoLeftPoster"
+            >
+    </Introduce>
+  </div>
+  <div h-100vh w-full relative bg-white class="[z-index:3]">
     <div class="title">
       为什么加入我们
     </div>
@@ -49,8 +59,11 @@
 import { useDeviceType } from '~/hooks/useDeviceType'
 import RandomWord from '../RandomWord.vue';
 import { onMounted } from "vue"
-
 import { withDefaults } from 'vue';
+import Introduce from './Introduction.vue';
+import CompanyLogo from '~/assets/icon/cz_ba-style_white.png';
+import videoPoster from "~/assets/video/introduction.mp4";
+import videoLeftPoster from "~/assets/video/introductionleft.mp4";
 withDefaults(defineProps<{
   textColor?:string
 }>(), {
@@ -154,7 +167,7 @@ onMounted(()=>{
   }
 }
 .SecContent-container{
-  width: 100%; height: 100vh;
+  width: 100%;
   background-color: white;
   z-index: 3;
   .title{

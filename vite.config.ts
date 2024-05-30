@@ -13,6 +13,9 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 
+//引入svg需要用到的插件
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+
 export default defineConfig({
   resolve: {
     alias: {
@@ -21,6 +24,11 @@ export default defineConfig({
     },
   },
   plugins: [
+    createSvgIconsPlugin({
+      iconDirs: [path.resolve(process.cwd(), 'src/assets/icon')],
+      symbolId: 'icon-[dir]-[name]'
+    }),
+    
     VueMacros({
       defineOptions: false,
       defineModels: false,
