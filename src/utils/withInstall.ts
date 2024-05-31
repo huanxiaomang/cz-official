@@ -15,6 +15,6 @@ export function useGlobalComps<T extends Component>(
   components: Record<string, SFCWithInstall<T>>
 ) {
   Object.keys(components).forEach((key) => {
-    app.component(key, components[key]);
+    app.use(components[key]);
   });
 }

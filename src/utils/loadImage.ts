@@ -1,4 +1,8 @@
-export function loadImage<T extends string | undefined>(url: T, success: (url: string) => void, error?: (url: string) => void) {
+export function loadImage<T extends string | undefined>(
+  url: T,
+  success: (url: string) => void,
+  error?: (url: string) => void
+) {
   if (!url) return;
   const img = document.createElement('img');
   img.src = url;
