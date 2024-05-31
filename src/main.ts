@@ -9,7 +9,7 @@ import { VueMasonryPlugin } from 'vue-masonry';
 import { router } from './router';
 import { globalComponents} from '~/components'
 import 'virtual:svg-icons-register'
-import { useGlobalComps } from './utils/withInstall';
+import { useGlobalComps } from './utils/components';
 const app = createApp(App)
 app.use(VueMasonryPlugin)
 setupStore(app);
