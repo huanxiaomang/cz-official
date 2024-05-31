@@ -28,7 +28,7 @@ export default defineConfig({
       iconDirs: [path.resolve(process.cwd(), 'src/assets/icon')],
       symbolId: 'icon-[dir]-[name]'
     }),
-    
+
     VueMacros({
       defineOptions: false,
       defineModels: false,

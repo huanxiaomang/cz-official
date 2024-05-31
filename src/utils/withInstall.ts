@@ -12,9 +12,7 @@ export function withInstall<T extends Component>(component: T) {
 
 export function useGlobalComps<T extends Component>(
   app: App,
-  components: Record<string, SFCWithInstall<T>>
+  components: SFCWithInstall<T>[]
 ) {
-  Object.keys(components).forEach((key) => {
-    app.use(components[key]);
-  });
+  components.forEach((c) => app.use(c));
 }
