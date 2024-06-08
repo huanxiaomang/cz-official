@@ -67,7 +67,15 @@ const Theme = defineConfig({
                     // },
                   { text: '3- vue3基础语法', link: '3-vue3语法' },
                 ],
-            },
+          },
+          {
+            text: "JS重难点",
+            base: "/course/",
+            items: [
+              { text: '1- 上下文、作用域链、闭包', link: 'bi' },
+
+            ],
+          },
             {
                 text: "JS重难题型",
                 base: "/tx/",
@@ -80,7 +88,8 @@ const Theme = defineConfig({
                     { text: '5- 基于正则的Parser', link: '5-基于正则的Parser' },
 
                 ],
-            },
+          },
+
             // {
             //     text: "绩效项目实战",
             //     base: "/jx/",
