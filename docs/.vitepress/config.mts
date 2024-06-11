@@ -74,6 +74,7 @@ const Theme = defineConfig({
             items: [
               { text: '1- 上下文、作用域链、闭包', link: 'bi' },
               { text: '2- 数组全部知识点总结', link: 'array' },
+              { text: '3- JS中4种相等比较算法', link: '相等' },
 
             ],
           },
