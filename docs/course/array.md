@@ -30,9 +30,11 @@ MDN称之为`Copying methods and mutating methods`，直译为复制方法和变
 
 那么用破坏性分类，有4+3+1个破坏性方法，其余全是非破坏性：
 
-4：`unshift`、`push`、`shift`、`pop`四个用来在头尾增删元素。
-3：`splice`、`reverse`、`sort`三个用来修改数组，值得一提的是在ES2023中引入了他们的非破坏性版本（返回修改后的新数组）：`toSpliced`、`toReversed`、`toSorted`。
-1：fill，用传入的值填充数组从头到尾全部元素。
+**4**：`unshift`、`push`、`shift`、`pop`四个用来在头尾增删元素。
+
+**3**：`splice`、`reverse`、`sort`三个用来修改数组，值得一提的是在ES2023中引入了他们的非破坏性版本（返回修改后的新数组）：`toSpliced`、`toReversed`、`toSorted`。
+
+**1**：fill，用传入的值填充数组从头到尾全部元素。
 
 破坏性其实还有一个[`copyWithin()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin)方法，由于太不常用这里不提。
 
