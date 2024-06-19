@@ -68,28 +68,24 @@ const Theme = defineConfig({
                   { text: '3- vue3基础语法', link: '3-vue3语法' },
                 ],
           },
+
           {
             text: "JS重难点",
             base: "/course/",
             items: [
               { text: '1- 上下文、作用域链、闭包', link: 'bi' },
               { text: '2- 数组全部知识点总结', link: 'array' },
-              { text: '3- JS中4种相等比较算法', link: '相等' },
+              { text: '3- Number全部知识点+面试题', link: 'number' },
 
             ],
           },
-            {
-                text: "JS重难题型",
-                base: "/tx/",
-                items: [
-                    { text: '0- 介绍', link: '0-介绍' },
-                    { text: '1- 树形结构转换', link: '1-树形结构转换' },
-                    { text: '2- 拖拽API', link: '2-拖拽API' },
-                    { text: '3- 二维数组小游戏', link: '3-二维数组小游戏' },
-                    { text: '4- 完美封装各类组件', link: '4-完美封装各类组件' },
-                    { text: '5- 基于正则的Parser', link: '5-基于正则的Parser' },
+          {
+            text: "其他知识点",
+            base: "/course/",
+            items: [
+              { text: '1- JS中4种相等比较算法', link: '相等' },
 
-                ],
+            ],
           },
 
             // {

@@ -12,7 +12,8 @@ defineOptions({
   name: 'IndexPage',
 })
 
-
+const a = undefined;
+console.log(a);
 
 
 </script>
