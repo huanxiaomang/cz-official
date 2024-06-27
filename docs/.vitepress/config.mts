@@ -80,10 +80,11 @@ const Theme = defineConfig({
             ],
           },
           {
-            text: "其他知识点",
+            text: "面试",
             base: "/course/",
             items: [
               { text: '1- JS中4种相等比较算法', link: '相等' },
+              { text: '2- HTTP常见状态码', link: 'http' },
 
             ],
           },
