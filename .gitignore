@@ -18,3 +18,4 @@ app/server/.vscode/sftp.json
 .build/.vscode/sftp.json
 docs/.vitepress/cache
 cache
+.obsidian

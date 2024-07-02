@@ -42,11 +42,11 @@ const Theme = defineConfig({
         },
 
         sidebar: [
-            {
-                text: "指南",
-                base: "/guide/",
-                items: [{ text: "前端速通指南", link: "前端速通指南" }],
-            },
+            // {
+            //     text: "指南",
+            //     base: "/guide/",
+            //     items: [{ text: "前端速通指南", link: "前端速通指南" }],
+            // },
             {
                 text: "教程",
                 base: "/course/",
