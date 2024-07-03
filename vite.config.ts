@@ -53,7 +53,6 @@ export default defineConfig({
         '@vueuse/core',
         VueRouterAutoImports,
         {
-          // add any other imports you were relying on
           'vue-router/auto': ['useLink'],
         },
       ],
