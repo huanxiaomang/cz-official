@@ -12,7 +12,7 @@ hero:
   actions:
     - theme: brand
       text: 进入学习
-      link: /guide/前端速通指南
+      link: /course/bi
     - theme: alt
       text: 项目实战
       link: /jx/0-目标
