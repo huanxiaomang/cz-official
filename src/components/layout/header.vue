@@ -28,7 +28,7 @@
           </div>
         </div>
         <a i-carbon-logo-github icon-btn v-if="!isLogin" hover:text-blue-500 rel="noreferrer"
-          href="https://github.com/huanxiaomang/cz-official" target="_blank" title="GitHub" text-black text-5 ml-auto
+          href="" target="_blank" title="GitHub" text-black text-5 ml-auto
           mr-8 />
       </div>
     </transition>
@@ -36,7 +36,7 @@
   <div v-if="deviceType === 'mobile'" :class="{ 'mb-20': route.path !== '/' }">
     <div class="header w-full h-13 flex top-0 bg-white" flex="items-center row" fixed z-100 border-b>
       <div mr-auto ml-8 h-full items-center flex gap-2>
-        <a i-carbon-logo-github v-if="!isLogin" rel="noreferrer" href="https://github.com/huanxiaomang/cz-official"
+        <a i-carbon-logo-github v-if="!isLogin" rel="noreferrer" href=""
           target="_blank" title="GitHub" text-black text-5 />
         <CZAvatar v-else :user-id="userStore.userInfo?.userId!" :click-fn="() => void 0"></CZAvatar>
 
