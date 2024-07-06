@@ -24,7 +24,7 @@ const isRouterActive = pageStore.isRouterActive;
 </script>
 <style lang="scss">
 .bg {
-  background-image: url(grid-black.svg);
+  background-image: url('./assets/images/grid-black.svg');
 }
 .fade-enter-active,
 .fade-leave-active {
