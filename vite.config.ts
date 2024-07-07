@@ -10,8 +10,9 @@ import VueMacros from 'unplugin-vue-macros/vite'
 import VueRouter from 'unplugin-vue-router/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
 import vueJsx from '@vitejs/plugin-vue-jsx';
-
+import { visualizer } from 'rollup-plugin-visualizer'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+import  externalGlobals  from 'rollup-plugin-external-globals';
 
 //引入svg需要用到的插件
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
@@ -22,6 +23,15 @@ export default defineConfig({
       '#/': `${path.resolve(__dirname, './types')}/`,
       '~/': `${path.resolve(__dirname, './src')}/`,
     },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        chunkFileNames: 'js/[name]-[hash].js',
+        entryFileNames: 'js/[name]-[hash].js',
+        assetFileNames: '[ext]/[name]-[hash].[ext]',
+      },
+    }
   },
   plugins: [
     createSvgIconsPlugin({
@@ -76,6 +86,7 @@ export default defineConfig({
     // https://github.com/antfu/unocss
     // see uno.config.ts for config
     UnoCSS(),
+    visualizer({ open: true }),
   ],
 
   // https://github.com/vitest-dev/vitest

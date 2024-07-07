@@ -19,3 +19,4 @@ app/server/.vscode/sftp.json
 docs/.vitepress/cache
 cache
 .obsidian
+stats.html

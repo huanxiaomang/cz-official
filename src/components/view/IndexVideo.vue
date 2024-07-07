@@ -2,7 +2,7 @@
   <div class="video-container" h-100vh w-full relative>
     <video autoplay loop muted class="video" h-full w-full object-cover z-1
       poster="../../assets/video/bg-first-frame.jpg">
-      <source src="../../assets/video/bg.mp4" type="video/mp4">
+      <source :src="bgVideoURL" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     <div class="title-container w-full z-2 absolute flex items-center justify-center flex-col top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
@@ -31,18 +31,18 @@
     <div class="mainVideo">
       <video autoplay loop muted class="video" h-full w-full object-cover z-1
         poster="../../assets/video/bg-first-frame.jpg">
-        <source src="../../assets/video/font.mp4" type="video/mp4">
+        <source :src="fontVideoURL" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
   </div>
   <div h-80vh w-full relative class="SecContent-container">
-    <Introduce 
-            :title="'创智工作室介绍'" 
-            :companyLogo=CompanyLogo 
+    <Introduce
+            :title="'创智工作室介绍'"
+            :companyLogo=CompanyLogo
             :companyName="'包容, 多元, 创新, 精进'"
-            :video-poster="videoPoster"
-            :video-left-poster="videoLeftPoster"
+            :video-poster="videoURL"
+            :video-left-poster="leftVideoURL"
             >
     </Introduce>
   </div>
@@ -62,8 +62,6 @@ import { onMounted } from "vue"
 import { withDefaults } from 'vue';
 import Introduce from './Introduction.vue';
 import CompanyLogo from '~/assets/icon/cz_ba-style_white.png';
-import videoPoster from "~/assets/video/introduction.mp4";
-import videoLeftPoster from "~/assets/video/introductionleft.mp4";
 withDefaults(defineProps<{
   textColor?:string
 }>(), {
@@ -90,7 +88,7 @@ const mainContent = [
 
 /*————————————————————————————————————————————————————————————————————————*/
 import gsap from 'gsap';
-import { ScrollTrigger } from "gsap/ScrollTrigger"; 
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 //以下代码均为gsap动画
 onMounted(()=>{
   let a = document.querySelectorAll(".mainContent-text")
@@ -100,7 +98,7 @@ onMounted(()=>{
     a.forEach((item :any) => {
       item.style.display = "none"
     });
-  } 
+  }
   gsap.registerPlugin(ScrollTrigger);
   gsap.fromTo(".mainContent-title",
   { fontSize: '40rem', letterSpacing: "500px", paddingBottom: "50rem", paddingTop: "50rem" },
@@ -121,6 +119,10 @@ onMounted(()=>{
 })
 /*————————————————————————————————————————————————————————————————————————*/
 
+const bgVideoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'bg.mp4';
+const fontVideoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'font.mp4';
+const leftVideoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'introductionleft.mp4';
+const videoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'introduction.mp4';
 </script>
 <style lang="scss" scoped>
 .title-cn {
@@ -142,7 +144,7 @@ onMounted(()=>{
   .mainContent{
     position: relative;
     z-index: 2;
-    width: 100%; 
+    width: 100%;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -171,7 +173,7 @@ onMounted(()=>{
   background-color: white;
   z-index: 3;
   .title{
-    font-size: 40px; 
+    font-size: 40px;
     padding-top: 30px;
   }
 }
