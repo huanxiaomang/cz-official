@@ -71,7 +71,8 @@ export const useUserStore = defineStore({
       params:UpdateParams
     ): Promise<GetUserInfoModel | null>{
       try {
-        const data = await updateUserInfoApi(params);
+        const oldData = await getUserInfo();
+        const data = await updateUserInfoApi({...oldData,...params});
         const { token } = data;
 
         // save token
