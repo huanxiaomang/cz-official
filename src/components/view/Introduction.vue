@@ -15,7 +15,7 @@
                         </video>
                     </div>
                     <div class="absolute top-0 left-0 w-full h-full px-10 py-4 lg:px-7">
-                        <img :src="companyLogo" alt="" class="w-[70px] h-[34px] lg:w-[40%] lg:h-[14%]">
+                        <img :src="companyLogo" alt="" class=" h-[34px] lg:h-[14%] ">
                         <div class="text-white font-bold flex mt-[110px] leading-[2.75rem] text-[1.25rem] lg:mt-[210px] lg:text-[1.5rem]">
                             {{ companyName }}
                         </div>
