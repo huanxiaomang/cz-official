@@ -14,7 +14,6 @@
 点个赞，跟我一起查漏补缺吧！
 
 <img src="./../public/images/max.jpg" alt="" width="20%" />
-
 开始之前我们复习一下JS的数据类型都有什么：
 
 # JS8种数据类型
@@ -191,6 +190,7 @@ JavaScript 的 `Number` 类型是一个[双精度 64 位二进制格式 IEEE 7
 IEEE 754 双精度浮点数使用 64 位来表示 3 个部分：
 
 ![image.png](./../public/images/e10282bfc53a4c03b91478bc81b55a79~tplv-k3u1fbpfcp-jj-mark_0_0_0_0_q75.png)
+
 
 由于浮点数的有效数字部分（尾数）为 52 位，并且前面隐含一个 1，因此有效数字实际上是 53 位。有效数字部分范围在 1.0 到 2.0 之间。
 
@@ -423,3 +423,4 @@ Number.isNaN('hello world'); // false
 [JavaScript 数据类型和数据结构 - JavaScript | MDN (mozilla.org)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures)
 
 [在 JavaScript 中，Math.max() 和 Math.min() 在不填入参数的情况下为什么返回 -INFINITY 与 INFINITY - PinkChampagne - 博客园 (cnblogs.com)](https://www.cnblogs.com/pinkchampagne/p/15351743.html)
+
