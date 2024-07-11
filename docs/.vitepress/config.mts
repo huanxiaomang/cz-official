@@ -108,7 +108,16 @@ const Theme = defineConfig({
 
             //     ],
             // },
+          {
+            text: "备赛",
+            base: "/tx/",
+            items: [
+              { text: "0- 介绍", link: "0-介绍" },
+              { text: "1- 树形结构转换", link: "1-树形结构转换" },
+              { text: "2- 拖拽API", link: "2-拖拽API" },
 
+            ],
+          },
             {
                 text: "其他",
                 base: "/other/",

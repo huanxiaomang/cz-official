@@ -12,10 +12,10 @@ hero:
   actions:
     - theme: brand
       text: 进入学习
-      link: /course/bi
+      link: /course/2-HTML+CSS
     - theme: alt
-      text: 项目实战
-      link: /jx/0-目标
+      text: 我的项目
+      link: /course/my/我的项目
 
 features:
   - icon: 🪴

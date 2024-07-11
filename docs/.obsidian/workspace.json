@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "course/my/我的网站收藏.md",
+                "file": "course/my/我的项目.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "course/my/我的网站收藏.md",
+                "file": "course/my/我的项目.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "course/my/我的网站收藏.md",
+                "file": "course/my/我的项目.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "course/my/我的网站收藏.md"
+                "file": "course/my/我的项目.md"
               }
             }
           }
@@ -148,6 +148,18 @@
   },
   "active": "89d2391a39065e2f",
   "lastOpenFiles": [
+    "Pasted image 20240711214914.png",
+    "Pasted image 20240711214553.png",
+    "Pasted image 20240711214542.png",
+    "img_v2_d0356d8d-71cf-4cd6-9a65-28572585668g.jpg",
+    "Pasted image 20240711214142.png",
+    "Pasted image 20240711213831.png",
+    "Pasted image 20240711213517.png",
+    "Pasted image 20240711212912.png",
+    "Pasted image 20240711212824.png",
+    "Pasted image 20240711212614.png",
+    "Pasted image 20240711212517.png",
+    "course/my/我的网站收藏.md",
     "course/my/我的项目.md",
     "course/about/README.md",
     "course/main/前端速通指南.md",
@@ -155,24 +167,14 @@
     "course/2-HTML+CSS.md",
     "course/1-introduction.md",
     "course/my/4月.md",
-    "course/my/我的网站收藏.md",
     "guide/前端速通指南 copy.md",
     "guide/前端速通指南.md",
     "未命名.canvas",
-    "Pasted image 20240408224250.png",
     "lqb/en.md",
-    "915c1d8521c69ff46ea8e2b5a7d9ace5.jpg",
-    "public/images/PixPin_2024-04-04_10-42-33.png",
     "tx/4-完美封装各类组件.md",
     "tx/1-树形结构转换.md",
     "tx/3-二维数组小游戏.md",
     "tx/5-基于正则的Parser.md",
-    "images/Pasted image 20240330181055.png",
-    "Pasted image 20240330161306.png",
-    "Pasted image 20240330163047.png",
-    "Pasted image 20240330161325.png",
-    "Pasted image 20240328164912.png",
-    "images/Pasted image 20240330163143.png",
     "images",
     "lqb/1-介绍.md",
     "course/my",
