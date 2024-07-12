@@ -4,19 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "414160cf79e79c65",
+        "id": "0b1b78eb62c97051",
         "type": "tabs",
         "children": [
           {
-            "id": "89d2391a39065e2f",
+            "id": "4a678894b710c311",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "course/my/我的项目.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -85,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "course/my/我的项目.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "course/my/我的项目.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -124,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "course/my/我的项目.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -146,21 +138,24 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "89d2391a39065e2f",
+  "active": "4a678894b710c311",
   "lastOpenFiles": [
-    "Pasted image 20240711214914.png",
-    "Pasted image 20240711214553.png",
-    "Pasted image 20240711214542.png",
-    "img_v2_d0356d8d-71cf-4cd6-9a65-28572585668g.jpg",
-    "Pasted image 20240711214142.png",
-    "Pasted image 20240711213831.png",
-    "Pasted image 20240711213517.png",
-    "Pasted image 20240711212912.png",
-    "Pasted image 20240711212824.png",
-    "Pasted image 20240711212614.png",
-    "Pasted image 20240711212517.png",
-    "course/my/我的网站收藏.md",
+    "public/images/Pasted image 20240711212517.png",
+    "public/images/Pasted image 20240408224250.png",
+    "public/images/output.png",
+    "public/images/img_v2_d0356d8d-71cf-4cd6-9a65-28572585668g.jpg",
+    "public/images/ec0b978934cf68c8d49161400652d588.png",
+    "public/images/dd02dd42-feca-483c-9ce2-bf848e5ab4b0.png",
+    "public/images/b6f891c6-650b-4bb6-963c-e06a456c90f2.png",
+    "public/images/20240711214914.png",
+    "public/images/20240711214553.png",
+    "public/images/20240711214542.png",
+    "public/images/20240711213831.png",
+    "b6f891c6-650b-4bb6-963c-e06a456c90f2.png.crdownload",
+    "dd02dd42-feca-483c-9ce2-bf848e5ab4b0.png.crdownload",
+    "output.png.crdownload",
     "course/my/我的项目.md",
+    "course/my/我的网站收藏.md",
     "course/about/README.md",
     "course/main/前端速通指南.md",
     "course/3-JS-Array-Object.md",
