@@ -36,14 +36,17 @@ export type ModalOptionsPartial = Partial<ModalOptionsEx> &
   Pick<ModalOptionsEx, "content">;
 
 function getIcon(iconType: string) {
-  if (iconType === "warning") {
-    return <InfoCircleFilled class="modal-icon-warning" />;
-  } else if (iconType === "success") {
-    return <CheckCircleFilled class="modal-icon-success" />;
-  } else if (iconType === "info") {
-    return <InfoCircleFilled class="modal-icon-info" />;
-  } else {
-    return <CloseCircleFilled class="modal-icon-error" />;
+  switch (iconType) {
+    case "warning":
+      return <InfoCircleFilled class="modal-icon-warning" />;
+    case "success":
+      return <CheckCircleFilled class="modal-icon-success" />;
+    case "info":
+      return <InfoCircleFilled class="modal-icon-info" />;
+    case "error":
+      return <CloseCircleFilled class="modal-icon-error" />;
+    default:
+      return <InfoCircleFilled class="modal-icon-info" />;
   }
 }
 

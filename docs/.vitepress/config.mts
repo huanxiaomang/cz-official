@@ -70,12 +70,13 @@ const Theme = defineConfig({
           },
 
           {
-            text: "JS重难点",
+            text: "重难点",
             base: "/course/",
             items: [
               { text: '1- 上下文、作用域链、闭包', link: 'bi' },
               { text: '2- 数组全部知识点总结', link: 'array' },
               { text: '3- Number全部知识点+面试题', link: 'number' },
+              { text: '4- 浏览器缓存', link: '缓存' },
 
             ],
           },

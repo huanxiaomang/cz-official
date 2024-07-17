@@ -1,5 +1,4 @@
 /// <reference types="vitest" />
-
 import path from 'node:path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
@@ -18,6 +17,10 @@ import  externalGlobals  from 'rollup-plugin-external-globals';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 export default defineConfig({
+  esbuild: {
+    pure: ['console.log'], // 删除 console.log
+    drop: ['debugger'], // 删除 debugger
+  },
   resolve: {
     alias: {
       '#/': `${path.resolve(__dirname, './types')}/`,
