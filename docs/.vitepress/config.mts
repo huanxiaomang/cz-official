@@ -127,6 +127,13 @@ const Theme = defineConfig({
 
                 ],
             },
+            {
+                text: "我的",
+                base: "/my/",
+                items: [
+                    { text: "我的项目", link: "我的项目" },
+                ],
+            },
         ],
 
         socialLinks: [{ icon: "github", link: "https://github.com/huanxiaomang" }],
