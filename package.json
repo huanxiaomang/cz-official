@@ -1,4 +1,6 @@
 {
+  "name":"cz-official",
+  "version": "1.2.1",
   "type": "module",
   "private": true,
   "author": {

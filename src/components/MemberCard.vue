@@ -1,23 +1,23 @@
 <template>
-  <div shadow-md rounded-md flex sm:w-110 flex-col items-center m-5 pb-3 bg-white hover:scale-105 transition-all
+  <div shadow-md rounded-md flex sm:w-110 flex-col items-center m-5 pb-3 bg-white dark:bg-dark hover:scale-105 transition-all
     animate-ease-in-out class="card select-none" >
     <img :src="bg" alt="用户背景图" w-full rounded-t-md h-30 object-cover class="[-webkit-user-drag:none]" select-none>
     <img :src="avatar" alt="用户头像" w-30 h-30 object-cover rounded-full class="mt-[-3.75rem] user-drag-none select-none [-webkit-user-drag:none]">
 
     <div mt-2 text-5.5 :class="userInfo.role === 'ADMIN' ? 'text-yellow-500':'text-blue-500'">{{ userInfo.username }}
     </div>
-    <div mt-1 text-3.5>{{ userInfo.major }} - 大{{ gradeToCN(userInfo.grade) }}</div>
+    <div mt-1 text-3.5 v-if="gradeToCN(userInfo.grade)">{{ userInfo.major }} - 大{{ gradeToCN(userInfo.grade) }}</div>
     <div gap-2 mt-2 flex v-if="userInfo.badge">
       <Badge v-for="b of userInfo.badge.split(',') " :key="b">{{ b }}</Badge>
     </div>
-    <div px-10 mt-2 mb-1 text-3.5 text-center whitespace-pre-wrap class="color-[#646a73] w-[70%]">
+    <div px-10 mt-2 mb-1 text-3.5 text-center whitespace-pre-wrap class="color-[#646a73] w-[70%] dark:text-gray-4">
       {{ userInfo.description }}
     </div>
     <div mt-10 flex items-center v-if="userInfo.github">
       <a i-carbon-logo-github icon-btn hover:text-blue-500 rel="noreferrer" :href="userInfo.github" target="_blank"
-        title="GitHub" text-black text-5 ml-auto mr-4 />
+        title="GitHub" text-black text-5 ml-auto mr-4 dark:text-blue-4 />
       <a i-eva:email-fill icon-btn hover:text-blue-500 rel="noreferrer" @click="copyToClipboard(userInfo.email)"
-        target="_blank" title="Email" text-black text-5.5 />
+        target="_blank" title="Email" text-black text-5.5 dark:text-blue-4 />
     </div>
   </div>
 </template>

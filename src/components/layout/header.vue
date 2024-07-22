@@ -15,6 +15,9 @@
               i-ri:share-box-fill text-4 ml-1>
             </div></a>
         </div>
+            <button icon-btn @click="toggleDark()">
+      <div i-carbon-sun dark:i-carbon-moon w-8 mr-3 />
+    </button>
         <div mr-4 v-if="!isLogin">
           <router-link to="/register" class="hover:text-blue-5" cursor-pointer>注册 </router-link>|
           <router-link to="/login" class="hover:text-blue-5" cursor-pointer>登录</router-link>
@@ -90,6 +93,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useDeviceType } from '~/hooks/useDeviceType';
 import { useUserStore } from '~/store/user';
 import CZAvatar from '../CZAvatar.vue';
+import { toggleDark } from '~/composables/dark';
 
 const route = useRoute();
 
