@@ -129,7 +129,7 @@ const Theme = defineConfig({
             },
             {
                 text: "我的",
-                base: "/my/",
+                base: "/course/my/",
                 items: [
                     { text: "我的项目", link: "我的项目" },
                 ],
