@@ -3,36 +3,36 @@
     {{ text }}
 
     <span class="point" inline-block :class="isEnd ? 'w-10' : ''">{{ point }}
-      <span :class="randomWordClass" :style="{color: mainValue.randomWordColor}" v-if="mainValue.randomWordCount === 1">
+      <span :class="randomWordClass" :style="{ color: mainValue.randomWordColor }" v-if="mainValue.randomWordCount === 1">
         {{ randomWord }}
       </span>
-      <span :class="randomWordClass" :style="{color: mainValue.randomWordColor}" v-else v-for="i in randomWordCount"
+      <span :class="randomWordClass" :style="{ color: mainValue.randomWordColor }" v-else v-for="i in randomWordCount"
         :key="i">
-        {{ randomWord === "end" ? "": randomList[Math.floor(Math.random() * randomList.length)] }}
+        {{ randomWord === "end" ? "" : randomList[Math.floor(Math.random() * randomList.length)] }}
       </span>
     </span>
   </span>
 </template>
 
 <script setup lang='ts'>
-import { ref , withDefaults } from 'vue';
+import { ref, withDefaults } from 'vue';
 let mainValue = withDefaults(defineProps<{
-    randomWordTime?: number,
-    relWordTime?: number,
-    TextContent: string,
-    IsInterval?: boolean,
-    randomWordCount?: number,
-    randomWordColor?: string,
-    startY?: number
-    textColor?:string
-}>(),{
-    randomWordTime: 50,
-    relWordTime: 150,
-    IsInterval: true,
-    randomWordCount: 1,
-    randomWordColor: "#FF6C05",
-    startY: 0,
-    textColor:"#000"
+  randomWordTime?: number,
+  relWordTime?: number,
+  TextContent: string,
+  IsInterval?: boolean,
+  randomWordCount?: number,
+  randomWordColor?: string,
+  startY?: number
+  textColor?: string
+}>(), {
+  randomWordTime: 50,
+  relWordTime: 150,
+  IsInterval: true,
+  randomWordCount: 1,
+  randomWordColor: "#FF6C05",
+  startY: 0,
+  textColor: "#000"
 })
 /////只要不动下面的屎山，那它就是好代码  ----hakurei77
 let randomList = "!@#$%^&*()_+-=[]{}|;':\",.<>/?~`";//随机字列表    (不用动这一段代码)
@@ -49,63 +49,63 @@ const isEnd = ref(false);
  * @param underline_presistent_time 随机字闪烁持续时间
  * @param random_persistent_time 真实字闪烁持续时间
  */
-let randomDisplay = ( random_word_time:number , rel_word_time:number , underline_presistent_time = 4500 , random_persistent_time = 1000) => {
-    let index = 0;
-    let wordTimer = setInterval(() => { //随机抽字函数
-        if(mainValue.randomWordCount === 1){
-            randomWord.value = randomList[Math.floor(Math.random() * randomList.length)];
-        }
-        else{
-            randomWord.value = "";
-        }
-    }, random_word_time)
-    let textTimer = setInterval(() => {
-      if (index < mainValue.TextContent.length) {
-          let letter = mainValue.TextContent[index];
-          if (letter + mainValue.TextContent.slice(index + 1, index + 4) === `<br>`){
-              text.value += `\n`;
-              index += 4;
-          } else {
-            text.value += letter;
-            index++;
-          }
+let randomDisplay = (random_word_time: number, rel_word_time: number, underline_presistent_time = 4500, random_persistent_time = 1000) => {
+  let index = 0;
+  let wordTimer = setInterval(() => { //随机抽字函数
+    if (mainValue.randomWordCount === 1) {
+      randomWord.value = randomList[Math.floor(Math.random() * randomList.length)];
+    }
+    else {
+      randomWord.value = "";
+    }
+  }, random_word_time)
+  let textTimer = setInterval(() => {
+    if (index < mainValue.TextContent.length) {
+      let letter = mainValue.TextContent[index];
+      if (letter + mainValue.TextContent.slice(index + 1, index + 4) === `<br>`) {
+        text.value += `\n`;
+        index += 4;
       } else {
-          isEnd.value = true;
-            randomWordClass.value = "randomWord underline";
+        text.value += letter;
+        index++;
+      }
+    } else {
+      isEnd.value = true;
+      randomWordClass.value = "randomWord underline";
+      clearInterval(wordTimer);
+      clearInterval(textTimer);
+      point.value = ""
+      mainValue.randomWordCount === 1 ? randomWord.value = "" : randomWord.value = "end"
+      if (mainValue.IsInterval) {
+        randomWord.value = "_"
+        setInterval(() => {
+          randomWordClass.value = "randomWord";
+          let wordTimer = setInterval(() => {
+            randomWord.value = randomList[Math.floor(Math.random() * randomList.length)];
+          }, 50)
+          setTimeout(() => {
             clearInterval(wordTimer);
-            clearInterval(textTimer);
-            point.value = ""
-            mainValue.randomWordCount === 1 ? randomWord.value = "" : randomWord.value = "end"
-            if(mainValue.IsInterval){
-                randomWord.value = "_"
-                setInterval(() => {
-                    randomWordClass.value = "randomWord";
-                    let wordTimer = setInterval(() => {
-                        randomWord.value = randomList[Math.floor(Math.random() * randomList.length)];
-                    },50)
-                    setTimeout(() => {
-                        clearInterval(wordTimer);
-                        randomWordClass.value = "randomWord underline";
-                        randomWord.value = "_"
-                    },random_persistent_time)
-                },underline_presistent_time)
-            }
-        }
-    }, rel_word_time);    //字刷新事件
+            randomWordClass.value = "randomWord underline";
+            randomWord.value = "_"
+          }, random_persistent_time)
+        }, underline_presistent_time)
+      }
+    }
+  }, rel_word_time);    //字刷新事件
 };
 // 开始逐个显示字母
-function howToStart(){
-  if(mainValue.startY === 0){
+function howToStart() {
+  if (mainValue.startY === 0) {
     randomDisplay(mainValue.randomWordTime, mainValue.relWordTime);
   }
-  else{
-    window.addEventListener('scroll', function() {
-        // 当滚动距离大于或等于100vh时执行代码
-        if (window.scrollY >= mainValue.startY && time === 0) {
-            // 执行你的函数
-            randomDisplay(mainValue.randomWordTime, mainValue.relWordTime);
-            time++;
-        }
+  else {
+    window.addEventListener('scroll', function () {
+      // 当滚动距离大于或等于100vh时执行代码
+      if (window.scrollY >= mainValue.startY && time === 0) {
+        // 执行你的函数
+        randomDisplay(mainValue.randomWordTime, mainValue.relWordTime);
+        time++;
+      }
     });
   }
 }
@@ -113,23 +113,25 @@ howToStart();
 </script>
 
 <style scoped lang="scss">
-.text{
-    color:v-bind("textColor")
+.text {
+  color: v-bind("textColor")
 }
+
 .underline {
-    animation: blink 1.5s steps(1) infinite;
+  animation: blink 1.5s steps(1) infinite;
 }
+
 @keyframes blink {
-    0% {
-        opacity: 0;
-    }
+  0% {
+    opacity: 0;
+  }
 
-    50% {
-        opacity: 1;
-    }
+  50% {
+    opacity: 1;
+  }
 
-    100% {
-        opacity: 0;
-    }
+  100% {
+    opacity: 0;
+  }
 }
 </style>

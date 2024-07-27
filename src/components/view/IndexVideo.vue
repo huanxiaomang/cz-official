@@ -5,7 +5,8 @@
       <source :src="bgVideoURL" type="video/mp4">
       Your browser does not support the video tag.
     </video>
-    <div class="title-container w-full z-2 absolute flex items-center justify-center flex-col top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+    <div
+      class="title-container w-full z-2 absolute flex items-center justify-center flex-col top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
       <div flex flex-col gap-1>
         <RandomWord class="title-cn" :TextContent="deviceType === 'mobile' ? CN_titleWithBR : CN_title" sm:text-5xl
           text-3xl font-bold>
@@ -19,13 +20,12 @@
   </div>
   <div w-full relative class="mainContent-container">
     <div class="mainContent">
-      <RandomWord class="mainContent-title" :TextContent="mainContentTitle"
-          :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" :startY="700" font-300 sm:text-xl
-          tracking-wide>
+      <RandomWord class="mainContent-title" :TextContent="mainContentTitle" :randomWordCount="3" :IsInterval="false"
+        :relWordTime="50" randomWordColor="#666" :startY="700" font-300 sm:text-xl tracking-wide>
       </RandomWord>
-      <RandomWord class="mainContent-text" v-for="item,i in mainContent" :TextContent="item" :textColor="textColor"
-          :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" :startY="1600" font-300 sm:text-xl
-          tracking-wide>
+      <RandomWord class="mainContent-text" v-for="item, i in mainContent" :TextContent="item" :textColor="textColor"
+        :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" :startY="1600" font-300
+        sm:text-xl tracking-wide>
       </RandomWord>
     </div>
     <div class="mainVideo">
@@ -37,13 +37,8 @@
     </div>
   </div>
   <div h-80vh w-full relative class="SecContent-container">
-    <Introduce
-            :title="'创智工作室介绍'"
-            :companyLogo=CompanyLogo
-            :companyName="'包容, 多元, 创新, 精进'"
-            :video-poster="videoURL"
-            :video-left-poster="leftVideoURL"
-            >
+    <Introduce :title="'创智工作室介绍'" :companyLogo=CompanyLogo :companyName="'包容, 多元, 创新, 精进'" :video-poster="videoURL"
+      :video-left-poster="leftVideoURL">
     </Introduce>
   </div>
   <div h-100vh w-full relative bg-white class="[z-index:3]">
@@ -63,9 +58,9 @@ import { withDefaults } from 'vue';
 import Introduce from './Introduction.vue';
 import CompanyLogo from '~/assets/icon/cz_ba-style_white.png';
 withDefaults(defineProps<{
-  textColor?:string
+  textColor?: string
 }>(), {
-  textColor:"#373737"
+  textColor: "#373737"
 })
 
 const deviceType = useDeviceType();
@@ -90,32 +85,36 @@ const mainContent = [
 import gsap from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 //以下代码均为gsap动画
-onMounted(()=>{
+onMounted(() => {
   let a = document.querySelectorAll(".mainContent-text")
   const screenWidth = window.innerWidth;
   // 根据屏幕宽度设置字体大小
   if (screenWidth < 640) {
-    a.forEach((item :any) => {
+    a.forEach((item: any) => {
       item.style.display = "none"
     });
   }
   gsap.registerPlugin(ScrollTrigger);
   gsap.fromTo(".mainContent-title",
-  { fontSize: '40rem', letterSpacing: "500px", paddingBottom: "50rem", paddingTop: "50rem" },
-  { fontSize: '1rem', letterSpacing: "0px", paddingBottom: "0rem", paddingTop: "0rem",
-    scrollTrigger: { trigger: ".mainContent", start: "top 50%", end: "top 0%", scrub: true },})
-  gsap.from(".mainContent-title",{
-    scrollTrigger: { trigger: ".mainContent", start: "top 0%", end: "top -300%", scrub: true, pin:true },})
+    { fontSize: '40rem', letterSpacing: "500px", paddingBottom: "50rem", paddingTop: "50rem" },
+    {
+      fontSize: '1rem', letterSpacing: "0px", paddingBottom: "0rem", paddingTop: "0rem",
+      scrollTrigger: { trigger: ".mainContent", start: "top 50%", end: "top 0%", scrub: true },
+    })
+  gsap.from(".mainContent-title", {
+    scrollTrigger: { trigger: ".mainContent", start: "top 0%", end: "top -300%", scrub: true, pin: true },
+  })
   let textTimeLine = gsap.timeline({
-      scrollTrigger: { trigger: ".mainVideo", start: "top 100%", end: "top 0%", scrub: true }});
-      textTimeLine
-        .from(".mainContent-text:nth-child(2)", { x: -500, opacity: 0 })
-        .from(".mainContent-text:nth-child(3)", { x: 500, opacity: 0 })
-        .from(".mainContent-text:nth-child(4)", { x: -500, opacity: 0 })
-        .from(".mainContent-text:nth-child(5)", { x: 500, opacity: 0 })
-        .from(".mainContent-text:nth-child(6)", { x: -500, opacity: 0 })
-        .from(".mainContent-text:nth-child(7)", { x: 500, opacity: 0 })
-        .from(".mainContent-text:nth-child(8)", { x: -500, opacity: 0 })
+    scrollTrigger: { trigger: ".mainVideo", start: "top 100%", end: "top 0%", scrub: true }
+  });
+  textTimeLine
+    .from(".mainContent-text:nth-child(2)", { x: -500, opacity: 0 })
+    .from(".mainContent-text:nth-child(3)", { x: 500, opacity: 0 })
+    .from(".mainContent-text:nth-child(4)", { x: -500, opacity: 0 })
+    .from(".mainContent-text:nth-child(5)", { x: 500, opacity: 0 })
+    .from(".mainContent-text:nth-child(6)", { x: -500, opacity: 0 })
+    .from(".mainContent-text:nth-child(7)", { x: 500, opacity: 0 })
+    .from(".mainContent-text:nth-child(8)", { x: -500, opacity: 0 })
 })
 /*————————————————————————————————————————————————————————————————————————*/
 
@@ -129,19 +128,20 @@ const videoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'introduction.mp4';
   color: transparent;
   background-clip: text !important;
   background: -webkit-linear-gradient(to right, #1d2836 0%,
-    #384e6c 100%);
+      #384e6c 100%);
   background: linear-gradient(to right, #1d2836 0%, #384e6c 100%);
 }
 
-.title-en{
+.title-en {
   font-family: Gilroy-regular, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
-.mainContent-container{
+.mainContent-container {
   background-color: white;
   height: 220vh;
   overflow: hidden;
-  .mainContent{
+
+  .mainContent {
     position: relative;
     z-index: 2;
     width: 100%;
@@ -150,29 +150,36 @@ const videoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'introduction.mp4';
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    .mainContent-title{
+
+    .mainContent-title {
       white-space: nowrap;
       font-weight: 600;
     }
-    .mainContent-text{
+
+    .mainContent-text {
       text-align: center;
-      margin-top: 10px; margin-bottom: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
       text-align: left;
       font-weight: 540;
     }
   }
-  .mainVideo{
+
+  .mainVideo {
     position: absolute;
     z-index: 1;
     bottom: 0;
-    width: 100%; height: 100vh;
+    width: 100%;
+    height: 100vh;
   }
 }
-.SecContent-container{
+
+.SecContent-container {
   width: 100%;
   background-color: white;
   z-index: 3;
-  .title{
+
+  .title {
     font-size: 40px;
     padding-top: 30px;
   }
