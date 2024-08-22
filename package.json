@@ -1,5 +1,5 @@
 {
-  "name":"cz-official",
+  "name": "cz-official",
   "version": "1.2.1",
   "type": "module",
   "private": true,
@@ -36,6 +36,7 @@
     "@vueuse/core": "^10.9.0",
     "ant-design-vue": "4.x",
     "axios": "^1.6.8",
+    "esbuild": "^0.23.1",
     "gsap": "^3.12.5",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
