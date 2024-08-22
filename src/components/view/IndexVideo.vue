@@ -37,9 +37,9 @@
     </div>
   </div>
   <div h-80vh w-full relative class="SecContent-container">
-    <Introduce :title="'创智工作室介绍'" :companyLogo=CompanyLogo :companyName="'包容, 多元, 创新, 精进'" :video-poster="videoURL"
+    <!-- <Introduce :title="'创智工作室介绍'" :companyLogo=CompanyLogo :companyName="'包容, 多元, 创新, 精进'" :video-poster="videoURL"
       :video-left-poster="leftVideoURL">
-    </Introduce>
+    </Introduce> -->
   </div>
   <div h-100vh w-full relative bg-white class="[z-index:3]">
     <div class="title">

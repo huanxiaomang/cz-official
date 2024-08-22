@@ -26,8 +26,6 @@ export interface ProjectResultModel {
   updatedAt: string;
 }
 
-
-
 enum Api {
   GetAll = "/project",
   CreateProj = "/project/create",
