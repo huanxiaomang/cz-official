@@ -42,10 +42,23 @@
     </Introduce> -->
   </div>
   <div h-100vh w-full relative bg-white class="[z-index:3]">
-    <div class="title">
-      为什么加入我们
+    <div class="title" text-lightblue font-bold text-10>
+      我们的优势
     </div>
-    维护中QAQ
+    <div text-gray-7 gap-3 grid>
+      <div>相对<span font-bold>灵活</span>、<span font-bold>开明</span>的培养体系，为成员们提供良好愉快的学习氛围。</div>
+      <div>蓝桥杯<span font-bold>国一</span>学长带队前端，冲刺蓝桥杯</div>
+    </div>
+    <div class="title" text-lightblue font-bold text-10 mt-10>
+      我们需要你
+    </div>
+    <div text-gray-7 gap-3 grid>
+      <div>1. 自驱力自控力</div>
+      <div>2. 对计算机技术具备兴趣</div>
+      <div>3. 善于思考；具备主观能动性</div>
+      <div>4. 具备计算机常识</div>
+    </div>
+
   </div>
 
 </template>

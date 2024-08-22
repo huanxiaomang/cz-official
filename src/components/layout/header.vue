@@ -30,9 +30,9 @@
             <div @click="handleLogout" px-5 py-2 hover:bg-gray-100 text-left rounded-md>退出登录</div>
           </div>
         </div>
-        <a i-carbon-logo-github icon-btn v-if="!isLogin" hover:text-blue-500 rel="noreferrer"
+        <!-- <a i-carbon-logo-github icon-btn v-if="!isLogin" hover:text-blue-500 rel="noreferrer"
           href="" target="_blank" title="GitHub" text-black text-5 ml-auto
-          mr-8 />
+          mr-8 /> -->
       </div>
     </transition>
   </div>
