@@ -11,8 +11,12 @@
             "id": "4a678894b710c311",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "course/缓存.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "course/缓存.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "course/缓存.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "course/缓存.md"
+              }
             }
           }
         ]
@@ -140,6 +148,10 @@
   },
   "active": "4a678894b710c311",
   "lastOpenFiles": [
+    "other/阿德勒心理学.md",
+    "other/新手常见问题篇.md",
+    "other/我收集的一些js例子.md",
+    "other/随记.md",
     "public/images/Pasted image 20240711212517.png",
     "public/images/Pasted image 20240408224250.png",
     "public/images/output.png",
@@ -150,7 +162,6 @@
     "public/images/20240711214914.png",
     "public/images/20240711214553.png",
     "public/images/20240711214542.png",
-    "public/images/20240711213831.png",
     "b6f891c6-650b-4bb6-963c-e06a456c90f2.png.crdownload",
     "dd02dd42-feca-483c-9ce2-bf848e5ab4b0.png.crdownload",
     "output.png.crdownload",
@@ -182,9 +193,6 @@
     "course/4-JS-cases.md",
     "course/5-DOM+BOM.md",
     "public/xmind/Window.xmind",
-    "public/xmind/DOM.xmind",
-    "lqb/3-JS基础.md",
-    "lqb/2-HTML+CSS.md",
-    "lqb/4-Axios+ES6.md"
+    "public/xmind/DOM.xmind"
   ]
 }
