@@ -11,13 +11,13 @@
             cursor-pointer>通知</router-link>
           <router-link to="/member" class="item" :class="{ 'active': route.path === '/member' }"
             cursor-pointer>成员</router-link>
-          <a class="item" href="http://1.92.82.236:5173/" target="_blank" flex items-center>文档<div inline-block
+          <a class="item" href="http://docs.czstudio.tech/" target="_blank" flex items-center>文档<div inline-block
               i-ri:share-box-fill text-4 ml-1>
             </div></a>
         </div>
-            <button icon-btn @click="toggleDark()">
-      <div i-carbon-sun dark:i-carbon-moon w-8 mr-3 />
-    </button>
+        <button icon-btn @click="toggleDark()">
+          <div i-carbon-sun dark:i-carbon-moon w-8 mr-3 />
+        </button>
         <div mr-4 v-if="!isLogin">
           <router-link to="/register" class="hover:text-blue-5" cursor-pointer>注册 </router-link>|
           <router-link to="/login" class="hover:text-blue-5" cursor-pointer>登录</router-link>
@@ -30,17 +30,17 @@
             <div @click="handleLogout" px-5 py-2 hover:bg-gray-100 text-left rounded-md>退出登录</div>
           </div>
         </div>
-        <!-- <a i-carbon-logo-github icon-btn v-if="!isLogin" hover:text-blue-500 rel="noreferrer"
+        <a i-carbon-logo-github icon-btn v-if="!isLogin" hover:text-blue-500 rel="noreferrer"
           href="" target="_blank" title="GitHub" text-black text-5 ml-auto
-          mr-8 /> -->
+          mr-8 />
       </div>
     </transition>
   </div>
   <div v-if="deviceType === 'mobile'" :class="{ 'mb-20': route.path !== '/' }">
     <div class="header w-full h-13 flex top-0 bg-white" flex="items-center row" fixed z-100 border-b>
       <div mr-auto ml-8 h-full items-center flex gap-2>
-        <a i-carbon-logo-github v-if="!isLogin" rel="noreferrer" href=""
-          target="_blank" title="GitHub" text-black text-5 />
+        <a i-carbon-logo-github v-if="!isLogin" rel="noreferrer" href="" target="_blank" title="GitHub" text-black
+          text-5 />
         <CZAvatar v-else :user-id="userStore.userInfo?.userId!" :click-fn="() => void 0"></CZAvatar>
 
 
