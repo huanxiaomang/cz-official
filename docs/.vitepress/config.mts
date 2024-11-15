@@ -119,14 +119,14 @@ const Theme = defineConfig({
 
             ],
           },
-            {
-                text: "其他",
-                base: "/other/",
-                items: [{ text: "学习笔记", link: "我收集的一些js例子" },
-                { text: "常见问题", link: "新手常见问题篇" },
+            // {
+            //     text: "其他",
+            //     base: "/other/",
+                // items: [{ text: "学习笔记", link: "我收集的一些js例子" },
+            //     { text: "常见问题", link: "新手常见问题篇" },
 
-                ],
-            },
+            //     ],
+            // },
             {
                 text: "我的",
                 base: "/course/my/",
