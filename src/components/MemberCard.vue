@@ -4,7 +4,7 @@
     <img :src="bg" alt="用户背景图" w-full rounded-t-md h-30 object-cover class="[-webkit-user-drag:none]" select-none>
     <img :src="avatar" alt="用户头像" w-30 h-30 object-cover rounded-full class="mt-[-3.75rem] user-drag-none select-none [-webkit-user-drag:none]">
 
-    <div mt-2 text-5.5 :class="userInfo.role === 'ADMIN' ? 'text-yellow-500':'text-blue-500'">{{ userInfo.username }}
+    <div mt-2 text-5.5 :class="userInfo.role === 'ADMIN' ? 'text-yellow-500':'text-blue-500'" :title="userInfo.role == 'ADMIN'?'创智管理员':'创智成员'">{{ userInfo.username }} 
     </div>
     <div mt-1 text-3.5 v-if="gradeToCN(userInfo.grade)">{{ userInfo.major }} - 大{{ gradeToCN(userInfo.grade) }}</div>
     <div gap-2 mt-2 flex v-if="userInfo.badge">
