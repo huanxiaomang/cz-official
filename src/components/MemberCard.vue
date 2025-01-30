@@ -8,8 +8,8 @@
       <template #title>
         <span>{{ userInfo.role == 'ADMIN' ? '创智管理员' : '创智成员' }}</span>
       </template>
-      <div mt-2 text-5.5 cursor-default :class="userInfo.role === 'ADMIN' ? 'text-yellow-500' : 'text-blue-500'"
-        >{{ userInfo.username }}
+      <div mt-2 text-5.5 cursor-default :class="userInfo.role === 'ADMIN' ? 'text-yellow-500' : 'text-blue-500'">{{
+        userInfo.username }}
       </div>
     </a-tooltip>
 
