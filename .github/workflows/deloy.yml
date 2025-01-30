@@ -48,7 +48,7 @@ jobs:
 
             # 装依赖
             - name: Install
-              run: pnpm i
+              run: pnpm i --frozen-lockfile
 
             # 打包
             - name: Build Web

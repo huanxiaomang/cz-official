@@ -16,6 +16,7 @@ declare module 'vue' {
     ASelect: typeof import('ant-design-vue/es')['Select']
     ASelectOption: typeof import('ant-design-vue/es')['SelectOption']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
+    ATooltip: typeof import('ant-design-vue/es')['Tooltip']
     Badge: typeof import('./src/components/Badge.vue')['default']
     CZAvatar: typeof import('./src/components/CZAvatar.vue')['default']
     Footer: typeof import('./src/components/layout/footer.vue')['default']
