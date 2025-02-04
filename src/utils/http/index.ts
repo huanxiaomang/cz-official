@@ -17,6 +17,7 @@ import { AxiosRetry } from "./axiosRetry";
 import axios from "axios";
 import { useGlobSetting } from "./../../hooks/setting/useGlobSetting";
 import { useUserStore } from "~/store/user";
+import { getAppEnvConfig } from "../env";
 
 
 
@@ -314,7 +315,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
 }
 export const defHttp = createAxios({
   requestOptions: {
-    apiUrl: 'http://1.92.82.236:3000/',
+    apiUrl: getAppEnvConfig().VITE_GLOB_API_URL,
 
   }
 });
