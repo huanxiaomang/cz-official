@@ -36,7 +36,7 @@
       </video>
     </div>
   </div>
-  <div h-80vh w-full relative class="SecContent-container">
+  <div h-20vh w-full relative class="SecContent-container">
     <!-- <Introduce :title="'创智工作室介绍'" :companyLogo=CompanyLogo :companyName="'包容, 多元, 创新, 精进'" :video-poster="videoURL"
       :video-left-poster="leftVideoURL">
     </Introduce> -->
@@ -52,11 +52,16 @@
     <div class="title" text-lightblue font-bold text-10 mt-10>
       我们需要你
     </div>
+
     <div text-gray-7 gap-3 grid>
       <div>1. 自驱力自控力</div>
       <div>2. 对计算机技术具备兴趣</div>
       <div>3. 善于思考；具备主观能动性</div>
       <div>4. 具备计算机常识</div>
+    </div>
+    <div class="w-full h-300 flex flex-col items-center justify-center relative">
+      <canvas class="w-full" ref="canvasRef"></canvas>
+      <div class="w-full text-center text-gray-700 cursor-pointer hover:underline"><a href="https://www.npmjs.com/package/svg-particle" target="_blank">svg-particle(NPM) - Hakurei77</a></div>
     </div>
 
   </div>
@@ -66,10 +71,17 @@
 <script setup lang='ts'>
 import { useDeviceType } from '~/hooks/useDeviceType'
 import RandomWord from '../RandomWord.vue';
-import { onMounted } from "vue"
+import { onMounted, onUnmounted, ref } from "vue"
 import { withDefaults } from 'vue';
 import Introduce from './Introduction.vue';
 import CompanyLogo from '~/assets/icon/cz_ba-style_white.png';
+import { createSVGParticleSystem } from 'svg-particle'
+import gsap from 'gsap';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import svgContent from './../../assets/images/cz-logo.svg?raw'
+const canvasRef = ref<HTMLCanvasElement | null>(null);
+
+let particleSystem: ReturnType<typeof createSVGParticleSystem> | null = null;
 withDefaults(defineProps<{
   textColor?: string
 }>(), {
@@ -95,10 +107,9 @@ const mainContent = [
 ]
 
 /*————————————————————————————————————————————————————————————————————————*/
-import gsap from 'gsap';
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 //以下代码均为gsap动画
-onMounted(() => {
+onMounted(async () => {
   let a = document.querySelectorAll(".mainContent-text")
   const screenWidth = window.innerWidth;
   // 根据屏幕宽度设置字体大小
@@ -128,7 +139,24 @@ onMounted(() => {
     .from(".mainContent-text:nth-child(6)", { x: -500, opacity: 0 })
     .from(".mainContent-text:nth-child(7)", { x: 500, opacity: 0 })
     .from(".mainContent-text:nth-child(8)", { x: -500, opacity: 0 })
+
+    if (!canvasRef.value) return;
+    particleSystem = createSVGParticleSystem(
+        canvasRef.value,
+        svgContent,
+        {
+          particleColor:'#138AFA',
+          type:'push'
+        }
+    );
+    await particleSystem.start();
+
 })
+
+
+onUnmounted(() => {
+    particleSystem?.stop();
+});
 /*————————————————————————————————————————————————————————————————————————*/
 
 const bgVideoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'bg.mp4';
