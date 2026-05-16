@@ -17,7 +17,6 @@ import { AxiosRetry } from "./axiosRetry";
 import axios from "axios";
 import { useGlobSetting } from "./../../hooks/setting/useGlobSetting";
 import { useUserStore } from "~/store/user";
-import { getAppEnvConfig } from "../env";
 
 
 
@@ -55,7 +54,7 @@ const transform: AxiosTransform = {
       throw new Error('[HTTP] Request has no return value');
     }
     //  这里 code，result，messages为 后台统一的字段
-    const { code, result, messages } = data;
+    const { code, result, messages, meta } = data;
     const message = typeof messages === "string" ? messages : (messages as any)[Object.keys(messages)[0]];
 
     // 这里逻辑可以根据项目进行修改
@@ -80,7 +79,7 @@ const transform: AxiosTransform = {
       } else if (options.successMessageMode === "message") {
         createMessage.success(successMsg);
       }
-      return result;
+      return meta ? { result, meta } : result;
     }
 
     // 在此处根据自己项目的实际情况对不同的code执行不同的操作
@@ -251,12 +250,13 @@ const transform: AxiosTransform = {
   requestCatchHook: (e: Error, options: RequestOptions): Promise<any> => {
     const { notification } = useMessage();
 
-    const msgObj = ((e as AxiosError).response?.data as Result).messages;
+    const responseData = (e as AxiosError).response?.data as Result;
+    const msgObj = responseData?.messages || '网络连接错误';
 
 
       notification.error({
         message: '错误！',
-        description: JSON.stringify(msgObj),
+        description: typeof msgObj === 'string' ? msgObj : JSON.stringify(msgObj),
         duration: 3,
       });
     return Promise.reject(e);
@@ -313,9 +313,4 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     ),
   );
 }
-export const defHttp = createAxios({
-  requestOptions: {
-    apiUrl: getAppEnvConfig().VITE_GLOB_API_URL,
-
-  }
-});
+export const defHttp = createAxios();

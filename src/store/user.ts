@@ -3,7 +3,23 @@ import { RoleEnum, UserInfo } from "#/data";
 import { isArray } from "lodash-es";
 import { defineStore } from "pinia";
 import { h } from "vue";
-import { GetUserInfoModel, LoginParams, RegisterParams, UpdateParams, doLogout, getUserInfo, loginApi, registerApi, updateUserInfoApi } from "~/api/user";
+import {
+  GetUserInfoModel,
+  LoginParams,
+  RegisterParams,
+  UpdateParams,
+  SendVerificationCodeParams,
+  VerifyCodeParams,
+  ResetPasswordParams,
+  doLogout,
+  getUserInfo,
+  loginApi,
+  registerApi,
+  updateUserInfoApi,
+  sendVerificationCodeApi,
+  verifyCodeApi,
+  resetPasswordApi
+} from "~/api/user";
 import { useMessage } from "~/hooks/web/useMessage";
 
 
@@ -192,6 +208,40 @@ export const useUserStore = defineStore({
           await this.logout(true);
         },
       });
+    },
+
+    /**
+     * @description: Send verification code
+     */
+    async sendVerificationCode(params: SendVerificationCodeParams): Promise<void> {
+      try {
+        await sendVerificationCodeApi(params);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+
+    /**
+     * @description: Verify code
+     */
+    async verifyCode(params: VerifyCodeParams): Promise<boolean> {
+      try {
+        const result = await verifyCodeApi(params);
+        return result.valid;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+
+    /**
+     * @description: Reset password
+     */
+    async resetPassword(params: ResetPasswordParams): Promise<void> {
+      try {
+        await resetPasswordApi(params);
+      } catch (error) {
+        return Promise.reject(error);
+      }
     },
   },
 });

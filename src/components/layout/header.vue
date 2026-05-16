@@ -11,10 +11,18 @@
             cursor-pointer>通知</router-link>
           <router-link to="/member" class="item" :class="{ 'active': route.path === '/member' }"
             cursor-pointer>成员</router-link>
+          <router-link to="/lanqiao" class="item" :class="{ 'active': route.path === '/lanqiao' }"
+            cursor-pointer>成就</router-link>
+          <router-link to="/comment" class="item" :class="{ 'active': route.path === '/comment' }"
+            cursor-pointer>蓝桥讨论区</router-link>
+
           <a class="item" href="http://docs.czstudio.tech/" target="_blank" flex items-center>文档<div inline-block
               i-ri:share-box-fill text-4 ml-1>
             </div></a>
         </div>
+        <button icon-btn @click="showDesktopCalendar">
+          <div i-carbon-calendar w-8 mr-3 />
+        </button>
         <button icon-btn @click="toggleDark()">
           <div i-carbon-sun dark:i-carbon-moon w-8 mr-3 />
         </button>
@@ -24,10 +32,10 @@
         </div>
         <div v-else class="group" mr-8 flex items-center cursor-pointer max-w-md relative>
           <CZAvatar :user-id="userStore.userInfo?.userId!" :click-fn="()=>void 0"></CZAvatar>
-          <div absolute bg-white text-gray-7 text-sm top-12 right-0 ring-1 ring-gray-8 ring-opacity-5 rounded-md w-40
+          <div absolute bg-white dark:bg-gray-800 text-gray-7 dark:text-gray-200 text-sm top-12 right-0 ring-1 ring-gray-8 ring-opacity-5 rounded-md w-40
             px-2 py-2 scale-0 group-hover:scale-100 duration-300 origin-top-right shadow-lg>
-            <router-link to="/updateInfo" block px-5 py-2 hover:bg-gray-100 text-left rounded-md>修改信息</router-link>
-            <div @click="handleLogout" px-5 py-2 hover:bg-gray-100 text-left rounded-md>退出登录</div>
+            <router-link to="/updateInfo" block px-5 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-left rounded-md>修改信息</router-link>
+            <div @click="handleLogout" px-5 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-left rounded-md>退出登录</div>
           </div>
         </div>
         <a i-carbon-logo-github icon-btn v-if="!isLogin" hover:text-blue-500 rel="noreferrer"
@@ -37,9 +45,9 @@
     </transition>
   </div>
   <div v-if="deviceType === 'mobile'" :class="{ 'mb-20': route.path !== '/' }">
-    <div class="header w-full h-13 flex top-0 bg-white" flex="items-center row" fixed z-100 border-b>
+    <div class="header w-full h-13 flex top-0 bg-white dark:bg-[#1a1a1a] dark:border-gray-800" flex="items-center row" fixed z-100 border-b>
       <div mr-auto ml-8 h-full items-center flex gap-2>
-        <a i-carbon-logo-github v-if="!isLogin" rel="noreferrer" href="" target="_blank" title="GitHub" text-black
+        <a i-carbon-logo-github v-if="!isLogin" rel="noreferrer" href="" target="_blank" title="GitHub" text-black dark:text-white
           text-5 />
         <CZAvatar v-else :user-id="userStore.userInfo?.userId!" :click-fn="() => void 0"></CZAvatar>
 
@@ -48,38 +56,47 @@
       <div m-auto font-bold class="title">
         <router-link to="/">创智工作室</router-link>
       </div>
-      <a i-eva:menu-fill rel="noreferrer" target="_blank" @click="toggleMenu" title="GitHub" text-black text-5 ml-auto
+      <a i-eva:menu-fill rel="noreferrer" target="_blank" @click="toggleMenu" title="Menu" text-black dark:text-white text-5 ml-auto
         mr-8 />
     </div>
     <Transition name="fade">
       <div v-if="isMenuOpen" class="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-50" @click="closeMenu"></div>
     </Transition>
     <Transition name="slide2">
-      <div v-show="isMenuOpen" class=" top-13 fixed z-100 w-full flex flex-col bg-white">
-        <router-link to="/" class="phone-link" :class="{ 'active': route.path === '/' }" cursor-pointer h-12 flex
+      <div v-show="isMenuOpen" class=" top-13 fixed z-100 w-full flex flex-col bg-white dark:bg-[#1a1a1a] dark:text-gray-200">
+        <router-link to="/" class="phone-link dark:border-gray-800" :class="{ 'active': route.path === '/' }" cursor-pointer h-12 flex
           items-center pl-8 @click="closeMenu" border-b>主页</router-link>
-        <router-link to="/project" class="phone-link" :class="{ 'active': route.path === '/project' }" cursor-pointer
+        <router-link to="/project" class="phone-link dark:border-gray-800" :class="{ 'active': route.path === '/project' }" cursor-pointer
           h-12 flex items-center pl-8 @click="closeMenu" border-b>项目</router-link>
-        <router-link to="/notify" class="phone-link" :class="{ 'active': route.path === '/notify' }" cursor-pointer h-12
+        <router-link to="/notify" class="phone-link dark:border-gray-800" :class="{ 'active': route.path === '/notify' }" cursor-pointer h-12
           flex items-center pl-8 @click="closeMenu" border-b>通知</router-link>
-        <router-link to="/member" class="phone-link" border-b :class="{ 'active': route.path === '/member' }"
+        <router-link to="/member" class="phone-link dark:border-gray-800" border-b :class="{ 'active': route.path === '/member' }"
           cursor-pointer h-12 flex items-center pl-8 @click="closeMenu">成员</router-link>
-        <a class="item" href="http://1.92.82.236:5173/" target="_blank" border-b flex items-center cursor-pointer h-12
+        <router-link to="/lanqiao" class="phone-link dark:border-gray-800" border-b :class="{ 'active': route.path === '/lanqiao' }"
+          cursor-pointer h-12 flex items-center pl-8 @click="closeMenu">成就</router-link>
+        <router-link to="/comment" class="phone-link dark:border-gray-800" border-b :class="{ 'active': route.path === '/comment' }"
+          cursor-pointer h-12 flex items-center pl-8 @click="closeMenu">蓝桥讨论区</router-link>
+        <div class="phone-link dark:border-gray-800" border-b cursor-pointer h-12 flex items-center pl-8 @click="showMobileCalendar">
+          活动日历
+          <CarryOutOutlined class="ml-2" />
+        </div>
+
+        <a class="item phone-link dark:border-gray-800" :href="`${envConfig.VITE_GLOB_DOCS_URL}/docs/`" target="_blank" border-b flex items-center cursor-pointer h-12
           pl-8>文档
-          <div inline-block i-ri:share-box-fill text-4 ml-1 text-gray-7>
+          <div inline-block i-ri:share-box-fill text-4 ml-1 text-gray-7 dark:text-gray-300>
           </div>
         </a>
         <div v-if="!isLogin">
-          <router-link to="/login" class="phone-link" border-b cursor-pointer h-12 flex items-center pl-8
+          <router-link to="/login" class="phone-link dark:border-gray-800" border-b cursor-pointer h-12 flex items-center pl-8
             @click="closeMenu">登录</router-link>
-          <router-link to="/register" class="phone-link" border-b cursor-pointer h-12 flex items-center pl-8
+          <router-link to="/register" class="phone-link dark:border-gray-800" border-b cursor-pointer h-12 flex items-center pl-8
             @click="closeMenu">注册</router-link>
         </div>
         <div v-else>
-          <router-link to="/updateInfo" class="phone-link" border-b cursor-pointer h-12 flex items-center pl-8
+          <router-link to="/updateInfo" class="phone-link dark:border-gray-800" border-b cursor-pointer h-12 flex items-center pl-8
             @click="closeMenu">修改信息</router-link>
         </div>
-        <div v-if="isLogin" @click="handleLogout" px-5 py-2 hover:bg-gray-100 text-left rounded-md pl-8>退出登录</div>
+        <div v-if="isLogin" @click="handleLogout" px-5 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 text-left rounded-md pl-8>退出登录</div>
 
       </div>
     </Transition>
@@ -94,8 +111,11 @@ import { useDeviceType } from '~/hooks/useDeviceType';
 import { useUserStore } from '~/store/user';
 import CZAvatar from '../CZAvatar.vue';
 import { toggleDark } from '~/composables/dark';
+import { CarryOutOutlined } from '@ant-design/icons-vue';
+import { getAppEnvConfig } from '@/utils/env';
 
 const route = useRoute();
+const envConfig = getAppEnvConfig();
 
 const isHeaderHidden = ref(false);
 let lastScrollPosition = 0;
@@ -139,6 +159,19 @@ const handleLogout = () => {
   router.go(0);
 };
 
+// 显示移动端日历
+const showMobileCalendar = () => {
+  // 触发全局事件来显示日历
+  window.dispatchEvent(new CustomEvent('showCalendar'));
+  closeMenu();
+};
+
+// 显示桌面端日历
+const showDesktopCalendar = () => {
+  // 触发全局事件来显示日历
+  window.dispatchEvent(new CustomEvent('showCalendar'));
+};
+
 
 </script>
 
@@ -150,10 +183,19 @@ div.header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   color: #7b7e81;
 
+  :global(.dark) & {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
   font-family: Gilroy-regular, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 
   .item {
     color: #646a73;
+
+    :global(.dark) & {
+      color: #9ca3af;
+    }
+
     font-size: 15px;
     font-weight: 600;
 

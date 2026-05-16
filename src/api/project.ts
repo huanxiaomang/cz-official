@@ -39,7 +39,7 @@ export function getProjApi(
 
 ) {
 
-  return defHttp.get<ProjectResultModel>(
+  return defHttp.get<ProjectResultModel[]>(
     {
       url: Api.GetAll,
 

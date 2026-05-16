@@ -20,8 +20,9 @@
             <a-select-option value="后端开发">后端开发</a-select-option>
           </a-select>
         </a-form-item>
+
         <a-form-item label="头像" v-bind="validateInfos.avatar">
-          <Upload list-type="picture-card" :show-upload-list="false" action="http://1.92.82.236:3000/api/upload/image/"
+          <Upload list-type="picture-card" :show-upload-list="false" :action="`${envConfig.VITE_GLOB_UPLOAD_URL}/api/upload/image/`"
             :before-upload="beforeUpload" @change="handleAvatarChange">
             <img v-if="modelRef.avatar" :src="modelRef.avatar" alt="avatar" rounded-full />
 
@@ -33,7 +34,7 @@
           </Upload>
         </a-form-item>
         <a-form-item label="背景图" v-bind="validateInfos.background">
-          <Upload list-type="picture-card" :show-upload-list="false" action="http://1.92.82.236:3000/api/upload/image/"
+          <Upload list-type="picture-card" :show-upload-list="false" :action="`${envConfig.VITE_GLOB_UPLOAD_URL}/api/upload/image/`"
             :before-upload="beforeUpload" @change="handleBgChange">
             <img v-if="modelRef.background" :src="modelRef.background" alt="background" />
             <div v-else>
@@ -68,8 +69,10 @@ import { useRouter } from 'vue-router';
 import { getUserInfo } from '~/api/user';
 import { getUserInfoById } from '~/api/user';
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
+import { getAppEnvConfig } from '@/utils/env';
 const router = useRouter();
 const useForm = Form.useForm;
+const envConfig = getAppEnvConfig();
 
 const userInfo = useUserStore().userInfo!;
 

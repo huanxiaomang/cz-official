@@ -6,6 +6,7 @@ export function getAppEnvConfig() {
     VITE_GLOB_API_URL_PREFIX,
     VITE_GLOB_UPLOAD_URL,
     VITE_GLOB_API_URL,
+    VITE_GLOB_DOCS_URL,
   } = import.meta.env;
 
   return {
@@ -13,5 +14,6 @@ export function getAppEnvConfig() {
     VITE_GLOB_API_URL,
     VITE_GLOB_API_URL_PREFIX,
     VITE_GLOB_UPLOAD_URL,
+    VITE_GLOB_DOCS_URL,
   };
 }

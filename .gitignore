@@ -20,3 +20,8 @@ docs/.vitepress/cache
 cache
 docs/.obsidian
 stats.html
+
+# Ignore PEM keys and IDE/Agent temp folders
+*.pem
+.trae/
+.agents/

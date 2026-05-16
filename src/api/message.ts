@@ -1,4 +1,5 @@
 import { defHttp } from "~/utils/http";
+import { UserInfo } from "#/data";
 
 export interface MessageParams {
   title: string;
@@ -13,6 +14,14 @@ export interface MessageResultModel {
   updatedAt: string;
 }
 
+export interface WinnerInfo {
+  id: number;
+  name: string;
+  competition: string;
+  award: string;
+  avatar: string;
+  createdAt: string;
+}
 
 import { ErrorMessageMode } from "#/axios";
 
@@ -23,16 +32,12 @@ enum Api {
   RemoveMsg = "/message/remove",
 }
 
-
 export function getMsgApi(
   mode: ErrorMessageMode = "modal",
-
 ) {
-
-  return defHttp.get<MessageResultModel>(
+  return defHttp.get<MessageResultModel[]>(
     {
       url: Api.GetAll,
-
     },
     {
       errorMessageMode: mode,
@@ -43,7 +48,6 @@ export function getMsgApi(
 export function createMsgApi(
   info: MessageParams
 ) {
-
   return defHttp.post<MessageResultModel>(
     {
       url: Api.CreateMsg,
@@ -61,7 +65,6 @@ export function updateMsgApi(
   id: number,
   info: MessageParams
 ) {
-
   return defHttp.post<MessageResultModel>(
     {
       url: Api.UpdateMsg + `/${id}`,
@@ -77,8 +80,6 @@ export function updateMsgApi(
 export function removeMsgApi(
   id: number
 ) {
-
-
   return defHttp.delete<MessageResultModel>(
     {
       url: Api.RemoveMsg + `/${id}`,

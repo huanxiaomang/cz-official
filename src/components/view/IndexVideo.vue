@@ -41,11 +41,11 @@
       :video-left-poster="leftVideoURL">
     </Introduce> -->
   </div>
-  <div h-100vh w-full relative bg-white class="[z-index:3]">
+  <div min-h-100vh w-full relative class="bg-white dark:bg-[#121212] [z-index:3] px-4 pb-12">
     <div class="title" text-lightblue font-bold text-10>
       我们的优势
     </div>
-    <div text-gray-7 gap-3 grid>
+    <div class="text-gray-7 dark:text-gray-300" gap-3 grid>
       <div>相对<span font-bold>灵活</span>、<span font-bold>开明</span>的培养体系，为成员们提供良好愉快的学习氛围。</div>
       <div>蓝桥杯<span font-bold>国一</span>学长带队前端，冲刺蓝桥杯</div>
     </div>
@@ -53,15 +53,15 @@
       我们需要你
     </div>
 
-    <div text-gray-7 gap-3 grid>
+    <div class="text-gray-7 dark:text-gray-300" gap-3 grid>
       <div>1. 自驱力自控力</div>
       <div>2. 对计算机技术具备兴趣</div>
       <div>3. 善于思考；具备主观能动性</div>
       <div>4. 具备计算机常识</div>
     </div>
-    <div class="w-full h-300 flex flex-col items-center justify-center relative">
-      <canvas class="w-full" ref="canvasRef"></canvas>
-      <div class="w-full text-center text-gray-700 cursor-pointer hover:underline"><a href="https://www.npmjs.com/package/svg-particle" target="_blank">svg-particle(NPM) - Hakurei77</a></div>
+    <div class="w-full max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto my-12 flex flex-col items-center justify-center relative">
+      <canvas class="block w-full aspect-[486/250]" ref="canvasRef"></canvas>
+      <div class="w-full text-center text-gray-700 dark:text-gray-400 cursor-pointer hover:underline mt-4"><a href="https://www.npmjs.com/package/svg-particle" target="_blank">svg-particle(NPM) - Hakurei77</a></div>
     </div>
 
   </div>
@@ -82,6 +82,7 @@ import svgContent from './../../assets/images/cz-logo.svg?raw'
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 let particleSystem: ReturnType<typeof createSVGParticleSystem> | null = null;
+let handleParticleResize: (() => void) | null = null;
 withDefaults(defineProps<{
   textColor?: string
 }>(), {
@@ -105,6 +106,36 @@ const mainContent = [
   '学生将掌握HTML、CSS、JavaScript等前端技术，',
   '以及Java、Python、Node.js等后端编程语言，学习构建可扩展、高可用的系统。',
 ]
+
+const LOGO_SOURCE_WIDTH = 486;
+const LOGO_SOURCE_HEIGHT = 250;
+
+function getParticleOptions(canvas: HTMLCanvasElement) {
+  const canvasWidth = canvas.clientWidth || LOGO_SOURCE_WIDTH;
+  const isMobile = canvasWidth < 640;
+  const isTablet = canvasWidth >= 640 && canvasWidth < 1024;
+
+  let targetWidth = Math.floor(canvasWidth * 0.8);
+  let scaleFactor = targetWidth / LOGO_SOURCE_WIDTH;
+
+  // Fix for svg-particle float index bug:
+  // Ensure that (LOGO_SOURCE_WIDTH * scaleFactor) evaluates to an exact integer
+  // otherwise the internal RGBA array index calculation results in undefined.
+  while (!Number.isInteger(LOGO_SOURCE_WIDTH * scaleFactor)) {
+    targetWidth++;
+    scaleFactor = targetWidth / LOGO_SOURCE_WIDTH;
+  }
+
+  return {
+    particleColor: '#138AFA',
+    type: 'push' as const,
+    scaleFactor,
+    // particleSpacing MUST be an integer! Float values misalign the RGBA array reading.
+    particleSpacing: isMobile ? 3 : 4,
+    particleSize: isMobile ? 1.2 : isTablet ? 1.4 : 1.5,
+    mouseRadius: isMobile ? 50 : isTablet ? 60 : 70,
+  };
+}
 
 /*————————————————————————————————————————————————————————————————————————*/
 
@@ -140,29 +171,35 @@ onMounted(async () => {
     .from(".mainContent-text:nth-child(7)", { x: 500, opacity: 0 })
     .from(".mainContent-text:nth-child(8)", { x: -500, opacity: 0 })
 
-    if (!canvasRef.value) return;
-    particleSystem = createSVGParticleSystem(
-        canvasRef.value,
-        svgContent,
-        {
-          particleColor:'#138AFA',
-          type:'push'
-        }
-    );
-    await particleSystem.start();
+  if (!canvasRef.value) return;
+  particleSystem = createSVGParticleSystem(
+    canvasRef.value,
+    svgContent,
+    getParticleOptions(canvasRef.value),
+  );
+  await particleSystem.start();
+
+  handleParticleResize = () => {
+    if (!canvasRef.value || !particleSystem) return;
+    void particleSystem.updateOptions(getParticleOptions(canvasRef.value));
+  };
+  window.addEventListener('resize', handleParticleResize);
+  handleParticleResize();
 
 })
 
 
 onUnmounted(() => {
-    particleSystem?.stop();
+  if (handleParticleResize)
+    window.removeEventListener('resize', handleParticleResize);
+  particleSystem?.stop();
 });
 /*————————————————————————————————————————————————————————————————————————*/
 
-const bgVideoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'bg.mp4';
-const fontVideoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'font.mp4';
-const leftVideoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'introductionleft.mp4';
-const videoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'introduction.mp4';
+const bgVideoURL = 'http://1.92.82.236:3000/uploads/bg.mp4';
+const fontVideoURL = 'http://1.92.82.236:3000/uploads/font.mp4';
+const leftVideoURL = 'http://1.92.82.236:3000/uploads/introductionleft.mp4';
+const videoURL = 'http://1.92.82.236:3000/uploads/introduction.mp4';
 </script>
 <style lang="scss" scoped>
 .title-cn {
@@ -181,6 +218,10 @@ const videoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'introduction.mp4';
   background-color: white;
   height: 220vh;
   overflow: hidden;
+
+  :global(.dark) & {
+    background-color: #121212;
+  }
 
   .mainContent {
     position: relative;

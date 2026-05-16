@@ -44,5 +44,6 @@
     "json",
     "jsonc",
     "yaml"
-  ]
+  ],
+  "java.compile.nullAnalysis.mode": "automatic"
 }

@@ -27,7 +27,7 @@ import { splitDate } from '~/utils/splitDate'
 const projList = ref<ProjInfo[]>([]);
 
 onMounted(async () => {
-  const projs = (await getProjApi() as any).data;
+  const projs = await getProjApi();
   projList.value = projs.toSorted((a: ProjInfo, b: ProjInfo) => {
     return splitDate(b.createdAt).timestamp - splitDate(a.createdAt).timestamp
   });

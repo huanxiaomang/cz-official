@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/reset.css';
 import '@unocss/reset/tailwind.css'
 import './styles/main.css'
@@ -10,10 +11,13 @@ import { router } from './router';
 import { globalComponents} from '~/components'
 import 'virtual:svg-icons-register'
 import { useGlobalComps } from './utils/components';
+
 const app = createApp(App)
+app.use(Antd)
 app.use(VueMasonryPlugin)
 setupStore(app);
 
 app.use(router);
 useGlobalComps(app, globalComponents);
 app.mount('#app')
+
