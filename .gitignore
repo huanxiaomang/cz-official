@@ -25,3 +25,5 @@ stats.html
 *.pem
 .trae/
 .agents/
+.vscode/
+_trash/
