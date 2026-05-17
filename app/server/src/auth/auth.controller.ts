@@ -8,6 +8,8 @@ import { SendVerificationCodeDto, VerifyCodeDto } from './dto/verification-code.
 import { Admin, Auth } from './decorators/auth.decorator';
 import { VerificationCodeService } from './verification-code.service';
 
+import { CurrentUser } from './decorators/user.decorator';
+
 @Controller()
 export class AuthController {
   constructor(
@@ -43,7 +45,7 @@ export class AuthController {
 
   @Admin()
   @Post('generate-invitation')
-  generateInvitation(@Body() body: { maxUses?: number, expireDays?: number }, @Auth() user) {
+  generateInvitation(@Body() body: { maxUses?: number, expireDays?: number }, @CurrentUser() user) {
     return this.auth.generateInvitationCode(user.userId, body.maxUses || 1, body.expireDays || 7);
   }
 
