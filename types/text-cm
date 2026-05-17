@@ -1,0 +1,217 @@
+import { Ref } from "vue";
+import { ref } from "vue";
+
+// 用户类型
+export interface User {
+  userId: number;        // 与Prisma模型保持一致
+  username: string;      // 与Prisma模型保持一致
+  avatar?: string;       // 头像URL
+  // 补充其他用户字段
+  role?: string;
+  email?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  background?: string;
+  description?: string;
+  major?: string;
+  grade?: number;
+  badge?: string;
+  score?: number;
+}
+
+// 附件类型
+export interface Attachment {
+  id: string;           // 附件唯一标识
+  url: string;          // 访问URL
+  type: 'image' | 'file'; // 类型：图片或文件
+  name: string;         // 原始文件名
+  size: number;         // 文件大小（字节）
+  fileType: string;     // 文件类型（与Prisma模型保持一致）
+  createTime: Date;     // 创建时间
+}
+
+// 评论基础类型（与Prisma模型完全匹配）
+export interface CommentType {
+  id: number;           // 评论ID（自增）
+  content: string;      // 评论内容
+  post_id: number;      // 关联帖子ID（与Prisma模型保持一致）
+  user_id: number;      // 关联用户ID（与Prisma模型保持一致）
+  user_name: string;    // 用户名（冗余存储，避免多次查询）
+  root_parent_id?: number; // 根评论ID
+  create_time: Date;    // 创建时间
+  is_deleted: boolean;  // 是否删除
+  parent_id: number | null;   // 父评论ID
+  like_count: number;   // 点赞数
+  reply_count: number;  // 回复数
+  attachment_count: number; // 附件数
+
+  // 关联关系
+  post?: Post;          // 关联的帖子
+  user?: User;          // 关联的用户
+  parent?: CommentType; // 父评论
+  replies?: CommentType[]; // 子评论
+  likes?: CommentLike[];   // 点赞列表
+  attachments?: Attachment[]; // 附件列表
+}
+
+// 帖子类型
+export interface Post {
+  id: number;
+  title: string;
+  content: string;
+  user_id: number;
+  create_time: Date;
+  // 关联关系
+  user?: User;
+  comments?: CommentType[];
+}
+
+// 评论点赞类型
+export interface CommentLike {
+  id: number;
+  comment_id: number;
+  user_id: number;
+  create_time: Date;
+  // 关联关系
+  comment?: CommentType;
+  user?: User;
+}
+
+// 评论输入类型（用于表单提交）
+export interface CommentInput {
+  content: string;      // 评论内容（必填）
+  postId: number;       // 帖子ID（必填）
+  userId: number;       // 用户ID（必填）
+  parentId?: number;    // 父评论ID（选填）
+  files?: File[];       // 上传文件
+}
+
+// 主评论类型（顶级评论）
+export interface MainComment extends CommentType {
+  user: User;           // 评论作者信息
+  replies: Array<MainComment | Reply>; // 嵌套评论结构
+}
+
+// 回复类型（子评论）
+export interface Reply extends CommentType {
+  parent_id: number;    // 父评论ID（必填）
+  user: User;           // 回复作者信息
+  replies?: Reply[];    // 子回复列表
+}
+
+// 创建评论的数据传输对象
+export type CreateCommentDTO = Omit<CommentType,
+  'id' | 'create_time' | 'is_deleted' |
+  'like_count' | 'reply_count' | 'attachment_count' |
+  'post' | 'user' | 'parent' | 'replies' | 'likes' | 'attachments'
+> & {
+  files?: File[];       // 上传文件
+  parent_id?: number | null;   // 父评论ID（选填）
+};
+
+// 更新评论的数据传输对象
+export type UpdateCommentDTO = Partial<Omit<CreateCommentDTO, 'post_id' | 'user_id'>>;
+
+// 上传结果类型
+export interface UploadResult {
+  urls: string[];       // 上传后的文件URL列表
+  sizes: number[];      // 文件大小列表（字节）
+  types: string[];      // 文件类型列表
+  names: string[];      // 文件名列表
+}
+
+// 类型守卫 - 主评论判断
+export function isMainComment(comment: CommentType): comment is MainComment {
+  return comment.parent_id === null || comment.parent_id === undefined;
+}
+
+// 类型守卫 - 回复判断
+export function isReply(comment: CommentType): comment is Reply {
+  return comment.parent_id !== null && comment.parent_id !== undefined;
+}
+
+// 初始化评论数据（补充完整字段）
+const comments: Ref<MainComment[]> = ref([
+  {
+    id: 1,
+    content: '这是一条主评论',
+    post_id: 1,
+    user_id: 101,
+    user_name: '张三',
+    root_parent_id: 1,
+    create_time: new Date(),
+    is_deleted: false,
+    parent_id: 0,
+    like_count: 5,
+    reply_count: 1,
+    attachment_count: 0,
+    user: {
+      userId: 101,
+      username: '张三',
+      avatar: 'https://example.com/avatar1.jpg'
+    },
+    replies: [
+      {
+        id: 2,
+        content: '这是对主评论的回复',
+        post_id: 1,
+        user_id: 102,
+        user_name: '李四',
+        root_parent_id: 1,
+        create_time: new Date(),
+        is_deleted: false,
+        parent_id: 1,
+        like_count: 2,
+        reply_count: 1,
+        attachment_count: 0,
+        user: {
+          userId: 102,
+          username: '李四',
+          avatar: 'https://example.com/avatar2.jpg'
+        },
+        replies: [
+          {
+            id: 3,
+            content: '这是对回复的回复',
+            post_id: 1,
+            user_id: 101,
+            user_name: '张三',
+            root_parent_id: 1,
+            create_time: new Date(),
+            is_deleted: false,
+            parent_id: 2,
+            like_count: 1,
+            reply_count: 0,
+            attachment_count: 0,
+            user: {
+              userId: 101,
+              username: '张三',
+              avatar: 'https://example.com/avatar1.jpg'
+            },
+            replies: [],
+            attachments: []
+          },
+        ],
+        attachments: []
+      },
+    ],
+    attachments: []
+  },
+]);
+
+// 遍历评论并打印信息
+comments.value.forEach(comment => {
+  console.log(`评论 ${comment.id}: ${comment.content}`);
+
+  // 递归打印回复
+  function printReplies(replies: CommentType[]) {
+    replies.forEach(reply => {
+      console.log(`  回复 ${reply.id}: ${reply.content}`);
+      if (reply.replies && reply.replies.length > 0) {
+        printReplies(reply.replies);
+      }
+    });
+  }
+
+  printReplies(comment.replies);
+});

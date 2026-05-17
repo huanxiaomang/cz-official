@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>创智工作室验证码</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .code-box {
+            background-color: #f8f9fa;
+            border: 2px dashed #007bff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .code {
+            font-size: 32px;
+            font-weight: bold;
+            color: #007bff;
+            letter-spacing: 4px;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+        }
+        .footer {
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>创智工作室</h1>
+            <h2>验证码通知</h2>
+        </div>
+
+        <p>尊敬的 <strong>{{username}}</strong>，您好！</p>
+
+        <p>您正在进行身份验证，验证码如下：</p>
+
+        <div class="code-box">
+            <div class="code">{{code}}</div>
+        </div>
+
+        <div class="warning">
+            <strong>重要提醒：</strong>
+            <ul>
+                <li>验证码有效期为 <strong>5分钟</strong></li>
+                <li>请勿将验证码泄露给他人</li>
+                <li>如果这不是您本人的操作，请忽略此邮件</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>此邮件为系统自动发送，请勿回复</p>
+            <p>© 2025 创智工作室 - 安全可信赖的服务</p>
+        </div>
+    </div>
+</body>
+</html>

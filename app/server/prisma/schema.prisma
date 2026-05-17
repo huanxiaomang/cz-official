@@ -1,44 +1,118 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
-model user {
-    userId      Int      @id @default(autoincrement()) @db.UnsignedInt
-    username    String   @unique
-    password    String
-    role        String? // CZ_MEMBER 或者 COMMON 或者ADMIN
-    email       String   @unique
-    avatar      String?
-    github      String?
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    background  String?
-    description String?  @db.Text
-    major       String  // 前端开发、后端开发等等
-    grade       Int
-    badge       String? // 徽标，是一个字符串数组,格式形如蓝桥杯国三,创智成员
-    score       Int @default(0)
+model User {
+  userId       Int           @id @default(autoincrement()) @map("user_id") @db.UnsignedInt
+  username     String        @unique
+  password     String
+  role         String?
+  email        String        @unique
+  avatar       String?
+  github       String?
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  background   String?
+  description  String?       @db.Text
+  major        String
+  grade        Int
+  badge        String?
+  score        Int           @default(0)
+
+  comments     Comment[]
+  commentLikes CommentLike[]
+
+  @@map("user")
 }
 
-model project {
-    id        Int      @id @default(autoincrement()) @db.UnsignedInt
-    title     String
-    content   String   @db.Text
-    stack     String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    members   String // 项目成员，是一个用户id数组,格式形如1,2,3
+model Project {
+  id        Int      @id @default(autoincrement()) @db.UnsignedInt
+  title     String
+  content   String   @db.Text
+  stack     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  members   String
+
+  @@map("project")
 }
 
-model message {
-    id        Int      @id @default(autoincrement()) @db.UnsignedInt
-    title     String
-    content   String   @db.Text
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Message {
+  id        Int      @id @default(autoincrement()) @db.UnsignedInt
+  title     String
+  content   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("message")
+}
+
+
+
+model Comment {
+  id        Int       @id @default(autoincrement()) @db.UnsignedInt
+  title     String?   @db.VarChar(120)
+  category  String?   @db.VarChar(40)
+  tags      String?   @db.VarChar(255)
+  content   String    @db.Text
+  userId    Int       @map("user_id") @db.UnsignedInt
+  parentId  Int?      @map("parent_id") @db.UnsignedInt
+  quoteId   Int?      @map("quote_id") @db.UnsignedInt
+  isPinned  Boolean   @default(false) @map("is_pinned")
+  isFeatured Boolean  @default(false) @map("is_featured")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  user      User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  parent    Comment?   @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[]  @relation("CommentReplies")
+  quote     Comment?   @relation("CommentQuotes", fields: [quoteId], references: [id], onDelete: SetNull)
+  quotedBy  Comment[]  @relation("CommentQuotes")
+  likes     CommentLike[]
+
+  @@map("comment")
+}
+
+model CommentLike {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  commentId  Int       @map("comment_id") @db.UnsignedInt
+  userId     Int       @map("user_id") @db.UnsignedInt
+  createdAt  DateTime  @default(now()) @map("create_time")
+
+  comment    Comment   @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@unique([commentId, userId], name: "commentId_userId")
+  @@map("comment_like")
+}
+
+model Winner {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(100)
+  competition String @db.VarChar(100)
+  award      String   @db.VarChar(50)
+  avatar     String?  @db.VarChar(100)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("winners")
+}
+
+model activity {
+  id        Int      @id @default(autoincrement())
+  intro     String
+  detail    String   @db.Text
+  sdate     String
+  edate     String
+  joiners   String
+  status    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("activities")
 }

@@ -1,20 +1,20 @@
 <template>
-  <div class="login-container">
+  <div class="login-container dark:bg-[#121212] dark:text-gray-200">
     <div class="form-container" pt-10 w-full flex>
       <a-form m-auto w-120 :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
-        <a-form-item label="用户名" v-bind="validateInfos.username">
+        <a-form-item label="用户名" v-bind="validateInfos.username" class="dark:text-gray-200">
           <a-input v-model:value="modelRef.username" />
         </a-form-item>
-        <a-form-item label="邮箱" v-bind="validateInfos.email">
+        <a-form-item label="邮箱" v-bind="validateInfos.email" class="dark:text-gray-200">
           <a-input v-model:value="modelRef.email" />
         </a-form-item>
-        <a-form-item label="密码" v-bind="validateInfos.password">
-          <a-input v-model:value="modelRef.password" />
+        <a-form-item label="密码" v-bind="validateInfos.password" class="dark:text-gray-200">
+          <a-input-password v-model:value="modelRef.password" />
         </a-form-item>
-        <a-form-item label="确认密码" v-bind="validateInfos.password_confirm">
-          <a-input v-model:value="modelRef.password_confirm" />
+        <a-form-item label="确认密码" v-bind="validateInfos.password_confirm" class="dark:text-gray-200">
+          <a-input-password v-model:value="modelRef.password_confirm" />
         </a-form-item>
-        <a-form-item label="年级" v-bind="validateInfos.grade">
+        <a-form-item label="年级" v-bind="validateInfos.grade" class="dark:text-gray-200">
           <a-select v-model:value="modelRef.grade" placeholder="请选择您的年级">
             <a-select-option value="1">大一</a-select-option>
             <a-select-option value="2">大二</a-select-option>
@@ -23,14 +23,14 @@
             <a-select-option value="5">毕业</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="学习方向" v-bind="validateInfos.major">
+        <a-form-item label="学习方向" v-bind="validateInfos.major" class="dark:text-gray-200">
           <a-select v-model:value="modelRef.major" placeholder="学习方向">
             <a-select-option value="前端开发">前端开发</a-select-option>
             <a-select-option value="后端开发">后端开发</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item m-auto>
-          <a-button type="primary" @click.prevent="onSubmit" color="black">创建账户</a-button>
+          <a-button type="default" @click.prevent="onSubmit" class="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600">创建账户</a-button>
         </a-form-item>
       </a-form>
     </div>

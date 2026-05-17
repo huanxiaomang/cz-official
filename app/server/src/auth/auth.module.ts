@@ -4,6 +4,10 @@ import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
 import { JwtModule } from '@nestjs/jwt'
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { VerificationCodeService } from './verification-code.service'
+import { RedisService } from '../redis/redis.service'
+import { MailService } from '../mail/mail.service'
+import { PrismaService } from '../prisma/prisma.service'
 
 @Module({
   imports: [
@@ -18,7 +22,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
       },
     }),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    VerificationCodeService,
+    RedisService,
+    MailService,
+    PrismaService
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}

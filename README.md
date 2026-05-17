@@ -13,28 +13,25 @@
 ## 功能
 
 - 🗂️ 创智项目展览
-
 - 💬 工作室新消息
-
 - 👨🏻‍💻 当前工作室成员
-
 - 📖 在线学习文档
-
-- 🎨 留言板 (待开发)
-
-
+- 🎨 蓝桥讨论区/留言板 (已实现)
 
 ## 结构
 
-- / 主网站
-
-- app/sever/ nest后台
-
-- app/message-board/ 留言版（待开发）
-
-- docs/ 学习文档
+- `/` 前端主网站 (Vue3 + Vite)
+- `app/server/` NestJS 后台服务与 Prisma 数据库模型
+- `docs/` 开发文档与数据库设计
+- `src/pages/comment/` 留言板/讨论区模块
 
 后台管理系统过于繁杂，迁移至[这里](https://github.com/huanxiaomang/cz-admin)
+
+## 开发文档
+
+详细的开发指南和数据库设计，请参考：
+- [开发环境与规范指南](./docs/development.md)
+- [Prisma 数据库模型文档](./docs/database.md)
 
 
 ## 参与开发

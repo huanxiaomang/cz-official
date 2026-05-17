@@ -23,7 +23,7 @@ import { splitDate } from '~/utils/splitDate'
 const msgList = ref<Record<string,MsgInfo[]>>({});
 
 onMounted(async () => {
-  const msgs = (await getMsgApi() as any).data;
+  const msgs = await getMsgApi();
   msgs
     .toSorted((a: MsgInfo, b: MsgInfo) => {
       return splitDate(b.createdAt).timestamp - splitDate(a.createdAt).timestamp

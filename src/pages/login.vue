@@ -1,22 +1,25 @@
 <template>
-  <div class="login-container" w-full h-full>
+  <div class="login-container dark:bg-[#121212] dark:text-gray-200" w-full h-full>
     <div class="form-container" pt-10 w-full h-full flex items-center justify-center>
       <a-form :model="formState" name="basic" autocomplete="off" @finish="onFinish" @finishFailed="onFinishFailed"
         m-auto :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
-        <a-form-item label="邮箱" name="email" :rules="[{ required: true, message: '请输入邮箱!' }]">
+        <a-form-item label="邮箱" name="email" :rules="[{ required: true, message: '请输入邮箱!' }]" class="dark:text-gray-200">
           <a-input v-model:value="formState.email" />
         </a-form-item>
 
-        <a-form-item label="密码" name="password" :rules="[{ required: true, message: '请输入密码!' }]">
+        <a-form-item label="密码" name="password" :rules="[{ required: true, message: '请输入密码!' }]" class="dark:text-gray-200">
           <a-input-password v-model:value="formState.password" />
         </a-form-item>
 
         <a-form-item name="remember" :wrapper-col="{ offset: 8, span: 16 }">
-          <a-checkbox v-model:checked="formState.remember">请记住我</a-checkbox>
+          <div class="flex justify-between items-center">
+            <a-checkbox v-model:checked="formState.remember" class="dark:text-gray-300">请记住我</a-checkbox>
+            <router-link to="/forgotPassword" class="text-blue-500 hover:underline">忘记密码？</router-link>
+          </div>
         </a-form-item>
 
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-          <a-button type="default" html-type="submit" color="black" :loading="loading">登录</a-button>
+          <a-button type="default" html-type="submit" class="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600" :loading="loading">登录</a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -75,4 +78,5 @@ const onFinishFailed = (errorInfo: any) => {
   setTimeout(hide, 500);
 };
 </script>
+<mcfile name="forgotPassword.vue" path=".\forgotPassword.vue"></mcfile>
 

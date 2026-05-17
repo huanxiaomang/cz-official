@@ -7,6 +7,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {
+      "@/*": ["src/*"],
       "#/*":["types/*"],
       "~/*": ["src/*"]
     },
@@ -14,7 +15,8 @@
     "types": [
       "vite/client",
       "unplugin-vue-macros/macros-global",
-      "unplugin-vue-router/client"
+      "unplugin-vue-router/client",
+      "vue-router"
     ],
 
     "allowJs": true,

@@ -8,7 +8,49 @@ body,
 }
 
 html.dark {
+  background-color: #121212;
+  color: #e5e7eb;
+}
+html.dark .bg {
+  filter: invert(1) hue-rotate(180deg) opacity(0.3);
+}
 
+/* Ant Design Vue Dark Mode Overrides */
+html.dark .ant-form-item-label > label {
+  color: #e5e7eb !important;
+}
+html.dark .ant-checkbox-wrapper {
+  color: #e5e7eb !important;
+}
+html.dark .ant-input,
+html.dark .ant-input-password,
+html.dark .ant-select-selector {
+  background-color: #1f2937 !important;
+  color: #e5e7eb !important;
+  border-color: #374151 !important;
+}
+html.dark .ant-input-password-icon,
+html.dark .ant-select-arrow {
+  color: #9ca3af !important;
+}
+html.dark .ant-select-dropdown {
+  background-color: #1f2937 !important;
+  border: 1px solid #374151 !important;
+}
+html.dark .ant-select-item {
+  color: #e5e7eb !important;
+}
+html.dark .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+  background-color: #374151 !important;
+}
+html.dark .ant-btn-default {
+  background-color: #1f2937 !important;
+  color: #e5e7eb !important;
+  border-color: #374151 !important;
+}
+html.dark .ant-btn-default:hover {
+  border-color: #60a5fa !important;
+  color: #60a5fa !important;
 }
 *::selection{
       background-color: rgb(225, 234, 255);
