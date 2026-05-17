@@ -7,6 +7,7 @@ import LoginDto from './dto/login.dto'
 import UpdateUserDto from './dto/updateUser.dto'
 import ResetPasswordDto from './dto/reset-password.dto'
 import { VerificationCodeService } from './verification-code.service'
+import { randomBytes } from 'crypto'
 
 @Injectable()
 export class AuthService {
@@ -65,21 +66,62 @@ export class AuthService {
   }
 
   async register(dto: RegisterDto) {
-    const user = await this.prisma.user.create({
-      data: {
-        username: dto.username,
-        password: await hash(dto.password),
-        email: dto.email,
-        major: dto.major,
-        grade: dto.grade,
-        role: 'COMMON'
-      },
-    })
+    const invCode = await this.prisma.invitationCode.findUnique({
+      where: { code: dto.invitationCode },
+    });
+
+    if (!invCode) {
+      throw new BadRequestException('无效的邀请码');
+    }
+    if (invCode.usedCount >= invCode.maxUses) {
+      throw new BadRequestException('邀请码使用次数已达上限');
+    }
+    if (invCode.expiresAt < new Date()) {
+      throw new BadRequestException('邀请码已过期');
+    }
+
+    const user = await this.prisma.$transaction(async (prisma) => {
+      // 增加邀请码使用次数
+      await prisma.invitationCode.update({
+        where: { id: invCode.id },
+        data: { usedCount: { increment: 1 } },
+      });
+
+      // 创建用户
+      return prisma.user.create({
+        data: {
+          username: dto.username,
+          password: await hash(dto.password),
+          email: dto.email,
+          major: dto.major,
+          grade: dto.grade,
+          role: 'COMMON'
+        },
+      });
+    });
+
     return {
       ...await this.serializeUser(user),
       token: await this.token(user)
     }
 
+  }
+
+  async generateInvitationCode(creatorId: number, maxUses: number, expireDays: number) {
+    const code = randomBytes(4).toString('hex').toUpperCase(); // 8 characters
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + expireDays);
+
+    const invitationCode = await this.prisma.invitationCode.create({
+      data: {
+        code,
+        maxUses,
+        expiresAt,
+        creatorId
+      }
+    });
+
+    return invitationCode;
   }
 
   async login(dto: LoginDto) {

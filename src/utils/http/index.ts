@@ -30,23 +30,31 @@ const urlPrefix = globSetting.urlPrefix;
 const { createMessage, createErrorModal, createSuccessModal } = useMessage();
 
 function normalizeResponseMessage(messages?: string | object | null) {
+  if (!messages) {
+    return "";
+  }
+
   if (typeof messages === "string") {
     return messages;
   }
 
-  if (!messages || typeof messages !== "object") {
+  if (typeof messages !== "object") {
     return "";
   }
 
-  const firstMessage = Object.values(messages as Record<string, unknown>).find(
-    (value) => !isNull(value) && !isUndefined(value) && !isEmpty(value),
-  );
+  try {
+      const keys = Object.keys(messages);
+      if (keys.length === 0) return "";
 
-  if (typeof firstMessage === "string") {
-    return firstMessage;
+      const firstMessage = (messages as any)[keys[0]];
+
+      if (typeof firstMessage === "string") {
+        return firstMessage;
+      }
+      return firstMessage ? String(firstMessage) : "";
+  } catch (e) {
+      return "";
   }
-
-  return firstMessage ? String(firstMessage) : "";
 }
 
 const transform: AxiosTransform = {
@@ -79,7 +87,18 @@ const transform: AxiosTransform = {
     }
     //  这里 code，result，messages为 后台统一的字段
     const { code, result, messages, meta } = data;
-    const message = normalizeResponseMessage(messages);
+
+    // 防御 messages 也是未定义或空的情况
+    let message = "";
+    if (messages && typeof messages === "object") {
+        try {
+            message = normalizeResponseMessage(messages);
+        } catch (e) {
+            console.warn("解析 messages 失败:", e);
+        }
+    } else if (typeof messages === "string") {
+        message = messages;
+    }
 
     // 这里逻辑可以根据项目进行修改
     const hasSuccess =

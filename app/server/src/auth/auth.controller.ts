@@ -41,6 +41,12 @@ export class AuthController {
     return this.auth.register(dto);
   }
 
+  @Admin()
+  @Post('generate-invitation')
+  generateInvitation(@Body() body: { maxUses?: number, expireDays?: number }, @Auth() user) {
+    return this.auth.generateInvitationCode(user.userId, body.maxUses || 1, body.expireDays || 7);
+  }
+
   @Post('login')
   login(@Body() dto: LoginDto) {
     return this.auth.login(dto);

@@ -31,7 +31,7 @@ cz-official/
 ## 开发环境准备
 
 ### 前置依赖
-- **Node.js**: v18+ 
+- **Node.js**: v18+
 - **pnpm**: 推荐使用 pnpm 作为包管理器 (`npm i -g pnpm`)
 - **MySQL**: 数据库服务 (建议 8.0+)
 - **Redis**: 缓存服务 (主要用于后端验证码等功能)
@@ -84,3 +84,39 @@ cz-official/
 详细的生产环境部署可以参考 `ENV_CONFIG.md`，核心流程如下：
 1. 后端使用 `pnpm build` 编译，配合 PM2 等工具运行 `dist/main.js`。
 2. 前端使用 `pnpm build` 构建静态文件，将 `dist` 目录部署到 Nginx 中，并配置反向代理以解决跨域问题。
+
+### 生产环境反向代理
+
+当前项目推荐生产环境使用同源 API 方案：
+
+```env
+VITE_GLOB_API_URL=
+VITE_GLOB_API_URL_PREFIX=/api
+VITE_GLOB_UPLOAD_URL=/uploads/
+```
+
+也就是前端只请求当前站点下的 `/api/*` 和 `/uploads/*`，再由 Nginx 统一转发到真实后端。
+
+仓库已提供示例配置：
+- `deploy/nginx/cz-official.conf`
+
+对应关系如下：
+- 前端入口：`你的前端服务器IP:端口`
+- 后端服务：`你的后端服务器IP:3000`
+- API 转发：`/api/* -> http://你的后端服务器IP:3000/api/*`
+- 上传转发：`/uploads/* -> http://你的后端服务器IP:3000/uploads/*`
+
+### 上线检查
+
+完成部署后，建议至少检查以下地址：
+
+```text
+http://你的前端服务器IP:端口/
+http://你的前端服务器IP:端口/api/health/ping
+http://你的前端服务器IP:端口/api/activity
+```
+
+预期结果：
+- 首页能正常打开
+- `/api/health/ping` 返回 `{"code":0,"messages":"success","result":{"status":"ok"}}`
+- `/api/activity` 返回统一响应结构，而不是 `No static resource ...`

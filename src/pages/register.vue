@@ -29,6 +29,9 @@
             <a-select-option value="后端开发">后端开发</a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-item label="邀请码" v-bind="validateInfos.invitationCode" class="dark:text-gray-200">
+          <a-input v-model:value="modelRef.invitationCode" placeholder="请输入邀请码" />
+        </a-form-item>
         <a-form-item m-auto>
           <a-button type="default" @click.prevent="onSubmit" class="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600">创建账户</a-button>
         </a-form-item>
@@ -55,6 +58,7 @@ const modelRef = reactive<RegisterParams>({
   password_confirm:'',
   grade: 1,
   major: '',
+  invitationCode: '',
 });
 const rulesRef = reactive({
   username: [
@@ -95,6 +99,12 @@ const rulesRef = reactive({
     {
       required: true,
       message: '请选择您的学习方向',
+    },
+  ],
+  invitationCode: [
+    {
+      required: true,
+      message: '请输入邀请码',
     },
   ],
 });

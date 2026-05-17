@@ -8,24 +8,25 @@ datasource db {
 }
 
 model User {
-  userId       Int           @id @default(autoincrement()) @map("user_id") @db.UnsignedInt
-  username     String        @unique
-  password     String
-  role         String?
-  email        String        @unique
-  avatar       String?
-  github       String?
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at")
-  background   String?
-  description  String?       @db.Text
-  major        String
-  grade        Int
-  badge        String?
-  score        Int           @default(0)
+  userId      Int      @id @default(autoincrement()) @map("user_id") @db.UnsignedInt
+  username    String   @unique
+  password    String
+  role        String?
+  email       String   @unique
+  avatar      String?
+  github      String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  background  String?
+  description String?  @db.Text
+  major       String
+  grade       Int
+  badge       String?
+  score       Int      @default(0)
 
-  comments     Comment[]
-  commentLikes CommentLike[]
+  comments        Comment[]
+  commentLikes    CommentLike[]
+  invitationCodes InvitationCode[]
 
   @@map("user")
 }
@@ -52,53 +53,51 @@ model Message {
   @@map("message")
 }
 
-
-
 model Comment {
-  id        Int       @id @default(autoincrement()) @db.UnsignedInt
-  title     String?   @db.VarChar(120)
-  category  String?   @db.VarChar(40)
-  tags      String?   @db.VarChar(255)
-  content   String    @db.Text
-  userId    Int       @map("user_id") @db.UnsignedInt
-  parentId  Int?      @map("parent_id") @db.UnsignedInt
-  quoteId   Int?      @map("quote_id") @db.UnsignedInt
-  isPinned  Boolean   @default(false) @map("is_pinned")
-  isFeatured Boolean  @default(false) @map("is_featured")
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  title      String?   @db.VarChar(120)
+  category   String?   @db.VarChar(40)
+  tags       String?   @db.VarChar(255)
+  content    String    @db.Text
+  userId     Int       @map("user_id") @db.UnsignedInt
+  parentId   Int?      @map("parent_id") @db.UnsignedInt
+  quoteId    Int?      @map("quote_id") @db.UnsignedInt
+  isPinned   Boolean   @default(false) @map("is_pinned")
+  isFeatured Boolean   @default(false) @map("is_featured")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
 
-  user      User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  parent    Comment?   @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
-  replies   Comment[]  @relation("CommentReplies")
-  quote     Comment?   @relation("CommentQuotes", fields: [quoteId], references: [id], onDelete: SetNull)
-  quotedBy  Comment[]  @relation("CommentQuotes")
-  likes     CommentLike[]
+  user     User          @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  parent   Comment?      @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  Comment[]     @relation("CommentReplies")
+  quote    Comment?      @relation("CommentQuotes", fields: [quoteId], references: [id], onDelete: SetNull)
+  quotedBy Comment[]     @relation("CommentQuotes")
+  likes    CommentLike[]
 
   @@map("comment")
 }
 
 model CommentLike {
-  id         Int       @id @default(autoincrement()) @db.UnsignedInt
-  commentId  Int       @map("comment_id") @db.UnsignedInt
-  userId     Int       @map("user_id") @db.UnsignedInt
-  createdAt  DateTime  @default(now()) @map("create_time")
+  id        Int      @id @default(autoincrement()) @db.UnsignedInt
+  commentId Int      @map("comment_id") @db.UnsignedInt
+  userId    Int      @map("user_id") @db.UnsignedInt
+  createdAt DateTime @default(now()) @map("create_time")
 
-  comment    Comment   @relation(fields: [commentId], references: [id], onDelete: Cascade)
-  user       User      @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
   @@unique([commentId, userId], name: "commentId_userId")
   @@map("comment_like")
 }
 
 model Winner {
-  id         Int      @id @default(autoincrement())
-  name       String   @db.VarChar(100)
-  competition String @db.VarChar(100)
-  award      String   @db.VarChar(50)
-  avatar     String?  @db.VarChar(100)
-  createdAt  DateTime @default(now()) @map("created_at")
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(100)
+  competition String   @db.VarChar(100)
+  award       String   @db.VarChar(50)
+  avatar      String?  @db.VarChar(100)
+  createdAt   DateTime @default(now()) @map("created_at")
 
   @@map("winners")
 }
@@ -115,4 +114,18 @@ model activity {
   updatedAt DateTime @updatedAt
 
   @@map("activities")
+}
+
+model InvitationCode {
+  id        Int      @id @default(autoincrement()) @db.UnsignedInt
+  code      String   @unique @db.VarChar(50)
+  maxUses   Int      @default(1) @map("max_uses")
+  usedCount Int      @default(0) @map("used_count")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  creatorId Int      @map("creator_id") @db.UnsignedInt
+
+  creator User @relation(fields: [creatorId], references: [userId], onDelete: Cascade)
+
+  @@map("invitation_code")
 }
