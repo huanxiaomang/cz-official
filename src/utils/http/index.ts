@@ -29,6 +29,26 @@ const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
 const { createMessage, createErrorModal, createSuccessModal } = useMessage();
 
+function normalizeResponseMessage(messages?: string | object | null) {
+  if (typeof messages === "string") {
+    return messages;
+  }
+
+  if (!messages || typeof messages !== "object") {
+    return "";
+  }
+
+  const firstMessage = Object.values(messages as Record<string, unknown>).find(
+    (value) => !isNull(value) && !isUndefined(value) && !isEmpty(value),
+  );
+
+  if (typeof firstMessage === "string") {
+    return firstMessage;
+  }
+
+  return firstMessage ? String(firstMessage) : "";
+}
+
 const transform: AxiosTransform = {
   /**
    * @description: 处理响应数据。如果数据不是预期格式，可直接抛出错误
@@ -53,9 +73,13 @@ const transform: AxiosTransform = {
     if (!data) {
       throw new Error('[HTTP] Request has no return value');
     }
+    // 兼容未走统一响应包装的接口，直接返回原始数据。
+    if (!Reflect.has(data, "code") || !Reflect.has(data, "result")) {
+      return data;
+    }
     //  这里 code，result，messages为 后台统一的字段
     const { code, result, messages, meta } = data;
-    const message = typeof messages === "string" ? messages : (messages as any)[Object.keys(messages)[0]];
+    const message = normalizeResponseMessage(messages);
 
     // 这里逻辑可以根据项目进行修改
     const hasSuccess =
