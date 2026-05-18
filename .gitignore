@@ -28,3 +28,5 @@ stats.html
 .vscode/
 _trash/
 skills-lock.json
+*_rsa
+1.92.82.236_id_rsa
