@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../cz-admin-ge-main"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.css": "postcss"
+		},
+		"java.compile.nullAnalysis.mode": "automatic"
+	}
+}

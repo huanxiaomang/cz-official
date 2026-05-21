@@ -1,0 +1,34 @@
+:root {
+    /* 标题 */
+    --vp-home-hero-name-color: transparent;
+    --vp-home-hero-name-background: -webkit-linear-gradient(
+        to right,
+        #f78ca0 0%,
+        #f9748f 19%,
+        #fd868c 60%,
+        #fe9a8b 100%
+    );
+    --vp-home-hero-name-background: linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%);
+
+    --vp-home-hero-image-filter: blur(150px);
+
+    /* 顶部导航 */
+    --vp-c-brand-1: #fd6768;
+
+    /* brand按钮 */
+    --vp-button-brand-text: white;
+    --vp-button-brand-bg: #fd6768;
+    --vp-button-brand-hover-border: white;
+    --vp-button-brand-hover-text: #fff;
+    --vp-button-brand-hover-bg: #fd6768;
+    --vp-button-brand-active-border: white;
+
+    --vp-c-brand-dimm-1: rgba(65, 135, 63, 0.05);
+    --vp-c-brand-dimm-2: rgba(65, 135, 63, 0.2);
+    --vp-c-brand-dimm-3: rgba(65, 135, 63, 0.5);
+    --vp-code-color: #476582;
+    --vp-c-code-color: #c9def1;
+}
+.vp-doc a {
+    color: #fe9a8b;
+}
