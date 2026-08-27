@@ -71,7 +71,7 @@ export class AuthService {
         userId: Number(userId)
       },
       data: {
-        role: dto.role ?? currentUser.role,
+        role: dto.role !== undefined ? dto.role : currentUser.role,
         memberType: normalizedMemberType,
         admissionYear,
         grade: getPersistedLegacyGrade(admissionYear, normalizedMemberType),
