@@ -98,16 +98,19 @@ const showCalen = () => {
 const activities = ref<ActiInfo[]>([]);
 const value = ref<Dayjs>();
 const activitiesLoaded = ref(false);
+const activitiesLoading = ref(false);
 const activityDetailOpen = ref<boolean>(false);
 const selectedActivity = ref<ActiInfo | null>(null);
 
 // 获取活动数据
 const fetchActivities = async () => {
+  if (activitiesLoaded.value || activitiesLoading.value) {
+    return;
+  }
+
+  activitiesLoading.value = true;
   try {
     const response = await getActivitiesApi();
-    console.log('API完整响应:', response);
-
-    // response已经是经过处理的result数据了
     activities.value = Array.isArray(response) ? response : [];
 
     // 统一格式化为YYYY-MM-DD格式
@@ -116,13 +119,13 @@ const fetchActivities = async () => {
         activity.sdate = dayjs(activity.sdate).format('YYYY-MM-DD');
       }
     });
-
-    console.log('处理后的活动数据:', activities.value);
     activitiesLoaded.value = true;
   } catch (error) {
     console.error('获取活动数据失败:', error);
     activities.value = [];
     activitiesLoaded.value = true;
+  } finally {
+    activitiesLoading.value = false;
   }
 };
 
@@ -194,28 +197,19 @@ const getActivityStatusType = (status: number): 'success' | 'warning' | 'error' 
 };
 
 // 事件监听器函数
-const handleShowCalendar = () => {
-  console.log('收到显示日历事件');
+const handleShowCalendar = async () => {
+  await fetchActivities();
   showCalen();
 };
 
-onMounted(async () => {
-  await fetchActivities();
-  // 可以添加重试机制
-  if (!activities.value.length) {
-    console.log('尝试重新获取活动数据');
-    await fetchActivities();
-  }
-  
+onMounted(() => {
   // 监听来自header的显示日历事件
   window.addEventListener('showCalendar', handleShowCalendar);
-  console.log('日历事件监听器已添加');
 });
 
 // 清理事件监听器
 onUnmounted(() => {
   window.removeEventListener('showCalendar', handleShowCalendar);
-  console.log('日历事件监听器已移除');
 });
 </script>
 

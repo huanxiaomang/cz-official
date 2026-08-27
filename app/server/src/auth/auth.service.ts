@@ -1,5 +1,6 @@
 import { PrismaService } from './../prisma/prisma.service'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
 import RegisterDto from './dto/register.dto'
 import { hash, verify } from 'argon2'
 import { JwtService } from '@nestjs/jwt'
@@ -8,6 +9,18 @@ import UpdateUserDto from './dto/updateUser.dto'
 import ResetPasswordDto from './dto/reset-password.dto'
 import { VerificationCodeService } from './verification-code.service'
 import { randomBytes } from 'crypto'
+import { normalizeAssetUrl } from '../common/asset-url'
+import {
+  getAcademicAnchorYear,
+  getComputedGrade,
+  getMemberAcademicLabel,
+  getPersistedLegacyGrade,
+  getResolvedMemberType,
+  normalizeMemberType,
+  resolveAdmissionYear,
+} from '../common/member-profile'
+import AdminUpdateUserDto from './dto/admin-update-user.dto'
+import AdminQueryMembersDto from './dto/admin-query-members.dto'
 
 @Injectable()
 export class AuthService {
@@ -36,13 +49,32 @@ export class AuthService {
     }
   }
 
-  async setUserRole(userId, role) {
+  async setUserRole(userId, dto: AdminUpdateUserDto) {
+    const currentUser = await this.prisma.user.findUnique({
+      where: {
+        userId: Number(userId),
+      },
+    })
+
+    if (!currentUser) {
+      throw new BadRequestException(`User with ID ${userId} not found`);
+    }
+
+    const normalizedMemberType = normalizeMemberType(dto.memberType ?? currentUser.memberType, currentUser.badge);
+    const admissionYear =
+      normalizedMemberType === 'ADVISOR'
+        ? null
+        : resolveAdmissionYear(dto.admissionYear ?? currentUser.admissionYear, currentUser.grade);
+
     const user = await this.prisma.user.update({
       where: {
         userId: Number(userId)
       },
       data: {
-        role
+        role: dto.role ?? currentUser.role,
+        memberType: normalizedMemberType,
+        admissionYear,
+        grade: getPersistedLegacyGrade(admissionYear, normalizedMemberType),
       },
     })
     return await this.serializeUser(user);
@@ -51,6 +83,90 @@ export class AuthService {
   async getAllMembers() {
     const users = await this.prisma.user.findMany({})
     return await Promise.all(users.map(async (u) => await this.serializeUser(u)));
+  }
+
+  async getAdminMembers(dto: AdminQueryMembersDto) {
+    const page = dto.page ?? 1
+    const pageSize = dto.pageSize ?? 10
+    const academicAnchorYear = getAcademicAnchorYear()
+
+    const where: Prisma.UserWhereInput = {}
+
+    if (dto.username) {
+      where.username = {
+        contains: dto.username,
+      }
+    }
+
+    if (dto.role) {
+      where.role = dto.role
+    }
+
+    if (dto.major) {
+      where.major = {
+        contains: dto.major,
+      }
+    }
+
+    if (dto.memberType === 'ADVISOR') {
+      where.memberType = 'ADVISOR'
+    }
+    else if (dto.memberType === 'GRADUATED') {
+      where.OR = [
+        { memberType: 'GRADUATED' },
+        {
+          AND: [
+            { memberType: 'STUDENT' },
+            {
+              admissionYear: {
+                lte: academicAnchorYear - 4,
+              },
+            },
+          ],
+        },
+      ]
+    }
+    else if (dto.memberType === 'STUDENT') {
+      where.memberType = 'STUDENT'
+      where.admissionYear = {
+        ...(typeof dto.admissionYear === 'number'
+          ? { equals: dto.admissionYear }
+          : { gt: academicAnchorYear - 4 }),
+      }
+    }
+
+    if (dto.admissionYear && dto.memberType !== 'STUDENT') {
+      where.admissionYear = dto.admissionYear
+    }
+
+    const [users, total] = await this.prisma.$transaction([
+      this.prisma.user.findMany({
+        where,
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+      this.prisma.user.count({ where }),
+    ])
+
+    return {
+      items: await Promise.all(users.map(async (user) => await this.serializeUser(user))),
+      total,
+    }
+  }
+
+  async getAdminUserOptions() {
+    return await this.prisma.user.findMany({
+      select: {
+        userId: true,
+        username: true,
+      },
+      orderBy: {
+        userId: 'asc',
+      },
+    })
   }
 
   async getCZMembers() {
@@ -80,6 +196,8 @@ export class AuthService {
       throw new BadRequestException('邀请码已过期');
     }
 
+    const admissionYear = resolveAdmissionYear(dto.admissionYear, dto.grade);
+
     const user = await this.prisma.$transaction(async (prisma) => {
       // 增加邀请码使用次数
       await prisma.invitationCode.update({
@@ -94,7 +212,9 @@ export class AuthService {
           password: await hash(dto.password),
           email: dto.email,
           major: dto.major,
-          grade: dto.grade,
+          grade: getPersistedLegacyGrade(admissionYear, 'STUDENT'),
+          admissionYear,
+          memberType: 'STUDENT',
           role: 'COMMON'
         },
       });
@@ -142,6 +262,18 @@ export class AuthService {
 
   async updateUser(dto: UpdateUserDto, token) {
     const userId = (await this.decodeToken(token) as any).sub;
+    const currentUser = await this.prisma.user.findUnique({
+      where: {
+        userId,
+      },
+    });
+
+    if (!currentUser) {
+      throw new BadRequestException(`User with ID ${userId} not found`);
+    }
+
+    const admissionYear = resolveAdmissionYear(dto.admissionYear, dto.grade ?? currentUser.grade);
+    const memberType = normalizeMemberType(currentUser.memberType, currentUser.badge);
 
     // 更新用户信息
     const user = await this.prisma.user.update({
@@ -150,12 +282,13 @@ export class AuthService {
       },
       data: {
         username: dto.username,
-        avatar: dto.avatar,
-        background: dto.background,
+        avatar: normalizeAssetUrl(dto.avatar),
+        background: normalizeAssetUrl(dto.background),
         description: dto.description,
         github: dto.github,
         major: dto.major,
-        grade: dto.grade,
+        grade: getPersistedLegacyGrade(admissionYear, memberType),
+        admissionYear,
         badge: dto.badge
       },
     })
@@ -204,17 +337,24 @@ export class AuthService {
   }
 
   async serializeUser(user) {
+    const admissionYear = resolveAdmissionYear(user.admissionYear, user.grade);
+    const memberType = getResolvedMemberType(admissionYear, user.memberType, user.badge);
+    const grade = getComputedGrade(admissionYear, memberType);
+
     return {
       userId: user.userId,
       username: user.username,
       email: user.email,
       role: user.role,
-      avatar: user.avatar,
+      avatar: normalizeAssetUrl(user.avatar),
       github: user.github,
       major: user.major,
-      grade: user.grade,
+      grade: grade ?? (memberType === 'GRADUATED' ? 5 : 0),
+      admissionYear,
+      memberType,
+      gradeLabel: getMemberAcademicLabel(admissionYear, memberType),
       badge: user.badge,
-      background: user.background,
+      background: normalizeAssetUrl(user.background),
       description: user.description,
       createdAt: user.createdAt
     }

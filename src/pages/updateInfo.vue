@@ -5,13 +5,15 @@
         <a-form-item label="用户名" v-bind="validateInfos.username">
           <a-input v-model:value="modelRef.username" />
         </a-form-item>
-        <a-form-item label="年级" v-bind="validateInfos.grade">
-          <a-select v-model:value="modelRef.grade" placeholder="请选择您的年级">
-            <a-select-option value="1">大一</a-select-option>
-            <a-select-option value="2">大二</a-select-option>
-            <a-select-option value="3">大三</a-select-option>
-            <a-select-option value="4">大四</a-select-option>
-            <a-select-option value="5">毕业</a-select-option>
+        <a-form-item label="入学年份" v-bind="validateInfos.admissionYear">
+          <a-select v-model:value="modelRef.admissionYear" placeholder="请选择您的入学年份">
+            <a-select-option
+              v-for="option in admissionYearOptions"
+              :key="option.value"
+              :value="option.value"
+            >
+              {{ option.label }}
+            </a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="学习方向" v-bind="validateInfos.major">
@@ -22,7 +24,7 @@
         </a-form-item>
 
         <a-form-item label="头像" v-bind="validateInfos.avatar">
-          <Upload list-type="picture-card" :show-upload-list="false" :action="`${envConfig.VITE_GLOB_UPLOAD_URL}/api/upload/image/`"
+          <Upload list-type="picture-card" :show-upload-list="false" :action="uploadAction"
             :before-upload="beforeUpload" @change="handleAvatarChange">
             <img v-if="modelRef.avatar" :src="modelRef.avatar" alt="avatar" rounded-full />
 
@@ -34,7 +36,7 @@
           </Upload>
         </a-form-item>
         <a-form-item label="背景图" v-bind="validateInfos.background">
-          <Upload list-type="picture-card" :show-upload-list="false" :action="`${envConfig.VITE_GLOB_UPLOAD_URL}/api/upload/image/`"
+          <Upload list-type="picture-card" :show-upload-list="false" :action="uploadAction"
             :before-upload="beforeUpload" @change="handleBgChange">
             <img v-if="modelRef.background" :src="modelRef.background" alt="background" />
             <div v-else>
@@ -69,16 +71,18 @@ import { useRouter } from 'vue-router';
 import { getUserInfo } from '~/api/user';
 import { getUserInfoById } from '~/api/user';
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
-import { getAppEnvConfig } from '@/utils/env';
+import { resolveApiUrl } from '@/utils/env';
+import { getAdmissionYearOptions } from '@/utils/memberProfile';
 const router = useRouter();
 const useForm = Form.useForm;
-const envConfig = getAppEnvConfig();
+const uploadAction = resolveApiUrl('upload/image');
+const admissionYearOptions = getAdmissionYearOptions();
 
 const userInfo = useUserStore().userInfo!;
 
 const modelRef = reactive<Omit<UpdateParams,'password'>>({
   username: userInfo.username,
-  grade: userInfo.grade,
+  admissionYear: userInfo.admissionYear || admissionYearOptions[0]?.value || new Date().getFullYear(),
   major: userInfo.major,
   avatar: userInfo.avatar || '',
   background: userInfo.background || '',
@@ -153,10 +157,10 @@ const rulesRef = reactive({
     },
   ],
 
-  grade: [
+  admissionYear: [
     {
       required: true,
-      message: '请输入年级',
+      message: '请选择入学年份',
     },
   ],
   major: [
@@ -173,6 +177,7 @@ const onSubmit = () => {
   validate()
     .then(async () => {
       const data = toRaw(modelRef);
+      data.admissionYear = Number(data.admissionYear);
       const userStore = useUserStore();
 
       const userInfo = await userStore.updateUserInfo(data);

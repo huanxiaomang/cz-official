@@ -146,7 +146,10 @@ const transform: AxiosTransform = {
     // errorMessageMode='modal'的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
     // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
     if (options.errorMessageMode === "modal") {
-      createErrorModal(message);
+      createErrorModal({
+        title: "error",
+        content: timeoutMsg || message || "request failed",
+      });
     } else if (options.errorMessageMode === "message") {
       createMessage.error(timeoutMsg);
     }

@@ -23,15 +23,6 @@ export default defineConfig({
   server: {
     port: 3333,
     host: true,
-    // API代理配置
-    proxy: {
-      '/api': {
-        target: 'http://1.92.82.236:3000',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      },
-    },
   },
 
   esbuild: {

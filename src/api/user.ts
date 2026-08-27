@@ -15,7 +15,7 @@ export interface RegisterParams {
   email?: string;
   password?: string;
   password_confirm?: string;
-  grade?: number;
+  admissionYear?: number;
   major?: string;
   invitationCode?: string;
 }
@@ -27,7 +27,7 @@ export interface UpdateParams {
   background: string;
   description: string;
   major: string;
-  grade: number;
+  admissionYear: number;
   badge: string;
 }
 

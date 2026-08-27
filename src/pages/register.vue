@@ -14,13 +14,15 @@
         <a-form-item label="确认密码" v-bind="validateInfos.password_confirm" class="dark:text-gray-200">
           <a-input-password v-model:value="modelRef.password_confirm" />
         </a-form-item>
-        <a-form-item label="年级" v-bind="validateInfos.grade" class="dark:text-gray-200">
-          <a-select v-model:value="modelRef.grade" placeholder="请选择您的年级">
-            <a-select-option value="1">大一</a-select-option>
-            <a-select-option value="2">大二</a-select-option>
-            <a-select-option value="3">大三</a-select-option>
-            <a-select-option value="4">大四</a-select-option>
-            <a-select-option value="5">毕业</a-select-option>
+        <a-form-item label="入学年份" v-bind="validateInfos.admissionYear" class="dark:text-gray-200">
+          <a-select v-model:value="modelRef.admissionYear" placeholder="请选择您的入学年份">
+            <a-select-option
+              v-for="option in admissionYearOptions"
+              :key="option.value"
+              :value="option.value"
+            >
+              {{ option.label }}
+            </a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="学习方向" v-bind="validateInfos.major" class="dark:text-gray-200">
@@ -46,9 +48,11 @@ import { Form } from 'ant-design-vue';
 import { useUserStore } from '~/store/user';
 import { RegisterParams } from '~/api/user';
 import { useMessage } from '~/hooks/web/useMessage';
+import { getAdmissionYearOptions } from '@/utils/memberProfile';
 
 const useForm = Form.useForm;
 
+const admissionYearOptions = getAdmissionYearOptions();
 const labelCol = { span: 4 };
 const wrapperCol = { span: 8 };
 const modelRef = reactive<RegisterParams>({
@@ -56,7 +60,7 @@ const modelRef = reactive<RegisterParams>({
   email: '',
   password: '',
   password_confirm:'',
-  grade: 1,
+  admissionYear: admissionYearOptions[0]?.value,
   major: '',
   invitationCode: '',
 });
@@ -89,10 +93,10 @@ const rulesRef = reactive({
       message: '请再次输入您的密码',
     }
   ],
-  grade: [
+  admissionYear: [
     {
       required: true,
-      message: '请输入年级',
+      message: '请选择入学年份',
     },
   ],
   major: [
@@ -115,7 +119,7 @@ const onSubmit = () => {
   validate()
     .then(async () => {
       const data = toRaw(modelRef);
-      data.grade = Number(data.grade);
+      data.admissionYear = Number(data.admissionYear);
       const userStore = useUserStore();
       const userInfo = await userStore.register(data);
       if (userInfo) {

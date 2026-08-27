@@ -16,15 +16,15 @@
           <router-link to="/comment" class="item" :class="{ 'active': route.path === '/comment' }"
             cursor-pointer>蓝桥讨论区</router-link>
 
-          <a class="item" href="http://docs.czstudio.tech/" target="_blank" flex items-center>文档<div inline-block
-              i-ri:share-box-fill text-4 ml-1>
-            </div></a>
+          <a class="item" :href="`${envConfig.VITE_GLOB_DOCS_URL}/docs/`" target="_blank" rel="noopener noreferrer" flex items-center>文档
+            <ExportOutlined class="ml-1 text-4" />
+          </a>
         </div>
         <button icon-btn @click="showDesktopCalendar">
-          <div i-carbon-calendar w-8 mr-3 />
+          <CalendarOutlined class="mr-3 text-5" />
         </button>
         <button icon-btn @click="toggleDark()">
-          <div i-carbon-sun dark:i-carbon-moon w-8 mr-3 />
+          <span class="mr-3 text-5 leading-none">{{ isDark ? '🌙' : '☀' }}</span>
         </button>
         <div mr-4 v-if="!isLogin">
           <router-link to="/register" class="hover:text-blue-5" cursor-pointer>注册 </router-link>|
@@ -38,17 +38,21 @@
             <div @click="handleLogout" px-5 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-left rounded-md>退出登录</div>
           </div>
         </div>
-        <a i-carbon-logo-github icon-btn v-if="!isLogin" hover:text-blue-500 rel="noreferrer"
-          href="" target="_blank" title="GitHub" text-black text-5 ml-auto
-          mr-8 />
+        <a v-if="!isLogin" icon-btn hover:text-blue-500 rel="noopener noreferrer"
+          :href="CZ_GITHUB_URL" target="_blank" title="GitHub" aria-label="打开创智工作室 GitHub 仓库" text-black text-5 ml-auto
+          mr-8>
+          <GithubOutlined class="text-5" />
+        </a>
       </div>
     </transition>
   </div>
   <div v-if="deviceType === 'mobile'" :class="{ 'mb-20': route.path !== '/' }">
     <div class="header w-full h-13 flex top-0 bg-white dark:bg-[#1a1a1a] dark:border-gray-800" flex="items-center row" fixed z-100 border-b>
       <div mr-auto ml-8 h-full items-center flex gap-2>
-        <a i-carbon-logo-github v-if="!isLogin" rel="noreferrer" href="" target="_blank" title="GitHub" text-black dark:text-white
-          text-5 />
+        <a v-if="!isLogin" rel="noopener noreferrer" :href="CZ_GITHUB_URL" target="_blank" title="GitHub" aria-label="打开创智工作室 GitHub 仓库" text-black dark:text-white
+          text-5>
+          <GithubOutlined class="text-5" />
+        </a>
         <CZAvatar v-else :user-id="userStore.userInfo?.userId!" :click-fn="() => void 0"></CZAvatar>
 
 
@@ -56,8 +60,9 @@
       <div m-auto font-bold class="title">
         <router-link to="/">创智工作室</router-link>
       </div>
-      <a i-eva:menu-fill rel="noreferrer" target="_blank" @click="toggleMenu" title="Menu" text-black dark:text-white text-5 ml-auto
-        mr-8 />
+      <button type="button" @click="toggleMenu" title="Menu" aria-label="打开导航菜单" text-black dark:text-white text-5 ml-auto mr-8>
+        <MenuOutlined class="text-5" />
+      </button>
     </div>
     <Transition name="fade">
       <div v-if="isMenuOpen" class="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-50" @click="closeMenu"></div>
@@ -81,10 +86,9 @@
           <CarryOutOutlined class="ml-2" />
         </div>
 
-        <a class="item phone-link dark:border-gray-800" :href="`${envConfig.VITE_GLOB_DOCS_URL}/docs/`" target="_blank" border-b flex items-center cursor-pointer h-12
+        <a class="item phone-link dark:border-gray-800" :href="`${envConfig.VITE_GLOB_DOCS_URL}/docs/`" target="_blank" rel="noopener noreferrer" border-b flex items-center cursor-pointer h-12
           pl-8>文档
-          <div inline-block i-ri:share-box-fill text-4 ml-1 text-gray-7 dark:text-gray-300>
-          </div>
+          <ExportOutlined class="ml-1 text-4 text-gray-7 dark:text-gray-300" />
         </a>
         <div v-if="!isLogin">
           <router-link to="/login" class="phone-link dark:border-gray-800" border-b cursor-pointer h-12 flex items-center pl-8
@@ -105,14 +109,14 @@
 </template>
 
 <script setup lang='ts'>
-import { inject, onMounted, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useDeviceType } from '~/hooks/useDeviceType';
 import { useUserStore } from '~/store/user';
 import CZAvatar from '../CZAvatar.vue';
-import { toggleDark } from '~/composables/dark';
-import { CarryOutOutlined } from '@ant-design/icons-vue';
-import { getAppEnvConfig } from '@/utils/env';
+import { isDark, toggleDark } from '~/composables/dark';
+import { CalendarOutlined, CarryOutOutlined, ExportOutlined, GithubOutlined, MenuOutlined } from '@ant-design/icons-vue';
+import { CZ_GITHUB_URL, getAppEnvConfig } from '@/utils/env';
 
 const route = useRoute();
 const envConfig = getAppEnvConfig();
@@ -151,7 +155,7 @@ const closeMenu = () => {
 };
 
 const userStore = useUserStore();
-const isLogin = !!userStore.userInfo;
+const isLogin = computed(() => !!userStore.userInfo);
 const router = useRouter();
 
 const handleLogout = () => {
@@ -161,14 +165,12 @@ const handleLogout = () => {
 
 // 显示移动端日历
 const showMobileCalendar = () => {
-  // 触发全局事件来显示日历
   window.dispatchEvent(new CustomEvent('showCalendar'));
   closeMenu();
 };
 
 // 显示桌面端日历
 const showDesktopCalendar = () => {
-  // 触发全局事件来显示日历
   window.dispatchEvent(new CustomEvent('showCalendar'));
 };
 

@@ -17,6 +17,8 @@ async function run() {
           description: Random.cparagraph(30, 50),
           major: '前端开发',
           grade: 2,
+          admissionYear: 2025,
+          memberType: 'STUDENT',
           badge: '蓝桥杯国三,创智开发者',
 
     },
@@ -33,6 +35,8 @@ async function run() {
           description: Random.cparagraph(30, 50),
           major: '后端开发',
           grade: 2,
+          admissionYear: 2025,
+          memberType: 'STUDENT',
           badge: '蓝桥杯省二,创智开发者',
     },
   })
@@ -49,6 +53,8 @@ async function run() {
           description: Random.cparagraph(30, 50),
           major: '全栈开发',
           grade: 2,
+          admissionYear: 2025,
+          memberType: 'STUDENT',
           badge: '创智开发者',
     },
   })

@@ -212,6 +212,7 @@
 </template>
 
 <script setup lang="ts">
+import type { ComponentPublicInstance } from 'vue';
 import { computed, nextTick, ref, watch, onMounted, onUnmounted } from 'vue';
 import { getWinners, Winner } from '~/api/winners';
 import AchievementScene from '~/components/achievement/AchievementScene.vue';
@@ -310,9 +311,15 @@ watch(selectedGroup, (value) => {
   document.body.style.overflow = value ? 'hidden' : '';
 });
 
-function setSectionRef(element: Element | null, index: number) {
-  if (!(element instanceof HTMLElement)) return;
-  sectionRefs.value[index] = element;
+function setSectionRef(element: Element | ComponentPublicInstance | null, index: number) {
+  const target
+    = element instanceof HTMLElement
+      ? element
+      : element && '$el' in element && element.$el instanceof HTMLElement
+        ? element.$el
+        : null;
+  if (!target) return;
+  sectionRefs.value[index] = target;
 }
 
 function clamp(value: number, min: number, max: number) {

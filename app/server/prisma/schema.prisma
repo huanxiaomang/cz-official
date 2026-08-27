@@ -21,6 +21,8 @@ model User {
   description String?  @db.Text
   major       String
   grade       Int
+  admissionYear Int?   @map("admission_year")
+  memberType  String   @default("STUDENT") @map("member_type")
   badge       String?
   score       Int      @default(0)
 

@@ -82,7 +82,6 @@ npx prisma migrate reset
 pnpm dev:serve
 ```
 
-确保nest服务启动成功后，可以使用`pnpm dev:web`启动前端服务。
-
+确保nest服务启动成功后，可以使用`pnpm local`启动前端服务。
 
 

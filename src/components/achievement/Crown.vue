@@ -1,6 +1,6 @@
 <template>
   <TresGroup ref="groupRef">
-    <TresInstancedMesh ref="meshRef" :args="[null, null, count]" cast-shadow receive-shadow>
+    <TresInstancedMesh ref="meshRef" :args="[undefined, undefined, count]" cast-shadow receive-shadow>
       <TresSphereGeometry :args="[0.03, 8, 8]" />
       <TresMeshStandardMaterial
         color="#1DA1F2"
@@ -24,8 +24,21 @@ const props = defineProps({
   introProgress: { type: Number, default: 1 }
 })
 
-const meshRef = shallowRef(null)
-const groupRef = shallowRef(null)
+type Particle = {
+  theta: number;
+  radius: number;
+  yA: number;
+  jitterX: number;
+  jitterY: number;
+  jitterZ: number;
+  speed: number;
+  offset: number;
+  scatterDir: THREE.Vector3;
+  random: number;
+}
+
+const meshRef = shallowRef<THREE.InstancedMesh | null>(null)
+const groupRef = shallowRef<THREE.Group | null>(null)
 
 
 const scatterProgress = computed(() => {
@@ -33,7 +46,7 @@ const scatterProgress = computed(() => {
   return THREE.MathUtils.clamp(props.scrollProgress * 5, 0, 1)
 })
 
-const particles = []
+const particles: Particle[] = []
 const peaks = 6
 const peakHeight = 1.8
 const baseRadius = 2.2

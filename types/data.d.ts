@@ -9,6 +9,9 @@ export interface UserInfo {
   github?: string;
   major: string;
   grade: number;
+  admissionYear?: number;
+  memberType?: 'STUDENT' | 'GRADUATED' | 'ADVISOR';
+  gradeLabel?: string;
   badge?: string;
   score: string;
   createdAt: string;

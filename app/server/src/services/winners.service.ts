@@ -2,6 +2,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { CreateWinnerDto } from '../winners/dto/create-winner.dto';
 import { UpdateWinnerDto } from '../winners/dto/update-winner.dto';
+import { normalizeAssetUrl } from '../common/asset-url';
 
 @Injectable()
 export class WinnerService {
@@ -35,7 +36,7 @@ export class WinnerService {
     ]);
 
     return {
-      winners,
+      winners: winners.map(winner => this.serializeWinner(winner)),
       total,
       page,
       pageSize,
@@ -44,17 +45,21 @@ export class WinnerService {
   }
 
   async getWinners() {
-    return await this.prisma.winner.findMany({
+    const winners = await this.prisma.winner.findMany({
       orderBy: {
         createdAt: 'desc'
       }
     });
+
+    return winners.map(winner => this.serializeWinner(winner));
   }
 
   async getWinnerById(id: number) {
-    return await this.prisma.winner.findUnique({
+    const winner = await this.prisma.winner.findUnique({
       where: { id }
     });
+
+    return winner ? this.serializeWinner(winner) : winner;
   }
 
   async createWinner(createWinnerDto: CreateWinnerDto) {
@@ -70,7 +75,7 @@ export class WinnerService {
         name,
         competition,
         award,
-        avatar: avatar || null
+        avatar: normalizeAssetUrl(avatar) || null
       }
     });
   }
@@ -92,7 +97,7 @@ export class WinnerService {
         name: dto.name,
         competition: dto.competition,
         award: dto.award,
-        avatar: dto.avatar || null
+        avatar: normalizeAssetUrl(dto.avatar) || null
       }))
     });
 
@@ -125,7 +130,7 @@ export class WinnerService {
         name,
         competition,
         award,
-        avatar: avatar || null
+        avatar: normalizeAssetUrl(avatar) || null
       }
     });
   }
@@ -180,7 +185,7 @@ export class WinnerService {
       throw new BadRequestException('获奖等级参数不能为空');
     }
 
-    return await this.prisma.winner.findMany({
+    const winners = await this.prisma.winner.findMany({
       where: {
         award: {
           contains: award
@@ -190,6 +195,8 @@ export class WinnerService {
         createdAt: 'desc'
       }
     });
+
+    return winners.map(winner => this.serializeWinner(winner));
   }
 
   async getWinnersByCompetition(competition: string) {
@@ -197,7 +204,7 @@ export class WinnerService {
       throw new BadRequestException('比赛名称参数不能为空');
     }
 
-    return await this.prisma.winner.findMany({
+    const winners = await this.prisma.winner.findMany({
       where: {
         competition: {
           contains: competition
@@ -207,6 +214,8 @@ export class WinnerService {
         createdAt: 'desc'
       }
     });
+
+    return winners.map(winner => this.serializeWinner(winner));
   }
 
   async getWinnersStats() {
@@ -230,6 +239,13 @@ export class WinnerService {
       totalWinners,
       awardStats,
       competitionStats
+    };
+  }
+
+  private serializeWinner(winner: any) {
+    return {
+      ...winner,
+      avatar: normalizeAssetUrl(winner.avatar),
     };
   }
 }
