@@ -11,7 +11,7 @@
             cursor-pointer>通知</router-link>
           <router-link to="/member" class="item" :class="{ 'active': route.path === '/member' }"
             cursor-pointer>成员</router-link>
-          <router-link to="/lanqiao" class="item" :class="{ 'active': route.path === '/lanqiao' }"
+          <router-link to="/achievement" class="item" :class="{ 'active': route.path === '/achievement' }"
             cursor-pointer>成就</router-link>
           <router-link to="/comment" class="item" :class="{ 'active': route.path === '/comment' }"
             cursor-pointer>蓝桥讨论区</router-link>
@@ -77,7 +77,7 @@
           flex items-center pl-8 @click="closeMenu" border-b>通知</router-link>
         <router-link to="/member" class="phone-link dark:border-gray-800" border-b :class="{ 'active': route.path === '/member' }"
           cursor-pointer h-12 flex items-center pl-8 @click="closeMenu">成员</router-link>
-        <router-link to="/lanqiao" class="phone-link dark:border-gray-800" border-b :class="{ 'active': route.path === '/lanqiao' }"
+        <router-link to="/achievement" class="phone-link dark:border-gray-800" border-b :class="{ 'active': route.path === '/achievement' }"
           cursor-pointer h-12 flex items-center pl-8 @click="closeMenu">成就</router-link>
         <router-link to="/comment" class="phone-link dark:border-gray-800" border-b :class="{ 'active': route.path === '/comment' }"
           cursor-pointer h-12 flex items-center pl-8 @click="closeMenu">蓝桥讨论区</router-link>
@@ -165,13 +165,13 @@ const handleLogout = () => {
 
 // 显示移动端日历
 const showMobileCalendar = () => {
-  window.dispatchEvent(new CustomEvent('showCalendar'));
+  window.dispatchEvent(new CustomEvent('showMobileCalendar'));
   closeMenu();
 };
 
 // 显示桌面端日历
 const showDesktopCalendar = () => {
-  window.dispatchEvent(new CustomEvent('showCalendar'));
+  window.dispatchEvent(new CustomEvent('showDesktopCalendar'));
 };
 
 

@@ -1,34 +1,49 @@
 import { defHttp } from '~/utils/http'
 
+export interface WinnerMember {
+  sortOrder: number
+  user: {
+    userId: number
+    username: string
+    email: string
+    avatar: string
+    major: string
+    badge?: string | null
+  } | null
+}
+
 export interface Winner {
   id: number
-  name: string
-  competition: string
+  title: string
   award: string
+  category: 'COMPETITION' | 'SCHOLARSHIP' | 'HONOR'
   avatar: string
+  members: WinnerMember[]
   createdAt: string
 }
 
 export interface CreateWinnerDto {
-  name: string
-  competition: string
+  title: string
   award: string
+  category?: string
   avatar?: string
+  memberIds?: number[]
 }
 
 export interface UpdateWinnerDto {
-  name?: string
-  competition?: string
+  title?: string
   award?: string
+  category?: string
   avatar?: string
+  memberIds?: number[]
 }
 
 export interface PaginationParams {
   page?: number
   pageSize?: number
-  name?: string
-  competition?: string
+  title?: string
   award?: string
+  category?: string
 }
 
 export interface PaginationResult<T> {
@@ -47,10 +62,10 @@ export interface WinnerStats {
       award: number
     }
   }>
-  competitionStats: Array<{
-    competition: string
+  titleStats: Array<{
+    title: string
     _count: {
-      competition: number
+      title: number
     }
   }>
 }
@@ -120,10 +135,10 @@ export function getWinnersByAward(award: string) {
   })
 }
 
-export function getWinnersByCompetition(competition: string) {
+export function getWinnersByTitle(title: string) {
   return defHttp.get<Winner[]>({
-    url: '/winners/filter/competition',
-    params: { competition }
+    url: '/winners/filter/title',
+    params: { title }
   })
 }
 

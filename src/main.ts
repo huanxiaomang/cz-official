@@ -29,9 +29,9 @@ const SEO_BY_PATH: Record<string, { title: string; description: string }> = {
     title: '通知公告 | 创智工作室',
     description: '查看创智工作室最新通知、活动安排与站内动态。',
   },
-  '/lanqiao': {
+  '/achievement': {
     title: '成果荣誉 | 创智工作室',
-    description: '查看创智工作室蓝桥杯与相关竞赛成果，了解团队积累与荣誉表现。',
+    description: '查看创智工作室学科竞赛、荣誉奖学金与综合荣誉，了解团队积累与成员成就表现。',
   },
   '/comment': {
     title: '蓝桥讨论区 | 创智工作室',

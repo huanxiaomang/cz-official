@@ -1,0 +1,6 @@
+ALTER TABLE `winners`
+    ADD COLUMN `category` VARCHAR(40) NOT NULL DEFAULT 'COMPETITION',
+    ADD COLUMN `user_id` INTEGER UNSIGNED NULL;
+
+ALTER TABLE `winners`
+    ADD CONSTRAINT `winners_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;

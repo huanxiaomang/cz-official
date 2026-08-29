@@ -9,51 +9,51 @@ async function main() {
   // 插入测试数据
   const winners = [
     {
-      name: '张三',
-      competition: '蓝桥杯全国软件和信息技术专业人才大赛',
+      title: '蓝桥杯全国软件和信息技术专业人才大赛',
       award: '国一',
+      category: 'COMPETITION',
       avatar: 'avatar1.jpg'
     },
     {
-      name: '李四',
-      competition: '蓝桥杯全国软件和信息技术专业人才大赛',
+      title: '蓝桥杯全国软件和信息技术专业人才大赛',
       award: '国二',
+      category: 'COMPETITION',
       avatar: 'avatar2.jpg'
     },
     {
-      name: '王五',
-      competition: '蓝桥杯全国软件和信息技术专业人才大赛',
+      title: '蓝桥杯全国软件和信息技术专业人才大赛',
       award: '国三',
+      category: 'COMPETITION',
       avatar: 'avatar3.jpg'
     },
     {
-      name: '赵六',
-      competition: '蓝桥杯全国软件和信息技术专业人才大赛',
+      title: '蓝桥杯全国软件和信息技术专业人才大赛',
       award: '省一',
+      category: 'COMPETITION',
       avatar: 'avatar4.jpg'
     },
     {
-      name: '钱七',
-      competition: '蓝桥杯全国软件和信息技术专业人才大赛',
+      title: '蓝桥杯全国软件和信息技术专业人才大赛',
       award: '省二',
+      category: 'COMPETITION',
       avatar: 'avatar5.jpg'
     },
     {
-      name: '孙八',
-      competition: '蓝桥杯全国软件和信息技术专业人才大赛',
+      title: '蓝桥杯全国软件和信息技术专业人才大赛',
       award: '国一',
+      category: 'COMPETITION',
       avatar: 'avatar6.jpg'
     },
     {
-      name: '周九',
-      competition: '蓝桥杯全国软件和信息技术专业人才大赛',
+      title: '蓝桥杯全国软件和信息技术专业人才大赛',
       award: '国二',
+      category: 'COMPETITION',
       avatar: 'avatar7.jpg'
     },
     {
-      name: '吴十',
-      competition: '蓝桥杯全国软件和信息技术专业人才大赛',
+      title: '蓝桥杯全国软件和信息技术专业人才大赛',
       award: '国三',
+      category: 'COMPETITION',
       avatar: 'avatar8.jpg'
     }
   ]

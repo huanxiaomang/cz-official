@@ -4,150 +4,161 @@ import { CreateWinnerDto } from '../winners/dto/create-winner.dto';
 import { UpdateWinnerDto } from '../winners/dto/update-winner.dto';
 import { normalizeAssetUrl } from '../common/asset-url';
 
+const MEMBER_INCLUDE = {
+  members: {
+    include: { user: true },
+    orderBy: { sortOrder: 'asc' as const },
+  },
+};
+
 @Injectable()
 export class WinnerService {
   constructor(private prisma: PrismaService) {}
 
-  async getWinnersWithPagination(page = 1, pageSize = 10, name?: string, competition?: string, award?: string) {
+  async getWinnersWithPagination(page = 1, pageSize = 10, title?: string, award?: string, category?: string) {
     const skip = (page - 1) * pageSize;
-    
-    // 构建查询条件
+
     const where: any = {};
-    if (name) {
-      where.name = { contains: name };
-    }
-    if (competition) {
-      where.competition = { contains: competition };
+    if (title) {
+      where.title = { contains: title };
     }
     if (award) {
       where.award = { contains: award };
+    }
+    if (category) {
+      where.category = category;
     }
 
     const [winners, total] = await Promise.all([
       this.prisma.winner.findMany({
         where,
-        orderBy: {
-          createdAt: 'desc'
-        },
+        orderBy: { createdAt: 'desc' },
+        include: MEMBER_INCLUDE,
         skip,
-        take: pageSize
+        take: pageSize,
       }),
-      this.prisma.winner.count({ where })
+      this.prisma.winner.count({ where }),
     ]);
 
     return {
-      winners: winners.map(winner => this.serializeWinner(winner)),
+      winners: winners.map((winner) => this.serializeWinner(winner)),
       total,
       page,
       pageSize,
-      totalPages: Math.ceil(total / pageSize)
+      totalPages: Math.ceil(total / pageSize),
     };
   }
 
-  async getWinners() {
+  async getWinners(category?: string) {
+    const where: any = {};
+    if (category) {
+      where.category = category;
+    }
+
     const winners = await this.prisma.winner.findMany({
-      orderBy: {
-        createdAt: 'desc'
-      }
+      where,
+      orderBy: { createdAt: 'desc' },
+      include: MEMBER_INCLUDE,
     });
 
-    return winners.map(winner => this.serializeWinner(winner));
+    return winners.map((winner) => this.serializeWinner(winner));
   }
 
   async getWinnerById(id: number) {
     const winner = await this.prisma.winner.findUnique({
-      where: { id }
+      where: { id },
+      include: MEMBER_INCLUDE,
     });
 
     return winner ? this.serializeWinner(winner) : winner;
   }
 
   async createWinner(createWinnerDto: CreateWinnerDto) {
-    const { name, competition, award, avatar } = createWinnerDto;
+    const { title, award, category, avatar, memberIds } = createWinnerDto;
 
-    // 验证必填字段
-    if (!name || !competition || !award) {
-      throw new BadRequestException('姓名、比赛名称和获奖等级为必填字段');
+    if (!title || !award) {
+      throw new BadRequestException('成就名称和获奖等级为必填字段');
     }
 
-    return await this.prisma.winner.create({
+    const winner = await this.prisma.winner.create({
       data: {
-        name,
-        competition,
+        title,
         award,
-        avatar: normalizeAssetUrl(avatar) || null
-      }
+        category: category || 'COMPETITION',
+        avatar: normalizeAssetUrl(avatar) || null,
+      },
     });
+
+    if (memberIds && memberIds.length > 0) {
+      await this.prisma.winnerMember.createMany({
+        data: memberIds.map((userId, index) => ({
+          winnerId: winner.id,
+          userId,
+          sortOrder: index,
+        })),
+      });
+    }
+
+    return this.getWinnerById(winner.id);
   }
 
   async batchCreateWinners(createWinnerDtos: CreateWinnerDto[]) {
     if (!createWinnerDtos || createWinnerDtos.length === 0) {
-      throw new BadRequestException('获奖者数据不能为空');
+      throw new BadRequestException('成就数据不能为空');
     }
 
-    // 验证所有数据
+    const created = [];
     for (const dto of createWinnerDtos) {
-      if (!dto.name || !dto.competition || !dto.award) {
-        throw new BadRequestException('姓名、比赛名称和获奖等级为必填字段');
-      }
+      created.push(await this.createWinner(dto));
     }
-
-    const winners = await this.prisma.winner.createMany({
-      data: createWinnerDtos.map(dto => ({
-        name: dto.name,
-        competition: dto.competition,
-        award: dto.award,
-        avatar: normalizeAssetUrl(dto.avatar) || null
-      }))
-    });
 
     return {
-      count: winners.count,
-      message: `成功创建 ${winners.count} 条获奖者记录`
+      count: created.length,
+      message: `成功创建 ${created.length} 条成就记录`,
     };
   }
 
   async updateWinner(id: number, updateWinnerDto: UpdateWinnerDto) {
-    const { name, competition, award, avatar } = updateWinnerDto;
-
-    // 检查获奖者是否存在
-    const existingWinner = await this.prisma.winner.findUnique({
-      where: { id }
-    });
-
+    const existingWinner = await this.prisma.winner.findUnique({ where: { id } });
     if (!existingWinner) {
-      throw new NotFoundException('获奖者不存在');
+      throw new NotFoundException('成就不存在');
     }
 
-    // 验证必填字段
-    if (!name || !competition || !award) {
-      throw new BadRequestException('姓名、比赛名称和获奖等级为必填字段');
+    const { title, award, category, avatar, memberIds } = updateWinnerDto;
+
+    const data: any = {};
+    if (title !== undefined) data.title = title;
+    if (award !== undefined) data.award = award;
+    if (category !== undefined) data.category = category || 'COMPETITION';
+    if (avatar !== undefined) data.avatar = normalizeAssetUrl(avatar) || null;
+
+    if (Object.keys(data).length > 0) {
+      await this.prisma.winner.update({ where: { id }, data });
     }
 
-    return await this.prisma.winner.update({
-      where: { id },
-      data: {
-        name,
-        competition,
-        award,
-        avatar: normalizeAssetUrl(avatar) || null
+    if (memberIds !== undefined) {
+      await this.prisma.winnerMember.deleteMany({ where: { winnerId: id } });
+      if (memberIds.length > 0) {
+        await this.prisma.winnerMember.createMany({
+          data: memberIds.map((userId, index) => ({
+            winnerId: id,
+            userId,
+            sortOrder: index,
+          })),
+        });
       }
-    });
+    }
+
+    return this.getWinnerById(id);
   }
 
   async deleteWinner(id: number) {
-    // 检查获奖者是否存在
-    const existingWinner = await this.prisma.winner.findUnique({
-      where: { id }
-    });
-
+    const existingWinner = await this.prisma.winner.findUnique({ where: { id } });
     if (!existingWinner) {
-      throw new NotFoundException('获奖者不存在');
+      throw new NotFoundException('成就不存在');
     }
 
-    await this.prisma.winner.delete({
-      where: { id }
-    });
+    await this.prisma.winner.delete({ where: { id } });
 
     return true;
   }
@@ -157,26 +168,21 @@ export class WinnerService {
       throw new BadRequestException('删除ID列表不能为空');
     }
 
-    // 检查所有ID是否存在
     const existingWinners = await this.prisma.winner.findMany({
-      where: {
-        id: { in: ids }
-      }
+      where: { id: { in: ids } },
     });
 
     if (existingWinners.length !== ids.length) {
-      throw new BadRequestException('部分获奖者不存在');
+      throw new BadRequestException('部分成就不存在');
     }
 
     const result = await this.prisma.winner.deleteMany({
-      where: {
-        id: { in: ids }
-      }
+      where: { id: { in: ids } },
     });
 
     return {
       count: result.count,
-      message: `成功删除 ${result.count} 条获奖者记录`
+      message: `成功删除 ${result.count} 条成就记录`,
     };
   }
 
@@ -186,66 +192,72 @@ export class WinnerService {
     }
 
     const winners = await this.prisma.winner.findMany({
-      where: {
-        award: {
-          contains: award
-        }
-      },
-      orderBy: {
-        createdAt: 'desc'
-      }
+      where: { award: { contains: award } },
+      include: MEMBER_INCLUDE,
+      orderBy: { createdAt: 'desc' },
     });
 
-    return winners.map(winner => this.serializeWinner(winner));
+    return winners.map((winner) => this.serializeWinner(winner));
   }
 
-  async getWinnersByCompetition(competition: string) {
-    if (!competition) {
-      throw new BadRequestException('比赛名称参数不能为空');
+  async getWinnersByTitle(title: string) {
+    if (!title) {
+      throw new BadRequestException('成就名称参数不能为空');
     }
 
     const winners = await this.prisma.winner.findMany({
-      where: {
-        competition: {
-          contains: competition
-        }
-      },
-      orderBy: {
-        createdAt: 'desc'
-      }
+      where: { title: { contains: title } },
+      include: MEMBER_INCLUDE,
+      orderBy: { createdAt: 'desc' },
     });
 
-    return winners.map(winner => this.serializeWinner(winner));
+    return winners.map((winner) => this.serializeWinner(winner));
   }
 
   async getWinnersStats() {
     const totalWinners = await this.prisma.winner.count();
-    
+
     const awardStats = await this.prisma.winner.groupBy({
       by: ['award'],
-      _count: {
-        award: true
-      }
+      _count: { award: true },
     });
 
-    const competitionStats = await this.prisma.winner.groupBy({
-      by: ['competition'],
-      _count: {
-        competition: true
-      }
+    const titleStats = await this.prisma.winner.groupBy({
+      by: ['title'],
+      _count: { title: true },
+    });
+
+    const categoryStats = await this.prisma.winner.groupBy({
+      by: ['category'],
+      _count: { category: true },
     });
 
     return {
       totalWinners,
       awardStats,
-      competitionStats
+      titleStats,
+      categoryStats,
     };
   }
 
   private serializeWinner(winner: any) {
+    const { members, ...rest } = winner;
     return {
-      ...winner,
+      ...rest,
       avatar: normalizeAssetUrl(winner.avatar),
+      members: (members || []).map((member: any) => ({
+        sortOrder: member.sortOrder,
+        user: member.user
+          ? {
+              userId: member.user.userId,
+              username: member.user.username,
+              email: member.user.email,
+              avatar: normalizeAssetUrl(member.user.avatar),
+              major: member.user.major,
+              badge: member.user.badge,
+            }
+          : null,
+      })),
     };
   }
 }

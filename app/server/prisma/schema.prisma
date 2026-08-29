@@ -29,6 +29,7 @@ model User {
   comments        Comment[]
   commentLikes    CommentLike[]
   invitationCodes InvitationCode[]
+  winnerMembers   WinnerMember[]
 
   @@map("user")
 }
@@ -94,14 +95,29 @@ model CommentLike {
 }
 
 model Winner {
-  id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(100)
-  competition String   @db.VarChar(100)
-  award       String   @db.VarChar(50)
-  avatar      String?  @db.VarChar(100)
-  createdAt   DateTime @default(now()) @map("created_at")
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(100)
+  award     String   @db.VarChar(50)
+  category  String   @default("COMPETITION") @db.VarChar(40)
+  avatar    String?  @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  members WinnerMember[]
 
   @@map("winners")
+}
+
+model WinnerMember {
+  id        Int @id @default(autoincrement())
+  winnerId  Int @map("winner_id")
+  userId    Int @map("user_id") @db.UnsignedInt
+  sortOrder Int @default(0) @map("sort_order")
+
+  winner Winner @relation(fields: [winnerId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@unique([winnerId, userId])
+  @@map("winner_member")
 }
 
 model activity {

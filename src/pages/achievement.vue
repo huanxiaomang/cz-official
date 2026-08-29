@@ -36,7 +36,7 @@
           </div>
         </div>
 
-        <!-- Dynamic Sections based on Competitions -->
+        <!-- 成就条列表 -->
         <div
           class="relative z-10 pb-32 min-h-screen transition-transform duration-700"
           :style="{
@@ -45,15 +45,15 @@
           }"
         >
           <div
-            v-for="(group, index) in displayGroups"
-            :key="group"
+            v-for="(winner, index) in winnersData"
+            :key="winner.id"
             :ref="element => setSectionRef(element, index)"
             class="min-h-screen flex items-center relative"
             :class="index % 2 === 0 ? 'justify-start' : 'justify-end'"
           >
             <div
-              @click="openGroupDetail(group)"
-              class="relative w-[85vw] md:w-[75vw] min-h-[400px] flex items-center p-8 md:p-16 transition-transform duration-300 hover:scale-[1.02]"
+              @click="openWinnerDetail(winner)"
+              class="relative w-[85vw] md:w-[75vw] min-h-[320px] flex items-center p-8 md:p-16 transition-transform duration-300 hover:scale-[1.02]"
               style="cursor: pointer;"
               :class="index % 2 === 0 ? '-ml-[5vw] justify-end' : '-mr-[5vw] ml-auto justify-start'"
               :style="{
@@ -84,47 +84,82 @@
                   textAlign: index % 2 === 0 ? 'right' : 'left'
                 }"
               >
-                <h2 class="relative text-4xl md:text-5xl font-black mb-6 tracking-wider text-[#1F2329]/20">
-                  {{ group }}
+                <div class="mb-3 text-xs uppercase tracking-[0.35em] text-[#0284c7]">
+                  {{ getGroupLabel(winner.category) }}
+                </div>
+
+                <h2 class="relative text-3xl md:text-4xl font-black mb-5 tracking-wider text-[#1F2329]/20">
+                  {{ winner.title }}
                   <span
                     class="absolute inset-0 text-[#1F2329]"
                     :style="getTitleOverlayStyle(index)"
                   >
-                    {{ group }}
+                    {{ winner.title }}
                   </span>
                 </h2>
-                <p
-                  class="text-base md:text-lg leading-7 text-[#1F2329]/80 mb-8"
+
+                <div
+                  class="mb-6"
                   :style="getDescriptionStyle(index)"
                 >
-                  {{ getSectionDescription(group) }}
-                </p>
+                  <span :class="['inline-flex px-3 py-1 text-sm font-mono border rounded-full', getBadgeClass(winner.award)]">
+                    {{ winner.award }}
+                  </span>
+                </div>
+
                 <div
-                  class="inline-flex items-center gap-3 text-sm tracking-[0.2em] uppercase text-[#38BDF8]"
+                  class="flex flex-wrap items-center gap-3"
+                  :style="getDescriptionStyle(index)"
+                >
+                  <div
+                    v-for="member in winner.members"
+                    :key="member.user?.userId ?? member.sortOrder"
+                    class="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 py-1 pl-1 pr-3"
+                  >
+                    <img
+                      class="h-8 w-8 rounded-full border border-[#38BDF8]/30 bg-[#0a0f18] object-cover"
+                      :src="member.user?.avatar || winner.avatar"
+                      :alt="member.user?.username || '成员'"
+                    />
+                    <span class="text-sm text-[#1F2329]/80">
+                      {{ member.user?.username || '成员' }}
+                    </span>
+                  </div>
+                  <div v-if="!winner.members?.length" class="text-sm text-[#1F2329]/50">暂无关联成员</div>
+                </div>
+
+                <div
+                  class="mt-8 inline-flex items-center gap-3 text-sm tracking-[0.2em] uppercase text-[#0284c7]"
                   :style="getDetailHintStyle(index)"
                 >
                   <span>查看详情</span>
-                  <span class="text-white/45">{{ winnersByGroup[group]?.length || 0 }} 位获奖成员</span>
+                  <span class="text-[#1F2329]/55">{{ winner.members?.length || 0 }} 位成员</span>
                 </div>
-
               </div>
             </div>
+          </div>
+
+          <div
+            v-if="!winnersData.length"
+            class="min-h-[40vh] flex items-center justify-center text-white/50"
+          >
+            暂无成就记录
           </div>
         </div>
 
         <Transition name="achievement-detail">
           <div
-            v-if="selectedGroup"
+            v-if="selectedWinner"
             class="fixed inset-0 z-40 flex items-center justify-center bg-[#11151b]/78 backdrop-blur-md px-4 py-8"
-            @click="closeGroupDetail"
+            @click="closeWinnerDetail"
           >
             <div
-              class="relative w-full max-w-6xl max-h-[88vh] overflow-hidden rounded-[28px] border border-[#38BDF8]/20 bg-[linear-gradient(145deg,#1f2329_0%,#151a21_100%)] shadow-[0_25px_80px_rgba(0,0,0,0.45)]"
+              class="relative w-full max-w-5xl max-h-[88vh] overflow-hidden rounded-[28px] border border-[#38BDF8]/20 bg-[linear-gradient(145deg,#1f2329_0%,#151a21_100%)] shadow-[0_25px_80px_rgba(0,0,0,0.45)]"
               @click.stop
             >
               <button
                 class="absolute top-5 right-5 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/8 text-white/80 transition-colors duration-200 hover:border-[#38BDF8]/30 hover:bg-[#38BDF8]/12 hover:text-white"
-                @click="closeGroupDetail"
+                @click="closeWinnerDetail"
               >
                 ×
               </button>
@@ -137,23 +172,21 @@
                       <div class="mb-4 text-xs uppercase tracking-[0.35em] text-[#38BDF8]/80">
                         Achievement Detail
                       </div>
-                      <h2 class="mb-5 text-3xl md:text-5xl font-black tracking-[0.08em] text-white">
-                        {{ selectedGroup }}
+                      <h2 class="mb-5 text-3xl md:text-4xl font-black tracking-[0.08em] text-white">
+                        {{ selectedWinner.title }}
                       </h2>
-                      <p class="max-w-md text-sm md:text-base leading-7 text-white/72">
-                        {{ getSectionDescription(selectedGroup) }}
-                      </p>
+                      <div class="flex flex-wrap items-center gap-3">
+                        <span :class="['inline-flex px-3 py-1 text-sm font-mono border rounded-full', getBadgeClass(selectedWinner.award)]">
+                          {{ selectedWinner.award }}
+                        </span>
+                        <span class="inline-flex px-3 py-1 text-sm border rounded-full border-[#38BDF8]/40 text-[#38BDF8] bg-[#38BDF8]/10">
+                          {{ getGroupLabel(selectedWinner.category) }}
+                        </span>
+                      </div>
                     </div>
 
-                    <div class="mt-8 space-y-4">
-                      <div
-                        v-for="highlight in getGroupHighlights(selectedGroup)"
-                        :key="highlight"
-                        class="relative pl-5 text-sm leading-6 text-white/80"
-                      >
-                        <span class="absolute left-0 top-[9px] h-1.5 w-1.5 rounded-full bg-[#38BDF8] shadow-[0_0_10px_rgba(56,189,248,0.6)]" />
-                        {{ highlight }}
-                      </div>
+                    <div class="mt-8 text-sm text-white/55">
+                      {{ selectedWinner.members?.length || 0 }} 位关联成员
                     </div>
                   </div>
                 </div>
@@ -161,44 +194,37 @@
                 <div class="p-8 md:p-10 text-left">
                   <div class="mb-6 flex items-end justify-between gap-4 border-b border-white/10 pb-4">
                     <div>
-                      <h3 class="text-xl md:text-2xl font-bold text-white">获奖成员</h3>
+                      <h3 class="text-xl md:text-2xl font-bold text-white">关联成员</h3>
                       <p class="mt-2 text-sm text-white/55">
-                        共 {{ selectedGroupWinners.length }} 位成员
+                        共 {{ selectedWinner.members?.length || 0 }} 位成员
                       </p>
                     </div>
                   </div>
 
-                  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                  <div class="space-y-3">
                     <div
-                      v-for="winner in selectedGroupWinners"
-                      :key="winner.id"
-                      class="rounded-2xl border border-white/8 bg-white/[0.04] p-4 transition-colors duration-300 hover:border-[#38BDF8]/35 hover:bg-white/[0.06]"
+                      v-for="(member, idx) in selectedWinner.members"
+                      :key="member.user?.userId ?? member.sortOrder"
+                      class="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.04] p-3 transition-colors duration-300 hover:border-[#38BDF8]/35 hover:bg-white/[0.06]"
+                      :class="{ 'cursor-pointer': member.user?.userId }"
+                      @click="goMember(member.user?.userId)"
                     >
-                      <div class="flex items-center gap-3">
-                        <div class="relative shrink-0">
-                          <div class="absolute inset-0 rounded-full bg-[#38BDF8]/20 blur-md" />
-                          <img
-                            class="relative h-14 w-14 rounded-full border border-[#38BDF8]/30 bg-[#0a0f18] object-cover p-0.5"
-                            :src="winner.avatar || '/src/assets/images/default-avatar.png'"
-                            :alt="winner.name"
-                          />
-                        </div>
-                        <div class="min-w-0">
-                          <div class="truncate text-base font-bold text-white">
-                            {{ winner.name }}
-                          </div>
-                          <div class="mt-1 text-xs tracking-[0.18em] uppercase text-white/45">
-                            {{ selectedGroup }}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="mt-4">
-                        <span :class="['inline-flex px-2.5 py-1 text-[11px] font-mono border rounded-full', getBadgeClass(winner.award)]">
-                          {{ winner.award }}
-                        </span>
-                      </div>
+                      <span class="w-6 shrink-0 text-center font-mono text-sm text-[#38BDF8]/80">
+                        {{ idx + 1 }}
+                      </span>
+                      <img
+                        class="h-10 w-10 rounded-full border border-[#38BDF8]/30 bg-[#0a0f18] object-cover"
+                        :src="member.user?.avatar || selectedWinner.avatar"
+                        :alt="member.user?.username || '成员'"
+                      />
+                      <span class="flex-1 truncate text-sm text-white/85">
+                        {{ member.user?.username || '成员' }}
+                      </span>
+                      <span v-if="member.user?.major" class="hidden md:inline text-xs text-white/45">
+                        {{ member.user.major }}
+                      </span>
                     </div>
+                    <div v-if="!selectedWinner.members?.length" class="text-sm text-white/45">暂无关联成员</div>
                   </div>
                 </div>
               </div>
@@ -219,29 +245,23 @@ import AchievementScene from '~/components/achievement/AchievementScene.vue';
 import gridBackground from '~/assets/images/grid-black.svg';
 
 const winnersData = ref<Winner[]>([]);
-const groupTabs = ref<string[]>(['全部']);
 const scrollProgress = ref(0);
 const introProgress = ref(0);
-const selectedGroup = ref<string | null>(null);
+const selectedWinner = ref<Winner | null>(null);
 let introFrame = 0;
 const sectionRefs = ref<HTMLElement[]>([]);
 const sectionProgresses = ref<number[]>([]);
+
+const CATEGORY_LABELS: Record<string, string> = {
+  COMPETITION: '学科竞赛',
+  SCHOLARSHIP: '荣誉奖学金',
+  HONOR: '综合荣誉',
+};
 
 const heroOpacity = computed(() => introProgress.value * Math.max(0, 1 - scrollProgress.value * 5));
 const heroOffsetY = computed(() => (1 - introProgress.value) * 36);
 const detailsOpacity = computed(() => Math.max(0, (introProgress.value - 0.15) / 0.85));
 const detailsOffsetY = computed(() => (1 - detailsOpacity.value) * 48);
-const displayGroups = computed(() => groupTabs.value.filter(g => g !== '全部'));
-const winnersByGroup = computed<Record<string, Winner[]>>(() => {
-  return displayGroups.value.reduce((acc, group) => {
-    acc[group] = winnersData.value.filter(w => w.competition === group);
-    return acc;
-  }, {} as Record<string, Winner[]>);
-});
-const selectedGroupWinners = computed(() => {
-  if (!selectedGroup.value) return [];
-  return winnersByGroup.value[selectedGroup.value] || [];
-});
 
 function easeOutCubic(value: number) {
   return 1 - (1 - value) ** 3;
@@ -290,8 +310,6 @@ onMounted(async () => {
   try {
     const winners = await getWinners();
     winnersData.value = winners;
-    const groups = Array.from(new Set(winners.map(w => w.competition)));
-    groupTabs.value = ['全部', ...groups];
     await nextTick();
     updateScrollProgress();
   } catch (error) {
@@ -307,7 +325,7 @@ onUnmounted(() => {
   document.body.style.overflow = '';
 });
 
-watch(selectedGroup, (value) => {
+watch(selectedWinner, (value) => {
   document.body.style.overflow = value ? 'hidden' : '';
 });
 
@@ -375,47 +393,36 @@ function getDetailHintStyle(index: number) {
   };
 }
 
-function getSectionDescription(group: string) {
-  return `${group} 获奖成员与荣誉详情`;
+function getGroupLabel(category: string) {
+  return CATEGORY_LABELS[category] || category || '综合荣誉';
 }
 
-function getGroupHighlights(group: string) {
-  const winners = winnersByGroup.value[group] || [];
-  const awardSummary = winners.reduce<Record<string, number>>((acc, winner) => {
-    acc[winner.award] = (acc[winner.award] || 0) + 1;
-    return acc;
-  }, {});
-
-  const topAwards = Object.entries(awardSummary)
-    .slice(0, 3)
-    .map(([award, count]) => `${award} ${count} 人`);
-
-  return [
-    `${group} 共收录 ${winners.length} 位获奖成员`,
-    topAwards.length ? `奖项分布：${topAwards.join('，')}` : '奖项分布：待补充',
-    '点击卡片可继续扩展成员故事与成就背景'
-  ];
+function openWinnerDetail(winner: Winner) {
+  selectedWinner.value = winner;
 }
 
-function openGroupDetail(group: string) {
-  selectedGroup.value = group;
+function closeWinnerDetail() {
+  selectedWinner.value = null;
 }
 
-function closeGroupDetail() {
-  selectedGroup.value = null;
+function goMember(userId?: number) {
+  if (userId) {
+    window.location.href = '/member';
+  }
 }
 
 function getBadgeClass(award: string) {
-  if (award.includes('一等')) {
-    return "border-amber-400/50 text-amber-500 bg-amber-400/10 shadow-[0_0_10px_rgba(251,191,36,0.2)]";
+  const value = award || '';
+  if (value.includes('国')) {
+    return "border-amber-400/50 bg-[#2b1d07]/90 text-amber-300 shadow-[0_0_18px_rgba(251,191,36,0.45)]";
   }
-  if (award.includes('二等')) {
-    return "border-gray-400/50 text-gray-300 bg-gray-400/10";
+  if (value.includes('省')) {
+    return "border-sky-400/50 bg-[#082f49]/90 text-sky-300 shadow-[0_0_18px_rgba(56,189,248,0.45)]";
   }
-  if (award.includes('三等')) {
-    return "border-orange-400/50 text-orange-400 bg-orange-400/10";
+  if (value.includes('校') || value.includes('院')) {
+    return "border-emerald-400/50 bg-[#042f24]/90 text-emerald-300 shadow-[0_0_18px_rgba(52,211,153,0.45)]";
   }
-  return "border-[#38BDF8]/50 text-[#38BDF8] bg-[#38BDF8]/10 shadow-[0_0_10px_rgba(56,189,248,0.2)]";
+  return "border-slate-400/50 bg-slate-800/90 text-slate-200 shadow-[0_0_12px_rgba(148,163,184,0.35)]";
 }
 </script>
 
