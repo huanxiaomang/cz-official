@@ -16,13 +16,13 @@
       <!-- 月份选择器 -->
       <div class="month-selector mb-4 flex items-center justify-between">
         <button @click="previousMonth" class="month-btn">
-          <div i-carbon-chevron-left text-lg />
+          <LeftOutlined />
         </button>
         <div class="current-month text-lg font-semibold">
           {{ currentMonthText }}
         </div>
         <button @click="nextMonth" class="month-btn">
-          <div i-carbon-chevron-right text-lg />
+          <RightOutlined />
         </button>
       </div>
 
@@ -68,7 +68,7 @@
             <div class="event-participants">{{ event.joiners }}</div>
           </div>
           <div class="event-arrow">
-            <div i-carbon-chevron-right text-gray-400 />
+            <RightOutlined class="text-gray-400" />
           </div>
         </div>
       </div>
@@ -144,6 +144,7 @@ import {
   Modal as AModal,
   Badge as ABadge
 } from 'ant-design-vue';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons-vue';
 
 const open = ref<boolean>(false);
 const eventDetailOpen = ref<boolean>(false);
@@ -151,6 +152,8 @@ const currentDate = ref<Dayjs>(dayjs());
 const selectedDate = ref<Dayjs | null>(null);
 const selectedEvent = ref<ActiInfo | null>(null);
 const activities = ref<ActiInfo[]>([]);
+const activitiesLoaded = ref(false);
+const activitiesLoading = ref(false);
 
 const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
 
@@ -230,6 +233,11 @@ const getActivityStatusType = (status: number): 'success' | 'warning' | 'error' 
 
 // 获取活动数据
 const fetchActivities = async () => {
+  if (activitiesLoaded.value || activitiesLoading.value) {
+    return;
+  }
+
+  activitiesLoading.value = true;
   try {
     const response = await getActivitiesApi();
     activities.value = Array.isArray(response) ? response : [];
@@ -240,9 +248,13 @@ const fetchActivities = async () => {
         activity.sdate = dayjs(activity.sdate).format('YYYY-MM-DD');
       }
     });
+    activitiesLoaded.value = true;
   } catch (error) {
     console.error('获取活动数据失败:', error);
     activities.value = [];
+    activitiesLoaded.value = true;
+  } finally {
+    activitiesLoading.value = false;
   }
 };
 
@@ -270,17 +282,17 @@ const showEventDetail = (event: ActiInfo) => {
 };
 
 // 监听显示日历事件
-const handleShowCalendar = () => {
+const handleShowCalendar = async () => {
+  await fetchActivities();
   open.value = true;
 };
 
-onMounted(async () => {
-  await fetchActivities();
-  window.addEventListener('show-mobile-calendar', handleShowCalendar);
+onMounted(() => {
+  window.addEventListener('showMobileCalendar', handleShowCalendar);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('show-mobile-calendar', handleShowCalendar);
+  window.removeEventListener('showMobileCalendar', handleShowCalendar);
 });
 </script>
 

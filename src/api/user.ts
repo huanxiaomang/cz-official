@@ -11,12 +11,13 @@ export interface LoginParams {
 }
 
 export interface RegisterParams {
-  username: string;
-  email: string;
-  password: string;
-  password_confirm: string;
-  major: string;
-  grade: number;
+  username?: string;
+  email?: string;
+  password?: string;
+  password_confirm?: string;
+  admissionYear?: number;
+  major?: string;
+  invitationCode?: string;
 }
 
 export interface UpdateParams {
@@ -26,7 +27,7 @@ export interface UpdateParams {
   background: string;
   description: string;
   major: string;
-  grade: number;
+  admissionYear: number;
   badge: string;
 }
 

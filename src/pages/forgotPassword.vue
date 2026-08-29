@@ -53,6 +53,10 @@ import { useUserStore } from '~/store/user';
 import { useMessage } from '~/hooks/web/useMessage';
 import { useRouter } from 'vue-router';
 
+type ErrorWithMessage = {
+  message?: string;
+};
+
 interface FormState {
   email: string;
   code: string;
@@ -123,10 +127,11 @@ const onFinish = async (values: FormState) => {
     router.replace('/login');
   } catch (err) {
     console.error('❌ 密码重置失败:', err);
+    const errorMessage = (err as ErrorWithMessage)?.message || '验证码错误或已过期';
     // 新增：捕获后端返回的错误（如验证码错误）
     notification.error({
       message: '密码重置失败',
-      description: err.message || '验证码错误或已过期',
+      description: errorMessage,
       duration: 3
     });
   } finally {

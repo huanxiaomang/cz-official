@@ -41,6 +41,7 @@ export interface Result<T = any> {
   code: number;
   messages: string | object;
   result: T;
+  meta?: Record<string, any>;
 }
 
 // multipart/form-data: upload file

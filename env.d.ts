@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_GLOB_UPLOAD_URL: string;
   readonly VITE_GLOB_API_URL_PREFIX: string;
   readonly VITE_GLOB_APP_TITLE: string;
+  readonly VITE_GLOB_DOCS_URL: string;
 
 }
 interface ImportMeta {

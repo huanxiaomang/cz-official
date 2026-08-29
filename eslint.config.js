@@ -1,7 +1,16 @@
 
 
 export default {
-  ignores: ['**/*.md', '**/dist/**', '**/cache/**'],
+  ignores: [
+    '**/*.md',
+    '**/dist/**',
+    '**/cache/**',
+    '**/.agents/**',
+    '**/.trae/**',
+    '**/.vitepress/cache/**',
+    '**/coverage/**',
+    '**/*.d.ts',
+  ],
   rules: {
     // 缩进使用两个空格
     indent: ['error', 2],

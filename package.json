@@ -21,16 +21,16 @@
   "scripts": {
     "build": "vite build --mode production",
     "local": "vite --port 3333 --open --mode development",
-    "dev": "vite --port 3333 --open --mode production",
-    "dev:web": "vite --port 3333 --open --open --mode production",
-    "dev:docs": "node scripts/loadLocalImages.cjs && vitepress dev docs",
+    "dev": "pnpm local",
+    "dev:web": "pnpm local",
+    "dev:docs": "vitepress dev docs",
     "dev:serve": "pnpm -C app/server dev",
     "lint": "eslint .",
     "typecheck": "vue-tsc --noEmit",
     "preview": "vitepress preview docs",
     "test": "vitest",
     "up": "taze major -I",
-    "build:docs": "node scripts/loadLocalImages.cjs && vitepress build docs",
+    "build:docs": "vitepress build docs",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "dependencies": {
@@ -53,7 +53,7 @@
     "svg-particle": "^1.0.1",
     "three": "^0.184.0",
     "vitepress": "^1.6.3",
-    "vue": "^3.5.13",
+    "vue": "^3.5.17",
     "vue-masonry": "^0.16.0",
     "vue-router": "^4.5.0"
   },
@@ -69,7 +69,7 @@
     "@unocss/reset": "^0.58.9",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
-    "@vue-macros/volar": "^0.18.18",
+    "@vue-macros/volar": "^0.30.13",
     "@vue/test-utils": "^2.4.6",
     "conventional-changelog-cli": "4.1.0",
     "eslint": "^8.57.1",
@@ -91,6 +91,6 @@
     "vite-plugin-prerender": "^1.0.8",
     "vite-plugin-svg-icons": "^2.0.1",
     "vitest": "^1.6.0",
-    "vue-tsc": "^1.8.27"
+    "vue-tsc": "^2.1.10"
   }
 }

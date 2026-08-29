@@ -11,6 +11,7 @@ import '@wangeditor/editor/dist/css/style.css'
 import { onBeforeUnmount, ref, shallowRef, watchEffect, watch } from 'vue'
 // @ts-ignore
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import { resolveApiUrl } from '@/utils/env'
 
 const props = defineProps({
   modelValue: {
@@ -58,7 +59,7 @@ const editorConfig = {
   placeholder: props.placeholder,
   MENU_CONF: {
     uploadImage: {
-      server: 'http://1.92.82.236:3000/api/upload/image',
+      server: resolveApiUrl('upload/image'),
       fieldName: 'file',
       maxFileSize: 2 * 1024 * 1024,
       maxNumberOfFiles: 5,

@@ -22,9 +22,9 @@ export class WinnersController {
   }
 
   @Get()
-  async getAllWinners() {
+  async getAllWinners(@Query('category') category?: string) {
     try {
-      const winners = await this.winnerService.getWinners();
+      const winners = await this.winnerService.getWinners(category);
       return {
         code: HttpStatus.OK,
         message: 'success',
@@ -43,17 +43,17 @@ export class WinnersController {
   async getWinnersWithPagination(
     @Query('page') page: string = '1',
     @Query('pageSize') pageSize: string = '10',
-    @Query('name') name?: string,
-    @Query('competition') competition?: string,
-    @Query('award') award?: string
+    @Query('title') title?: string,
+    @Query('award') award?: string,
+    @Query('category') category?: string
   ) {
     try {
       const result = await this.winnerService.getWinnersWithPagination(
         parseInt(page),
         parseInt(pageSize),
-        name,
-        competition,
-        award
+        title,
+        award,
+        category
       );
       return {
         code: HttpStatus.OK,
@@ -87,10 +87,10 @@ export class WinnersController {
     }
   }
 
-  @Get('filter/competition')
-  async getWinnersByCompetition(@Query('competition') competition: string) {
+  @Get('filter/title')
+  async getWinnersByTitle(@Query('title') title: string) {
     try {
-      const winners = await this.winnerService.getWinnersByCompetition(competition);
+      const winners = await this.winnerService.getWinnersByTitle(title);
       return {
         code: HttpStatus.OK,
         message: 'success',

@@ -29,6 +29,34 @@ const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
 const { createMessage, createErrorModal, createSuccessModal } = useMessage();
 
+function normalizeResponseMessage(messages?: string | object | null) {
+  if (!messages) {
+    return "";
+  }
+
+  if (typeof messages === "string") {
+    return messages;
+  }
+
+  if (typeof messages !== "object") {
+    return "";
+  }
+
+  try {
+      const keys = Object.keys(messages);
+      if (keys.length === 0) return "";
+
+      const firstMessage = (messages as any)[keys[0]];
+
+      if (typeof firstMessage === "string") {
+        return firstMessage;
+      }
+      return firstMessage ? String(firstMessage) : "";
+  } catch (e) {
+      return "";
+  }
+}
+
 const transform: AxiosTransform = {
   /**
    * @description: 处理响应数据。如果数据不是预期格式，可直接抛出错误
@@ -53,9 +81,24 @@ const transform: AxiosTransform = {
     if (!data) {
       throw new Error('[HTTP] Request has no return value');
     }
+    // 兼容未走统一响应包装的接口，直接返回原始数据。
+    if (!Reflect.has(data, "code") || !Reflect.has(data, "result")) {
+      return data;
+    }
     //  这里 code，result，messages为 后台统一的字段
     const { code, result, messages, meta } = data;
-    const message = typeof messages === "string" ? messages : (messages as any)[Object.keys(messages)[0]];
+
+    // 防御 messages 也是未定义或空的情况
+    let message = "";
+    if (messages && typeof messages === "object") {
+        try {
+            message = normalizeResponseMessage(messages);
+        } catch (e) {
+            console.warn("解析 messages 失败:", e);
+        }
+    } else if (typeof messages === "string") {
+        message = messages;
+    }
 
     // 这里逻辑可以根据项目进行修改
     const hasSuccess =
@@ -103,7 +146,10 @@ const transform: AxiosTransform = {
     // errorMessageMode='modal'的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
     // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
     if (options.errorMessageMode === "modal") {
-      createErrorModal(message);
+      createErrorModal({
+        title: "error",
+        content: timeoutMsg || message || "request failed",
+      });
     } else if (options.errorMessageMode === "message") {
       createMessage.error(timeoutMsg);
     }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Headers, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Patch, Post, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import LoginDto from './dto/login.dto';
 import RegisterDto from './dto/register.dto';
@@ -7,6 +7,10 @@ import ResetPasswordDto from './dto/reset-password.dto';
 import { SendVerificationCodeDto, VerifyCodeDto } from './dto/verification-code.dto';
 import { Admin, Auth } from './decorators/auth.decorator';
 import { VerificationCodeService } from './verification-code.service';
+import AdminUpdateUserDto from './dto/admin-update-user.dto';
+import AdminQueryMembersDto from './dto/admin-query-members.dto';
+
+import { CurrentUser } from './decorators/user.decorator';
 
 @Controller()
 export class AuthController {
@@ -25,20 +29,38 @@ export class AuthController {
     return this.auth.getAllMembers();
   }
 
+  @Admin()
+  @Get('admin/users')
+  getAdminMembers(@Query() dto: AdminQueryMembersDto) {
+    return this.auth.getAdminMembers(dto);
+  }
+
+  @Admin()
+  @Get('admin/user-options')
+  getAdminUserOptions() {
+    return this.auth.getAdminUserOptions();
+  }
+
   @Get('getUserInfo/:userId')
   getUserInfo(@Param('userId') userId) {
     return this.auth.getUserInfo(userId);
   }
 
   @Admin()
-  @Get('setUserRole/:userId')
-  setUserRole(@Param('userId') userId, @Query('role') role: string) {
-    return this.auth.setUserRole(userId, role);
+  @Patch('admin/users/:userId')
+  setUserRole(@Param('userId') userId, @Body() dto: AdminUpdateUserDto) {
+    return this.auth.setUserRole(userId, dto);
   }
 
   @Post('register')
   register(@Body() dto: RegisterDto) {
     return this.auth.register(dto);
+  }
+
+  @Admin()
+  @Post('generate-invitation')
+  generateInvitation(@Body() body: { maxUses?: number, expireDays?: number }, @CurrentUser() user) {
+    return this.auth.generateInvitationCode(user.userId, body.maxUses || 1, body.expireDays || 7);
   }
 
   @Post('login')

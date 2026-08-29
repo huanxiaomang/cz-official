@@ -14,5 +14,7 @@ export function useGlobalComps<T extends Component>(
   app: App,
   components: SFCWithInstall<T>[]
 ) {
-  components.forEach((c) => app.use(c));
+  components.forEach((component) => {
+    app.component(component.name!, component);
+  });
 }

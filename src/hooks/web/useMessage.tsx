@@ -1,3 +1,4 @@
+import { h } from "vue";
 import type { ModalFuncProps } from "ant-design-vue/lib/modal/Modal";
 import { Modal, message as Message, notification } from "ant-design-vue";
 import {
@@ -52,7 +53,7 @@ function getIcon(iconType: string) {
 
 function renderContent({ content }: Pick<ModalOptionsEx, "content">) {
   if (isString(content)) {
-    return <div innerHTML={`<div>${content as string}</div>`}></div>;
+    return h("div", { innerHTML: `<div>${content as string}</div>` });
   } else {
     return content;
   }

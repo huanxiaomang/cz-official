@@ -7,6 +7,7 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import { normalizeAssetUrl } from '../common/asset-url';
 
 const DEFAULT_CATEGORY = '综合讨论';
 
@@ -277,6 +278,23 @@ export class CommentService {
 
     return {
       ...comment,
+      user: comment.user
+        ? {
+            ...comment.user,
+            avatar: normalizeAssetUrl(comment.user.avatar),
+          }
+        : comment.user,
+      quote: comment.quote
+        ? {
+            ...comment.quote,
+            user: comment.quote.user
+              ? {
+                  ...comment.quote.user,
+                  avatar: normalizeAssetUrl(comment.quote.user.avatar),
+                }
+              : comment.quote.user,
+          }
+        : comment.quote,
       isDeleted: Boolean(comment.deletedAt),
       likeCount: comment._count?.likes ?? comment.likes?.length ?? 0,
       replyCount: comment._count?.replies ?? replies.length,

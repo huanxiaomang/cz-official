@@ -78,6 +78,7 @@ import CompanyLogo from '~/assets/icon/cz_ba-style_white.png';
 import { createSVGParticleSystem } from 'svg-particle'
 import gsap from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { resolveUploadUrl } from '@/utils/env';
 import svgContent from './../../assets/images/cz-logo.svg?raw'
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
@@ -196,10 +197,10 @@ onUnmounted(() => {
 });
 /*————————————————————————————————————————————————————————————————————————*/
 
-const bgVideoURL = 'http://1.92.82.236:3000/uploads/bg.mp4';
-const fontVideoURL = 'http://1.92.82.236:3000/uploads/font.mp4';
-const leftVideoURL = 'http://1.92.82.236:3000/uploads/introductionleft.mp4';
-const videoURL = 'http://1.92.82.236:3000/uploads/introduction.mp4';
+const bgVideoURL = resolveUploadUrl('bg.mp4');
+const fontVideoURL = resolveUploadUrl('font.mp4');
+const leftVideoURL = resolveUploadUrl('introductionleft.mp4');
+const videoURL = resolveUploadUrl('introduction.mp4');
 </script>
 <style lang="scss" scoped>
 .title-cn {
@@ -264,6 +265,36 @@ const videoURL = 'http://1.92.82.236:3000/uploads/introduction.mp4';
   .title {
     font-size: 40px;
     padding-top: 30px;
+  }
+}
+
+@media (max-width: 640px) {
+  .video-container {
+    height: 82vh;
+  }
+
+  .title-container {
+    width: calc(100% - 2rem);
+    text-align: center;
+  }
+
+  .mainContent-container {
+    height: 62vh;
+
+    .mainContent {
+      display: none;
+      height: 0;
+      padding-inline: 0;
+    }
+
+    .mainVideo {
+      position: relative;
+      height: 62vh;
+    }
+  }
+
+  .SecContent-container {
+    height: 8vh;
   }
 }
 </style>

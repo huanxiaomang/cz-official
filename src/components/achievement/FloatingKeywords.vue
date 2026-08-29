@@ -55,8 +55,8 @@ const KEYWORDS_DATA = [
   { text: "最具潜力", angle: Math.PI * 2 / 7 * 6, y: -0.8, scale: 0.95, color: "#38BDF8" },
 ]
 
-const groupRef = shallowRef(null)
-const keywordRefs = ref<any[]>([])
+const groupRef = shallowRef<THREE.Group | null>(null)
+const keywordRefs = ref<Array<THREE.Group | null>>([])
 const opacities = ref<number[]>(new Array(7).fill(0))
 
 const vec3 = new THREE.Vector3()
