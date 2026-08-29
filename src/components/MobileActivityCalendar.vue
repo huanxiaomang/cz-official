@@ -288,11 +288,11 @@ const handleShowCalendar = async () => {
 };
 
 onMounted(() => {
-  window.addEventListener('showCalendar', handleShowCalendar);
+  window.addEventListener('showMobileCalendar', handleShowCalendar);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('showCalendar', handleShowCalendar);
+  window.removeEventListener('showMobileCalendar', handleShowCalendar);
 });
 </script>
 

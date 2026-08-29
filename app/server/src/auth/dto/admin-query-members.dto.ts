@@ -35,4 +35,9 @@ export default class AdminQueryMembersDto {
   @Min(1, { message: '分页大小不能小于 1' })
   @Max(100, { message: '分页大小不能大于 100' })
   pageSize?: number
+
+  // 前端 axios 会自动追加防缓存时间戳参数，这里允许其通过白名单校验
+  @IsOptional()
+  @IsString({ message: '时间戳格式不正确' })
+  _t?: string
 }

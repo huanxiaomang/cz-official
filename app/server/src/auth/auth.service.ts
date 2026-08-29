@@ -215,7 +215,7 @@ export class AuthService {
           grade: getPersistedLegacyGrade(admissionYear, 'STUDENT'),
           admissionYear,
           memberType: 'STUDENT',
-          role: 'COMMON'
+          role: 'CZ_MEMBER'
         },
       });
     });

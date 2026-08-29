@@ -204,12 +204,12 @@ const handleShowCalendar = async () => {
 
 onMounted(() => {
   // 监听来自header的显示日历事件
-  window.addEventListener('showCalendar', handleShowCalendar);
+  window.addEventListener('showDesktopCalendar', handleShowCalendar);
 });
 
 // 清理事件监听器
 onUnmounted(() => {
-  window.removeEventListener('showCalendar', handleShowCalendar);
+  window.removeEventListener('showDesktopCalendar', handleShowCalendar);
 });
 </script>
 
