@@ -32,7 +32,7 @@ export class WinnerService {
     const [winners, total] = await Promise.all([
       this.prisma.winner.findMany({
         where,
-        orderBy: { createdAt: 'desc' },
+        orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
         include: MEMBER_INCLUDE,
         skip,
         take: pageSize,
@@ -57,7 +57,7 @@ export class WinnerService {
 
     const winners = await this.prisma.winner.findMany({
       where,
-      orderBy: { createdAt: 'desc' },
+      orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
       include: MEMBER_INCLUDE,
     });
 
@@ -186,6 +186,23 @@ export class WinnerService {
     };
   }
 
+  async reorderWinners(ids: number[]) {
+    if (!ids || ids.length === 0) {
+      throw new BadRequestException('排序ID列表不能为空');
+    }
+
+    await this.prisma.$transaction(
+      ids.map((id, index) =>
+        this.prisma.winner.update({
+          where: { id },
+          data: { sortOrder: index },
+        }),
+      ),
+    );
+
+    return { success: true };
+  }
+
   async getWinnersByAward(award: string) {
     if (!award) {
       throw new BadRequestException('获奖等级参数不能为空');
@@ -194,7 +211,7 @@ export class WinnerService {
     const winners = await this.prisma.winner.findMany({
       where: { award: { contains: award } },
       include: MEMBER_INCLUDE,
-      orderBy: { createdAt: 'desc' },
+      orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
     });
 
     return winners.map((winner) => this.serializeWinner(winner));
@@ -208,7 +225,7 @@ export class WinnerService {
     const winners = await this.prisma.winner.findMany({
       where: { title: { contains: title } },
       include: MEMBER_INCLUDE,
-      orderBy: { createdAt: 'desc' },
+      orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
     });
 
     return winners.map((winner) => this.serializeWinner(winner));

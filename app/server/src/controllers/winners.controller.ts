@@ -189,6 +189,28 @@ export class WinnersController {
     }
   }
 
+  @Put('reorder')
+  @Admin()
+  async reorderWinners(@Body() body: { ids: number[] }) {
+    try {
+      const result = await this.winnerService.reorderWinners(body.ids);
+      return {
+        code: HttpStatus.OK,
+        message: 'success',
+        data: result
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException({
+        code: HttpStatus.BAD_REQUEST,
+        message: '调整展示顺序失败',
+        error: error.message
+      }, HttpStatus.BAD_REQUEST);
+    }
+  }
+
   @Put(':id')
   @Admin()
   async updateWinner(@Param('id') id: string, @Body() updateWinnerDto: UpdateWinnerDto) {

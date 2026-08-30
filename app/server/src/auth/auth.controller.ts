@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, Param, Patch, Post, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import LoginDto from './dto/login.dto';
 import RegisterDto from './dto/register.dto';
@@ -61,6 +61,18 @@ export class AuthController {
   @Post('generate-invitation')
   generateInvitation(@Body() body: { maxUses?: number, expireDays?: number }, @CurrentUser() user) {
     return this.auth.generateInvitationCode(user.userId, body.maxUses || 1, body.expireDays || 7);
+  }
+
+  @Admin()
+  @Get('invitations')
+  getInvitations() {
+    return this.auth.getInvitationCodes();
+  }
+
+  @Admin()
+  @Delete('invitation/:id')
+  deleteInvitation(@Param('id') id) {
+    return this.auth.deleteInvitationCode(id);
   }
 
   @Post('login')

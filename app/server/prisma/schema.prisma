@@ -100,6 +100,7 @@ model Winner {
   award     String   @db.VarChar(50)
   category  String   @default("COMPETITION") @db.VarChar(40)
   avatar    String?  @db.VarChar(100)
+  sortOrder Int      @default(0) @map("sort_order")
   createdAt DateTime @default(now()) @map("created_at")
 
   members WinnerMember[]

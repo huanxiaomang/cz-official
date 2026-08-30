@@ -244,6 +244,30 @@ export class AuthService {
     return invitationCode;
   }
 
+  async getInvitationCodes() {
+    return await this.prisma.invitationCode.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  async deleteInvitationCode(id: number) {
+    const invitationCode = await this.prisma.invitationCode.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!invitationCode) {
+      throw new BadRequestException(`Invitation code with ID ${id} not found`);
+    }
+
+    await this.prisma.invitationCode.delete({
+      where: { id: Number(id) },
+    });
+
+    return { success: true };
+  }
+
   async login(dto: LoginDto) {
     const user = await this.prisma.user.findUnique({
       where: {
