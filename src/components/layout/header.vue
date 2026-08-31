@@ -50,7 +50,7 @@
     <div class="header w-full h-13 flex top-0 bg-white dark:bg-[#1a1a1a] dark:border-gray-800" flex="items-center row" fixed z-100 border-b>
       <div mr-auto ml-8 h-full items-center flex gap-2>
         <a v-if="!isLogin" rel="noopener noreferrer" :href="CZ_GITHUB_URL" target="_blank" title="GitHub" aria-label="打开创智工作室 GitHub 仓库" text-black dark:text-white
-          text-5>
+          text-5 min-w-11 min-h-11 flex items-center justify-center>
           <GithubOutlined class="text-5" />
         </a>
         <CZAvatar v-else :user-id="userStore.userInfo?.userId!" :click-fn="() => void 0"></CZAvatar>
@@ -58,9 +58,9 @@
 
       </div>
       <div m-auto font-bold class="title">
-        <router-link to="/">创智工作室</router-link>
+        <router-link to="/" class="inline-flex items-center min-h-11 px-2">创智工作室</router-link>
       </div>
-      <button type="button" @click="toggleMenu" title="Menu" aria-label="打开导航菜单" text-black dark:text-white text-5 ml-auto mr-8>
+      <button type="button" @click="toggleMenu" title="Menu" aria-label="打开导航菜单" text-black dark:text-white text-5 ml-auto mr-6 min-w-11 min-h-11 flex items-center justify-center>
         <MenuOutlined class="text-5" />
       </button>
     </div>

@@ -26,11 +26,11 @@
             transform: `translate3d(0, ${heroOffsetY}px, 0)`
           }"
         >
-          <div class="pointer-events-auto -translate-y-[7vh] md:-translate-y-[8vh]">
-            <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-widest mb-6">
+          <div class="pointer-events-auto -translate-y-[7vh] md:-translate-y-[8vh] px-4">
+            <h1 class="text-4xl md:text-7xl font-extrabold text-white tracking-widest mb-6">
               ACHIEVEMENTS
             </h1>
-            <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
+            <p class="text-base md:text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
               历届赛事获奖名单及荣誉展示
             </p>
           </div>
@@ -48,14 +48,14 @@
             v-for="(winner, index) in winnersData"
             :key="winner.id"
             :ref="element => setSectionRef(element, index)"
-            class="min-h-screen flex items-center relative"
+            class="min-h-[70vh] md:min-h-screen flex items-center relative"
             :class="index % 2 === 0 ? 'justify-start' : 'justify-end'"
           >
             <div
               @click="openWinnerDetail(winner)"
-              class="relative w-[85vw] md:w-[75vw] min-h-[320px] flex items-center p-8 md:p-16 transition-transform duration-300 hover:scale-[1.02]"
+              class="relative w-[92vw] md:w-[75vw] min-h-[280px] md:min-h-[320px] flex items-center p-6 md:p-16 transition-transform duration-300 hover:scale-[1.02]"
               style="cursor: pointer;"
-              :class="index % 2 === 0 ? '-ml-[5vw] justify-end' : '-mr-[5vw] ml-auto justify-start'"
+              :class="index % 2 === 0 ? 'md:-ml-[5vw] justify-end' : 'md:-mr-[5vw] ml-auto justify-start'"
               :style="{
                 transform: `rotate(${index % 2 === 0 ? '-2deg' : '2deg'})`
               }"
@@ -88,7 +88,7 @@
                   {{ getGroupLabel(winner.category) }}
                 </div>
 
-                <h2 class="relative text-3xl md:text-4xl font-black mb-5 tracking-wider text-[#1F2329]/20">
+                <h2 class="relative text-2xl md:text-4xl font-black mb-5 tracking-wider text-[#1F2329]/20">
                   {{ winner.title }}
                   <span
                     class="absolute inset-0 text-[#1F2329]"
@@ -165,14 +165,14 @@
               </button>
 
               <div class="grid md:grid-cols-[1.1fr_1.4fr] max-h-[88vh] overflow-y-auto">
-                <div class="relative min-h-[300px] md:min-h-full">
+                <div class="relative min-h-[200px] md:min-h-full">
                   <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(56,189,248,0.32),transparent_50%),radial-gradient(circle_at_70%_65%,rgba(56,189,248,0.18),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))]" />
-                  <div class="relative z-10 flex h-full flex-col justify-between p-8 md:p-10 text-left">
+                  <div class="relative z-10 flex h-full flex-col justify-between p-6 md:p-10 text-left">
                     <div>
                       <div class="mb-4 text-xs uppercase tracking-[0.35em] text-[#38BDF8]/80">
                         Achievement Detail
                       </div>
-                      <h2 class="mb-5 text-3xl md:text-4xl font-black tracking-[0.08em] text-white">
+                      <h2 class="mb-5 text-2xl md:text-4xl font-black tracking-[0.08em] text-white">
                         {{ selectedWinner.title }}
                       </h2>
                       <div class="flex flex-wrap items-center gap-3">
@@ -191,7 +191,7 @@
                   </div>
                 </div>
 
-                <div class="p-8 md:p-10 text-left">
+                <div class="p-6 md:p-10 text-left">
                   <div class="mb-6 flex items-end justify-between gap-4 border-b border-white/10 pb-4">
                     <div>
                       <h3 class="text-xl md:text-2xl font-bold text-white">关联成员</h3>

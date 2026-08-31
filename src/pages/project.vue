@@ -2,7 +2,7 @@
   <div>
     <div container m-auto mt-6>
       <div v-for="proj in projList" :key="proj.id" mt-4 w-full sm:w-3xl m-auto
-        class=" bg-white dark:bg-transparent p-8 rounded-sm shadow-md whitespace-pre-wrap text-left">
+        class=" bg-white dark:bg-transparent p-5 sm:p-8 rounded-sm shadow-md whitespace-pre-wrap text-left">
         <div text-xl font-bold pb-3>{{ proj.title }}</div>
         <div flex gap-1 flex-wrap>
           <StackIcon :name="s" v-for="s of proj.stack.split('+') "></StackIcon>

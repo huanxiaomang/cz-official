@@ -17,10 +17,10 @@
       <!-- Float animation for the whole group -->
       <Levioso :speed="2" :rotation-intensity="0.2" :float-intensity="0.5">
         <Suspense>
-          <TresGroup>
+          <TresGroup :scale="deviceType === 'mobile' ? [0.7, 0.7, 0.7] : [1, 1, 1]">
             <Crown :scrollProgress="scrollProgress" :introProgress="introProgress" />
             <FloatingKeywords :scrollProgress="scrollProgress" :introProgress="introProgress" />
-            <ContactShadows :position="[0, -2.5, 0]" :opacity="0.35" :scale="10" :blur="2" :far="4" color="#38BDF8" />
+            <ContactShadows :position="[0, -2.5, 0]" :opacity="deviceType === 'mobile' ? 0.8 : 0.35" :scale="10" :blur="deviceType === 'mobile' ? 15 : 2" :far="4" color="#38BDF8" />
           </TresGroup>
         </Suspense>
       </Levioso>
@@ -33,6 +33,9 @@ import { ContactShadows, Levioso } from '@tresjs/cientos'
 import { TresCanvas } from '@tresjs/core'
 import Crown from './Crown.vue'
 import FloatingKeywords from './FloatingKeywords.vue'
+import { useDeviceType } from '~/hooks/useDeviceType'
+
+const deviceType = useDeviceType()
 
 defineProps({
   scrollProgress: {

@@ -9,7 +9,7 @@
         <div
           :style="{
             color: kw.color,
-            fontSize: `${kw.scale * 1.0}rem`,
+            fontSize: `${kw.scale * (deviceType === 'mobile' ? 0.8 : 1.0)}rem`,
             fontWeight: 'bold',
             opacity: opacities[i] ?? 0,
             textShadow: '0 0 10px rgba(56,189,248,0.3)',
@@ -31,6 +31,9 @@
 import { shallowRef, ref, onMounted } from 'vue'
 import { Html } from '@tresjs/cientos'
 import * as THREE from 'three'
+import { useDeviceType } from '~/hooks/useDeviceType'
+
+const deviceType = useDeviceType()
 
 const props = defineProps({
   scrollProgress: {
