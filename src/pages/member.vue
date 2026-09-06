@@ -1,7 +1,11 @@
 <template>
   <div>
+    <h1 class="page-title">创智工作室成员列表</h1>
+    <div text-center mt-8 mb-2>
+      <h2 text-3xl font-bold text-gray-800 dark:text-gray-200>创智工作室成员</h2>
+    </div>
     <div container m-auto id="memberlist">
-      <div v-masonry fit-width="true" transition-duration="0s" origin-left="false" w-full m-auto gap-10
+      <div v-masonry fit-width="true" transition-duration="0s" origin-left="false" w-full m-auto gap-6 sm:gap-10
         container>
         <MemberCard v-masonry-tile v-for="user of userList" :userInfo="user"
           class="card" w-80 mx-auto md:mx-6></MemberCard>
@@ -12,11 +16,8 @@
 
 <script setup lang='ts'>
 import { onMounted, ref } from 'vue';
-import axios from 'axios';
 import { getAllUser } from '~/api/user'
 import { UserInfo } from "#/data";
-import { loginApi } from '~/api/user';
-import { useUserStore } from '~/store/user';
 
 const userList = ref<UserInfo[]>([]);
 
@@ -29,5 +30,16 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+.page-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 </style>

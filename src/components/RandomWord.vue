@@ -1,5 +1,5 @@
 <template>
-  <span class="text" whitespace-pre-line text-left sm:text-center select-none>
+  <span class="text" whitespace-pre-line text-center select-none>
     {{ text }}
 
     <span class="point" inline-block :class="isEnd ? 'w-10' : ''">{{ point }}

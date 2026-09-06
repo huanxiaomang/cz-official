@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional } from 'class-validator';
 import { IsConfirm } from '@/common/rules/is-confirm.rule';
 import { IsNotExistsRule } from '@/common/rules/is-not-exists.rule';
 
@@ -14,8 +14,14 @@ export default class RegisterDto {
   password: string;
   @IsNotEmpty({ message: '确认密码不能为空' })
   password_confirm: string;
-    @IsNotEmpty({ message: '主修不能为空' })
-    major: string;
-    @IsNotEmpty({ message: '年级不能为空' })
-    grade: number;
+  @IsNotEmpty({ message: '邀请码不能为空' })
+  invitationCode: string;
+  @IsNotEmpty({ message: '主修专业不能为空' })
+  major: string;
+  @IsOptional()
+  @IsInt({ message: '旧年级格式不正确' })
+  grade?: number;
+  @IsNotEmpty({ message: '入学年份不能为空' })
+  @IsInt({ message: '入学年份格式不正确' })
+  admissionYear: number;
 }

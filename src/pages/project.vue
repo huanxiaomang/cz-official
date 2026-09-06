@@ -2,7 +2,7 @@
   <div>
     <div container m-auto mt-6>
       <div v-for="proj in projList" :key="proj.id" mt-4 w-full sm:w-3xl m-auto
-        class=" bg-white dark:bg-transparent p-8 rounded-sm shadow-md whitespace-pre-wrap text-left">
+        class=" bg-white dark:bg-transparent p-5 sm:p-8 rounded-sm shadow-md whitespace-pre-wrap text-left">
         <div text-xl font-bold pb-3>{{ proj.title }}</div>
         <div flex gap-1 flex-wrap>
           <StackIcon :name="s" v-for="s of proj.stack.split('+') "></StackIcon>
@@ -11,7 +11,7 @@
         <div mt-4>
           <CZAvatar v-for="u of proj.members.split(',')  " :key="u" :userId="u"></CZAvatar>
         </div>
-        <div text-xs pt-4 text-gray-800 class="dark:text-gray-5">{{ splitDate(proj.createdAt).fullDate }}</div>
+        <div text-xs pt-4 text-gray-800 class="dark:text-gray-5">{{ getProjectDateInfo(proj.createdAt).fullDate }}</div>
       </div>
     </div>
 
@@ -26,10 +26,24 @@ import { splitDate } from '~/utils/splitDate'
 
 const projList = ref<ProjInfo[]>([]);
 
+function getProjectDateInfo(createdAt: string) {
+  return splitDate(createdAt) ?? {
+    year: 'unknown',
+    month: 'unknown',
+    day: '00',
+    hour: '00',
+    minute: '00',
+    second: '00',
+    millisecond: '000',
+    fullDate: createdAt,
+    timestamp: 0,
+  };
+}
+
 onMounted(async () => {
-  const projs = (await getProjApi() as any).data;
+  const projs = await getProjApi();
   projList.value = projs.toSorted((a: ProjInfo, b: ProjInfo) => {
-    return splitDate(b.createdAt).timestamp - splitDate(a.createdAt).timestamp
+    return getProjectDateInfo(b.createdAt).timestamp - getProjectDateInfo(a.createdAt).timestamp
   });
 
 

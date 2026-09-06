@@ -1,6 +1,6 @@
 <template>
-  <div class="video-container" h-100vh w-full relative>
-    <video autoplay loop muted class="video" h-full w-full object-cover z-1
+  <div class="video-container" w-full relative>
+    <video ref="bgVideoRef" autoplay loop muted playsinline class="video" h-full w-full object-cover z-1
       poster="../../assets/video/bg-first-frame.jpg">
       <source :src="bgVideoURL" type="video/mp4">
       Your browser does not support the video tag.
@@ -21,31 +21,31 @@
   <div w-full relative class="mainContent-container">
     <div class="mainContent">
       <RandomWord class="mainContent-title" :TextContent="mainContentTitle" :randomWordCount="3" :IsInterval="false"
-        :relWordTime="50" randomWordColor="#666" :startY="700" font-300 sm:text-xl tracking-wide>
-      </RandomWord>
+          :relWordTime="50" randomWordColor="#666" :startY="deviceType === 'mobile' ? 0 : 700" font-300 sm:text-xl tracking-wide>
+        </RandomWord>
       <RandomWord class="mainContent-text" v-for="item, i in mainContent" :TextContent="item" :textColor="textColor"
-        :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" :startY="1600" font-300
+        :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" :startY="deviceType === 'mobile' ? 0 : 1600" font-300
         sm:text-xl tracking-wide>
       </RandomWord>
     </div>
     <div class="mainVideo">
-      <video autoplay loop muted class="video" h-full w-full object-cover z-1
+      <video ref="fontVideoRef" autoplay loop muted playsinline class="video" h-full w-full object-cover z-1
         poster="../../assets/video/bg-first-frame.jpg">
         <source :src="fontVideoURL" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
   </div>
-  <div h-20vh w-full relative class="SecContent-container">
+  <div w-full relative class="SecContent-container">
     <!-- <Introduce :title="'创智工作室介绍'" :companyLogo=CompanyLogo :companyName="'包容, 多元, 创新, 精进'" :video-poster="videoURL"
       :video-left-poster="leftVideoURL">
     </Introduce> -->
   </div>
-  <div h-100vh w-full relative bg-white class="[z-index:3]">
+  <div min-h-screen w-full relative class="bg-white dark:bg-[#121212] [z-index:3] px-4 pb-12">
     <div class="title" text-lightblue font-bold text-10>
       我们的优势
     </div>
-    <div text-gray-7 gap-3 grid>
+    <div class="text-gray-7 dark:text-gray-300" gap-3 grid>
       <div>相对<span font-bold>灵活</span>、<span font-bold>开明</span>的培养体系，为成员们提供良好愉快的学习氛围。</div>
       <div>蓝桥杯<span font-bold>国一</span>学长带队前端，冲刺蓝桥杯</div>
     </div>
@@ -53,15 +53,15 @@
       我们需要你
     </div>
 
-    <div text-gray-7 gap-3 grid>
+    <div class="text-gray-7 dark:text-gray-300" gap-3 grid>
       <div>1. 自驱力自控力</div>
       <div>2. 对计算机技术具备兴趣</div>
       <div>3. 善于思考；具备主观能动性</div>
       <div>4. 具备计算机常识</div>
     </div>
-    <div class="w-full h-300 flex flex-col items-center justify-center relative">
-      <canvas class="w-full" ref="canvasRef"></canvas>
-      <div class="w-full text-center text-gray-700 cursor-pointer hover:underline"><a href="https://www.npmjs.com/package/svg-particle" target="_blank">svg-particle(NPM) - Hakurei77</a></div>
+    <div class="w-full max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto my-12 flex flex-col items-center justify-center relative">
+      <canvas class="block w-full aspect-[486/250]" ref="canvasRef"></canvas>
+      <div class="w-full text-center text-gray-700 dark:text-gray-400 cursor-pointer hover:underline mt-4"><a href="https://www.npmjs.com/package/svg-particle" target="_blank">svg-particle(NPM) - Hakurei77</a></div>
     </div>
 
   </div>
@@ -78,10 +78,16 @@ import CompanyLogo from '~/assets/icon/cz_ba-style_white.png';
 import { createSVGParticleSystem } from 'svg-particle'
 import gsap from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { resolveUploadUrl } from '@/utils/env';
 import svgContent from './../../assets/images/cz-logo.svg?raw'
 const canvasRef = ref<HTMLCanvasElement | null>(null);
+const bgVideoRef = ref<HTMLVideoElement | null>(null);
+const fontVideoRef = ref<HTMLVideoElement | null>(null);
 
 let particleSystem: ReturnType<typeof createSVGParticleSystem> | null = null;
+let handleParticleResize: (() => void) | null = null;
+let handleParticleTouchStart: ((e: TouchEvent) => void) | null = null;
+let handleParticleTouchMove: ((e: TouchEvent) => void) | null = null;
 withDefaults(defineProps<{
   textColor?: string
 }>(), {
@@ -106,65 +112,164 @@ const mainContent = [
   '以及Java、Python、Node.js等后端编程语言，学习构建可扩展、高可用的系统。',
 ]
 
+const LOGO_SOURCE_WIDTH = 486;
+const LOGO_SOURCE_HEIGHT = 250;
+
+function getParticleOptions(canvas: HTMLCanvasElement) {
+  const canvasWidth = canvas.clientWidth || LOGO_SOURCE_WIDTH;
+  const isMobile = canvasWidth < 640;
+  const isTablet = canvasWidth >= 640 && canvasWidth < 1024;
+
+  let targetWidth = Math.floor(canvasWidth * 0.8);
+  let scaleFactor = targetWidth / LOGO_SOURCE_WIDTH;
+
+  // Fix for svg-particle float index bug:
+  // Ensure that (LOGO_SOURCE_WIDTH * scaleFactor) evaluates to an exact integer
+  // otherwise the internal RGBA array index calculation results in undefined.
+  while (!Number.isInteger(LOGO_SOURCE_WIDTH * scaleFactor)) {
+    targetWidth++;
+    scaleFactor = targetWidth / LOGO_SOURCE_WIDTH;
+  }
+
+  return {
+    particleColor: '#138AFA',
+    type: 'push' as const,
+    scaleFactor,
+    // particleSpacing MUST be an integer! Float values misalign the RGBA array reading.
+    particleSpacing: isMobile ? 3 : 4,
+    particleSize: isMobile ? 1.2 : isTablet ? 1.4 : 1.5,
+    mouseRadius: isMobile ? 50 : isTablet ? 60 : 70,
+  };
+}
+
 /*————————————————————————————————————————————————————————————————————————*/
 
 //以下代码均为gsap动画
 onMounted(async () => {
-  let a = document.querySelectorAll(".mainContent-text")
   const screenWidth = window.innerWidth;
-  // 根据屏幕宽度设置字体大小
-  if (screenWidth < 640) {
-    a.forEach((item: any) => {
-      item.style.display = "none"
-    });
-  }
   gsap.registerPlugin(ScrollTrigger);
-  gsap.fromTo(".mainContent-title",
-    { fontSize: '40rem', letterSpacing: "500px", paddingBottom: "50rem", paddingTop: "50rem" },
-    {
-      fontSize: '1rem', letterSpacing: "0px", paddingBottom: "0rem", paddingTop: "0rem",
-      scrollTrigger: { trigger: ".mainContent", start: "top 50%", end: "top 0%", scrub: true },
-    })
-  gsap.from(".mainContent-title", {
-    scrollTrigger: { trigger: ".mainContent", start: "top 0%", end: "top -300%", scrub: true, pin: true },
-  })
-  let textTimeLine = gsap.timeline({
-    scrollTrigger: { trigger: ".mainVideo", start: "top 100%", end: "top 0%", scrub: true }
-  });
-  textTimeLine
-    .from(".mainContent-text:nth-child(2)", { x: -500, opacity: 0 })
-    .from(".mainContent-text:nth-child(3)", { x: 500, opacity: 0 })
-    .from(".mainContent-text:nth-child(4)", { x: -500, opacity: 0 })
-    .from(".mainContent-text:nth-child(5)", { x: 500, opacity: 0 })
-    .from(".mainContent-text:nth-child(6)", { x: -500, opacity: 0 })
-    .from(".mainContent-text:nth-child(7)", { x: 500, opacity: 0 })
-    .from(".mainContent-text:nth-child(8)", { x: -500, opacity: 0 })
 
-    if (!canvasRef.value) return;
-    particleSystem = createSVGParticleSystem(
-        canvasRef.value,
-        svgContent,
-        {
-          particleColor:'#138AFA',
-          type:'push'
-        }
-    );
-    await particleSystem.start();
+  // 确保视频静音并自动播放（UnoCSS attributify 会吞掉 muted 属性，浏览器会阻止有声视频自动播放）
+  for (const video of [bgVideoRef.value, fontVideoRef.value]) {
+    if (!video) continue;
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    const p = video.play();
+    if (p) p.catch(() => { /* 等待用户交互后再尝试播放 */ });
+  }
+
+  // 中段滚动动画（桌面端与移动端参数不同，但都执行）
+  if (screenWidth >= 640) {
+    gsap.fromTo(".mainContent-title",
+      { fontSize: '40rem', letterSpacing: "500px", paddingBottom: "50rem", paddingTop: "50rem" },
+      {
+        fontSize: '1rem', letterSpacing: "0px", paddingBottom: "0rem", paddingTop: "0rem",
+        scrollTrigger: { trigger: ".mainContent", start: "top 50%", end: "top 0%", scrub: true },
+      })
+    gsap.from(".mainContent-title", {
+      scrollTrigger: { trigger: ".mainContent", start: "top 0%", end: "top -300%", scrub: true, pin: true },
+    })
+    let textTimeLine = gsap.timeline({
+      scrollTrigger: { trigger: ".mainVideo", start: "top 100%", end: "top 0%", scrub: true }
+    });
+    textTimeLine
+      .from(".mainContent-text:nth-child(2)", { x: -500, opacity: 0 })
+      .from(".mainContent-text:nth-child(3)", { x: 500, opacity: 0 })
+      .from(".mainContent-text:nth-child(4)", { x: -500, opacity: 0 })
+      .from(".mainContent-text:nth-child(5)", { x: 500, opacity: 0 })
+      .from(".mainContent-text:nth-child(6)", { x: -500, opacity: 0 })
+      .from(".mainContent-text:nth-child(7)", { x: 500, opacity: 0 })
+      .from(".mainContent-text:nth-child(8)", { x: -500, opacity: 0 })
+  } else {
+    // 移动端：整块 pin 固定在视口，视频居中做背景，标题收缩 + 正文自下而上浮现（上下跟随）
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: ".mainContent-container",
+        start: "top top",
+        end: "+=150%",
+        scrub: true,
+        pin: true,
+        anticipatePin: 1,
+      }
+    })
+      .fromTo(".mainContent-title",
+        { fontSize: '2.5rem', letterSpacing: '6px', opacity: 0, y: 60 },
+        { fontSize: '0.85rem', letterSpacing: '0px', opacity: 1, y: 0, duration: 0.5 }, 0)
+      .from(".mainContent-text:nth-child(2)", { y: 80, opacity: 0 }, 0.35)
+      .from(".mainContent-text:nth-child(3)", { y: 80, opacity: 0 }, 0.45)
+      .from(".mainContent-text:nth-child(4)", { y: 80, opacity: 0 }, 0.55)
+      .from(".mainContent-text:nth-child(5)", { y: 80, opacity: 0 }, 0.65)
+      .from(".mainContent-text:nth-child(6)", { y: 80, opacity: 0 }, 0.75)
+      .from(".mainContent-text:nth-child(7)", { y: 80, opacity: 0 }, 0.85)
+      .from(".mainContent-text:nth-child(8)", { y: 80, opacity: 0 }, 0.95)
+  }
+
+  if (!canvasRef.value) return;
+  particleSystem = createSVGParticleSystem(
+    canvasRef.value,
+    svgContent,
+    getParticleOptions(canvasRef.value),
+  );
+  await particleSystem.start();
+
+  handleParticleResize = () => {
+    if (!canvasRef.value || !particleSystem) return;
+    void particleSystem.updateOptions(getParticleOptions(canvasRef.value));
+  };
+  window.addEventListener('resize', handleParticleResize);
+  handleParticleResize();
+
+  // 移动端：svg-particle 库仅监听 mousemove，需将触摸事件桥接为鼠标事件以支持手指滑动交互
+  const particleCanvas = canvasRef.value;
+  if (particleCanvas) {
+    const dispatchTouchAsMouse = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+      window.dispatchEvent(new MouseEvent('mousemove', {
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+        bubbles: true,
+      }));
+    };
+    handleParticleTouchStart = (e: TouchEvent) => {
+      e.preventDefault();
+      dispatchTouchAsMouse(e);
+    };
+    handleParticleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      dispatchTouchAsMouse(e);
+    };
+    particleCanvas.addEventListener('touchstart', handleParticleTouchStart, { passive: false });
+    particleCanvas.addEventListener('touchmove', handleParticleTouchMove, { passive: false });
+  }
 
 })
 
 
 onUnmounted(() => {
-    particleSystem?.stop();
+  if (handleParticleResize)
+    window.removeEventListener('resize', handleParticleResize);
+  if (canvasRef.value) {
+    if (handleParticleTouchStart)
+      canvasRef.value.removeEventListener('touchstart', handleParticleTouchStart);
+    if (handleParticleTouchMove)
+      canvasRef.value.removeEventListener('touchmove', handleParticleTouchMove);
+  }
+  particleSystem?.stop();
 });
 /*————————————————————————————————————————————————————————————————————————*/
 
-const bgVideoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'bg.mp4';
-const fontVideoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'font.mp4';
-const leftVideoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'introductionleft.mp4';
-const videoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'introduction.mp4';
+const bgVideoURL = resolveUploadUrl('bg.mp4');
+const fontVideoURL = resolveUploadUrl('font.mp4');
+const leftVideoURL = resolveUploadUrl('introductionleft.mp4');
+const videoURL = resolveUploadUrl('introduction.mp4');
 </script>
 <style lang="scss" scoped>
+.video-container {
+  height: 100vh;
+}
+
 .title-cn {
   color: transparent;
   background-clip: text !important;
@@ -181,6 +286,10 @@ const videoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'introduction.mp4';
   background-color: white;
   height: 220vh;
   overflow: hidden;
+
+  :global(.dark) & {
+    background-color: #121212;
+  }
 
   .mainContent {
     position: relative;
@@ -201,7 +310,6 @@ const videoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'introduction.mp4';
       text-align: center;
       margin-top: 10px;
       margin-bottom: 10px;
-      text-align: left;
       font-weight: 540;
     }
   }
@@ -217,12 +325,67 @@ const videoURL = import.meta.env.VITE_GLOB_UPLOAD_URL + 'introduction.mp4';
 
 .SecContent-container {
   width: 100%;
+  height: 20vh;
   background-color: white;
   z-index: 3;
 
   .title {
     font-size: 40px;
     padding-top: 30px;
+  }
+}
+
+@media (max-width: 640px) {
+  .title-container {
+    width: calc(100% - 2rem);
+    text-align: center;
+  }
+
+  .mainContent-container {
+    height: 100vh;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .mainContent {
+    position: relative;
+    height: 100vh;
+    align-items: center;
+    padding: 0 1.25rem;
+    overflow: hidden;
+  }
+
+  .mainContent-title {
+    white-space: normal;
+    word-break: break-word;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .mainContent-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .mainVideo {
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+  }
+
+  .SecContent-container {
+    display: none;
+  }
+
+  .title {
+    font-size: 1.75rem;
   }
 }
 </style>

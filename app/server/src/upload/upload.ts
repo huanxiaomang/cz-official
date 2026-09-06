@@ -21,7 +21,7 @@ export function upload(field = 'file', options: MulterOptions) {
 //图片上传
 export function image(field = 'file') {
   return upload(field, {
-    limits: Math.pow(1024, 2) * 2,
+    limits: Math.pow(1024, 2) * 5,
     fileFilter: filterFilter('image'),
   } as MulterOptions)
 }

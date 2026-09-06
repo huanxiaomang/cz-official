@@ -9,6 +9,9 @@ export interface UserInfo {
   github?: string;
   major: string;
   grade: number;
+  admissionYear?: number;
+  memberType?: 'STUDENT' | 'GRADUATED' | 'ADVISOR';
+  gradeLabel?: string;
   badge?: string;
   score: string;
   createdAt: string;
@@ -28,6 +31,18 @@ export interface ProjInfo {
   content: string;
   stack: string;
   members: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export  interface ActiInfo {
+  id: number;
+  intro: string;
+  detail: string;
+  sdate: string;
+  edate: string;
+  joiners: string;
+  status: number;
   createdAt: string;
   updatedAt: string;
 }

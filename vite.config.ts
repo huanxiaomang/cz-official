@@ -17,18 +17,28 @@ import  externalGlobals  from 'rollup-plugin-external-globals';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 export default defineConfig({
+  // 使用 Vite 内置的环境变量加载机制（.env.*），不额外覆盖
+
+  // 开发服务器配置
+  server: {
+    port: 3333,
+    host: true,
+  },
+
   esbuild: {
     pure: ['console.log'], // 删除 console.log
     drop: ['debugger'], // 删除 debugger
   },
   resolve: {
     alias: {
+      '@/': `${path.resolve(__dirname, './src')}/`,
       '#/': `${path.resolve(__dirname, './types')}/`,
       '~/': `${path.resolve(__dirname, './src')}/`,
     },
   },
   build: {
     rollupOptions: {
+      external: [],
       output: {
         chunkFileNames: 'js/[name]-[hash].js',
         entryFileNames: 'js/[name]-[hash].js',
@@ -45,11 +55,17 @@ export default defineConfig({
     VueMacros({
       defineOptions: false,
       defineModels: false,
+      chainCall: false,
       plugins: {
         vue: Vue({
           script: {
             propsDestructure: true,
             defineModel: true,
+          },
+          template: {
+            compilerOptions: {
+              isCustomElement: tag => tag.startsWith('Tres') && tag !== 'TresCanvas',
+            },
           },
         }),
         vueJsx:vueJsx({})

@@ -17,6 +17,8 @@ async function run() {
           description: Random.cparagraph(30, 50),
           major: '前端开发',
           grade: 2,
+          admissionYear: 2025,
+          memberType: 'STUDENT',
           badge: '蓝桥杯国三,创智开发者',
 
     },
@@ -33,7 +35,27 @@ async function run() {
           description: Random.cparagraph(30, 50),
           major: '后端开发',
           grade: 2,
+          admissionYear: 2025,
+          memberType: 'STUDENT',
           badge: '蓝桥杯省二,创智开发者',
+    },
+  })
+
+  await prisma.user.create({
+    data: {
+      username: 'Urgar',
+      role: 'ADMIN',
+      password: await hash('123456'),
+      email: 'test@cz.com',
+      avatar: 'https://github.com/Urgar-biolian/img/blob/main/img/tong.jpg?raw=true',
+      github: 'https://github.com/Urgar-biolian',
+      background: 'https://github.com/Urgar-biolian/img/blob/main/img/IMG_20250926_203022.jpg?raw=true',
+          description: Random.cparagraph(30, 50),
+          major: '全栈开发',
+          grade: 2,
+          admissionYear: 2025,
+          memberType: 'STUDENT',
+          badge: '创智开发者',
     },
   })
 
@@ -56,6 +78,8 @@ async function run() {
       },
     })
   }
+
+  console.log('用户、项目和消息测试数据插入完成')
 }
 
-run()
+run();

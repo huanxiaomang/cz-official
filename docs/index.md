@@ -34,12 +34,6 @@ features:
 
 
 <script setup>
-if (!window.created && document.body.clientWidth >= 750) {
-    createImage();
-}
-window.created = true;
-
-
 function createImage() {
 //     const img = document.createElement('img');
 //     img.src = '/dls.jpg';
@@ -81,41 +75,13 @@ const _historyWrap = function (type) {
         return rv;
     };
 };
-history.pushState = _historyWrap('pushState');
-history.replaceState = _historyWrap('replaceState');
-
-window.addEventListener('pushState', function (e) {
-    handleRouteChange();
-
-});
-
-window.addEventListener('replaceState', function (e) {
-    handleRouteChange();
-
-});
-
-window.addEventListener('popstate', function (event) {
-    // 处理路由变化
-    handleRouteChange();
-});
-
-
-// 初始化页面时的路由处理
-handleRouteChange();
 
 // 处理路由变化的函数
 function handleRouteChange() {
     // 获取当前路由
     let currentRoute = window.location.href;
-    for (const key in authorMap) {
-        if (currentRoute.includes(key)) {
-            setAuthorText(authorMap[key]);
-        } else {
-            setAuthorText(default_author);
-        }
-    }
-
-
+    const matchedAuthor = Object.entries(authorMap).find(([key]) => currentRoute.includes(key))?.[1] || default_author;
+    setAuthorText(matchedAuthor);
 }
 
 function setAuthorText(text) {
@@ -126,5 +92,32 @@ function setAuthorText(text) {
     }
 }
 
+if (typeof window !== 'undefined') {
+    if (!window.created && document.body.clientWidth >= 750) {
+        createImage();
+    }
+    window.created = true;
+
+    if (!window.__czDocsHistoryPatched) {
+        history.pushState = _historyWrap('pushState');
+        history.replaceState = _historyWrap('replaceState');
+
+        window.addEventListener('pushState', function () {
+            handleRouteChange();
+        });
+
+        window.addEventListener('replaceState', function () {
+            handleRouteChange();
+        });
+
+        window.addEventListener('popstate', function () {
+            handleRouteChange();
+        });
+
+        window.__czDocsHistoryPatched = true;
+    }
+
+    handleRouteChange();
+}
 
 </script>
