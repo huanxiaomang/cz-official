@@ -58,6 +58,8 @@ export interface Comment {
     };
   };
   replies?: Comment[];
+  subReplies?: Comment[];
+  parentUser?: { username?: string };
   likes?: CommentLike[];
   attachments?: CommentAttachment[];
 }

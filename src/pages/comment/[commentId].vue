@@ -46,22 +46,76 @@
         <CommentForm
           v-if="showCommentForm"
           :is-modal="true"
+          :parent-id="mainComment?.id"
           @submitted="handleCommentSubmitted"
           @cancelled="handleCancelComment"
         />
 
-        <CommentItem
-          v-else-if="mainComment"
-          :comment="{ ...mainComment, replies: visibleReplies }"
-          :current-user-id="currentUserId"
-          :current-user-role="currentUserRole"
-          :thread-author-id="mainComment.userId"
-          :show-replies="true"
-          :full-content="true"
-          @delete="handleDeleteComment"
-          @like="handleLikeComment"
-          @update="refreshDetail"
-        />
+        <template v-else-if="mainComment">
+          <CommentItem
+            :comment="{ ...mainComment, replies: [] }"
+            :current-user-id="currentUserId"
+            :current-user-role="currentUserRole"
+            :thread-author-id="mainComment.userId"
+            :show-replies="false"
+            :full-content="true"
+            @delete="handleDeleteComment"
+            @like="handleLikeComment"
+            @update="refreshDetail"
+          />
+
+          <div v-if="topLevelReplies.length > 0" class="reply-list">
+            <div class="reply-list-header">
+              <span>全部回复</span>
+              <span>共 {{ totalReplyCount }} 条</span>
+            </div>
+
+            <template v-for="(reply, index) in topLevelReplies" :key="reply.id">
+              <CommentItem
+                :comment="{ ...reply, replies: [] }"
+                :current-user-id="currentUserId"
+                :current-user-role="currentUserRole"
+                :thread-author-id="mainComment.userId"
+                :floor-label="`#${index + 2}`"
+                :show-replies="false"
+                :full-content="true"
+                @delete="handleDeleteComment"
+                @like="handleLikeComment"
+                @update="refreshDetail"
+              />
+
+              <div v-if="replySubReplyCount(reply) > 0" class="sub-replies">
+                <button class="sub-replies-toggle" @click="toggleExpand(reply.id)">
+                  {{ expandedReplies.has(reply.id) ? '收起回复' : `展开 ${replySubReplyCount(reply)} 条回复` }}
+                </button>
+                <template v-if="expandedReplies.has(reply.id)">
+                  <CommentItem
+                    v-for="sub in previewSubReplies(reply)"
+                    :key="sub.id"
+                    :comment="sub"
+                    :current-user-id="currentUserId"
+                    :current-user-role="currentUserRole"
+                    :thread-author-id="mainComment.userId"
+                    :floor-label="''"
+                    :show-replies="false"
+                    :full-content="true"
+                    :reply-to="subReplyTo(reply, sub)"
+                    @delete="handleDeleteComment"
+                    @like="handleLikeComment"
+                    @update="refreshDetail"
+                  />
+                  <button
+                    v-if="!shownMoreReplies.has(reply.id) && visibleSubReplies(reply).length > SUB_REPLIES_PREVIEW"
+                    class="sub-replies-toggle more-btn"
+                    @click="showMore(reply.id)"
+                  >
+                    查看更多（剩余 {{ visibleSubReplies(reply).length - SUB_REPLIES_PREVIEW }} 条）
+                  </button>
+                </template>
+              </div>
+            </template>
+          </div>
+        </template>
       </main>
 
       <aside class="thread-sidebar">
@@ -80,8 +134,8 @@
               <span>回复</span>
             </div>
             <div>
-              <strong>{{ visibleReplies.length }}</strong>
-              <span>可见内容</span>
+              <strong>{{ totalReplyCount }}</strong>
+              <span>总回复</span>
             </div>
           </div>
         </section>
@@ -130,15 +184,81 @@ const currentUserRole = computed(() => {
 
 const isAdmin = computed(() => currentUserRole.value.toUpperCase() === 'ADMIN');
 
-const visibleReplies = computed(() => {
-  if (!mainComment.value?.replies) {
-    return [];
-  }
+// 楼中楼默认展开条数
+const SUB_REPLIES_PREVIEW = 3;
+
+// 一级回复：直接回复帖子的楼层
+const topLevelReplies = computed(() => {
+  const replies = mainComment.value?.replies || [];
   if (!onlyAuthorReplies.value) {
-    return mainComment.value.replies;
+    return replies;
   }
-  return mainComment.value.replies.filter((reply: any) => reply.userId === mainComment.value.userId);
+  return replies.filter((reply: any) => reply.userId === mainComment.value.userId);
 });
+
+// 某条一级回复下楼中楼的全部后代（平铺，不限深度）
+function allSubReplies(reply: any): any[] {
+  return reply.subReplies || [];
+}
+
+// 应用「只看题主」过滤后的楼中楼
+function visibleSubReplies(reply: any): any[] {
+  const subs = allSubReplies(reply);
+  if (!onlyAuthorReplies.value) {
+    return subs;
+  }
+  return subs.filter((sub: any) => sub.userId === mainComment.value.userId);
+}
+
+// 某条一级回复下楼中楼的总回复数（含所有深层回复）
+function replySubReplyCount(reply: any): number {
+  return visibleSubReplies(reply).length;
+}
+
+// 总回复数 = 一级回复数 + 楼中楼数（含所有深层回复，不因只看题主变化）
+const totalReplyCount = computed(() => {
+  const replies = mainComment.value?.replies || [];
+  return replies.length + replies.reduce(
+    (sum: number, reply: any) => sum + allSubReplies(reply).length,
+    0,
+  );
+});
+
+const expandedReplies = ref<Set<number>>(new Set());
+const shownMoreReplies = ref<Set<number>>(new Set());
+
+function toggleExpand(replyId: number) {
+  const next = new Set(expandedReplies.value);
+  if (next.has(replyId)) {
+    next.delete(replyId);
+  } else {
+    next.add(replyId);
+  }
+  expandedReplies.value = next;
+}
+
+function showMore(replyId: number) {
+  const next = new Set(shownMoreReplies.value);
+  next.add(replyId);
+  shownMoreReplies.value = next;
+}
+
+// 当前应显示的楼中楼条目：默认前 N 条，点「查看更多」后展示全部
+function previewSubReplies(reply: any): any[] {
+  const subs = visibleSubReplies(reply);
+  if (shownMoreReplies.value.has(reply.id)) {
+    return subs;
+  }
+  return subs.slice(0, SUB_REPLIES_PREVIEW);
+}
+
+// 楼中楼内某条回复的「回复 @」对象：直接回复楼层本身不标 @
+function subReplyTo(reply: any, sub: any): string | undefined {
+  if (!sub || sub.parentId === reply.id) {
+    return undefined;
+  }
+  return sub.parentUser?.username;
+}
 
 onMounted(async () => {
   await refreshDetail();
@@ -159,31 +279,45 @@ function handleCancelComment() {
 }
 
 async function handleDeleteComment(commentId: number) {
-  const { deleteComment } = await import('~/api/commentApi');
-  await deleteComment(commentId);
-  await refreshDetail();
-  message.success('删除成功');
+  try {
+    const { deleteComment } = await import('~/api/commentApi');
+    await deleteComment(commentId);
+    await refreshDetail();
+    message.success('删除成功');
+  } catch (error) {
+    message.error('删除失败，请重试');
+  }
 }
 
 async function handleLikeComment(commentId: number) {
-  await toggleLike(commentId);
-  await refreshDetail();
+  if (currentUserId.value === 0) {
+    message.warning('请先登录');
+    return;
+  }
+  try {
+    await toggleLike(commentId);
+    await refreshDetail();
+  } catch (error) {
+    message.error('操作失败，请重试');
+  }
 }
 
 async function togglePin() {
   if (!mainComment.value) return;
+  const next = !mainComment.value.isPinned;
   const { updateComment } = await import('~/api/commentApi');
-  await updateComment(mainComment.value.id, { isPinned: !mainComment.value.isPinned });
+  await updateComment(mainComment.value.id, { isPinned: next });
   await refreshDetail();
-  message.success(mainComment.value.isPinned ? '已取消置顶' : '已置顶');
+  message.success(next ? '已置顶' : '已取消置顶');
 }
 
 async function toggleFeature() {
   if (!mainComment.value) return;
+  const next = !mainComment.value.isFeatured;
   const { updateComment } = await import('~/api/commentApi');
-  await updateComment(mainComment.value.id, { isFeatured: !mainComment.value.isFeatured });
+  await updateComment(mainComment.value.id, { isFeatured: next });
   await refreshDetail();
-  message.success(mainComment.value.isFeatured ? '已取消精华' : '已加精');
+  message.success(next ? '已加精' : '已取消精华');
 }
 
 function goBack() {
@@ -274,23 +408,23 @@ function goBack() {
   border-radius: 999px;
   font-size: 11px;
   font-weight: 700;
-  color: #dfe9ff;
-  background: rgba(59, 130, 246, 0.16);
+  color: #1d4ed8;
+  background: rgba(59, 130, 246, 0.12);
 }
 
 .headline-chip.pin {
-  color: #ffe5bc;
-  background: rgba(249, 115, 22, 0.16);
+  color: #c2410c;
+  background: rgba(249, 115, 22, 0.12);
 }
 
 .headline-chip.featured {
-  color: #d9fbe9;
-  background: rgba(16, 185, 129, 0.16);
+  color: #047857;
+  background: rgba(16, 185, 129, 0.12);
 }
 
 .headline-chip.subtle {
-  color: rgba(214, 224, 246, 0.72);
-  background: rgba(255, 255, 255, 0.05);
+  color: #64748b;
+  background: rgba(100, 116, 139, 0.1);
 }
 
 .headline-kicker {
@@ -445,6 +579,48 @@ function goBack() {
   display: grid;
   gap: 10px;
   line-height: 1.7;
+}
+
+.reply-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.reply-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 800;
+  color: #64748b;
+}
+
+.sub-replies {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+  padding-left: 16px;
+  border-left: 2px solid rgba(203, 213, 225, 0.6);
+}
+
+.sub-replies-toggle {
+  justify-self: start;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sub-replies-toggle:hover {
+  background: #e0e7ff;
 }
 
 @media (max-width: 1120px) {
@@ -639,6 +815,47 @@ html.dark .modal-footer,
 html.dark .form-header,
 html.dark .modal-body {
   background: transparent;
+}
+
+html.dark .reply-list {
+  border-color: #334155;
+}
+
+html.dark .reply-list-header {
+  color: #94a3b8;
+}
+
+html.dark .sub-replies {
+  border-color: #334155;
+}
+
+html.dark .sub-replies-toggle {
+  background: #334155;
+  color: #93c5fd;
+}
+
+html.dark .sub-replies-toggle:hover {
+  background: #475569;
+}
+
+html.dark .headline-chip {
+  color: #dfe9ff;
+  background: rgba(59, 130, 246, 0.16);
+}
+
+html.dark .headline-chip.pin {
+  color: #ffe5bc;
+  background: rgba(249, 115, 22, 0.16);
+}
+
+html.dark .headline-chip.featured {
+  color: #d9fbe9;
+  background: rgba(16, 185, 129, 0.16);
+}
+
+html.dark .headline-chip.subtle {
+  color: rgba(214, 224, 246, 0.72);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 </style>

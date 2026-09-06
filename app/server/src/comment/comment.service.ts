@@ -140,15 +140,10 @@ export class CommentService {
 
   async remove(id: number, userId: number, userRole?: string) {
     await this.assertCanManage(id, userId, userRole);
-    const comment = await this.prisma.comment.update({
-      where: { id },
-      data: {
-        deletedAt: new Date(),
-      },
-    });
+    await this.softDeleteTree(id);
 
     return {
-      data: comment,
+      data: { id },
     };
   }
 
@@ -162,12 +157,106 @@ export class CommentService {
       throw new NotFoundException('评论不存在或已删除');
     }
 
+    const withSubReplies = await this.attachSubReplies(comment);
+
     return {
-      data: this.formatComment(comment),
+      data: this.formatComment(withSubReplies),
     };
   }
 
+  // 楼中楼：不限深度地把一级楼层下的所有后代平铺到各自楼层，并给每条附上回复对象作者。
+  private async attachSubReplies(comment: any) {
+    const replies = Array.isArray(comment.replies) ? comment.replies : [];
+    if (replies.length === 0) {
+      return { ...comment, replies: [] };
+    }
+
+    const rootIds = replies.map((reply: any) => reply.id);
+    const byRoot: Record<number, any[]> = {};
+    const parentRootMap = new Map<number, number>();
+    for (const rootId of rootIds) {
+      byRoot[rootId] = [];
+      parentRootMap.set(rootId, rootId);
+    }
+
+    let frontier = [...rootIds];
+    while (frontier.length > 0) {
+      const batch = await this.prisma.comment.findMany({
+        where: { parentId: { in: frontier }, deletedAt: null },
+        include: {
+          user: {
+            select: {
+              userId: true,
+              username: true,
+              avatar: true,
+              role: true,
+              badge: true,
+              score: true,
+            },
+          },
+          likes: {
+            select: { id: true, commentId: true, userId: true, createdAt: true },
+          },
+          quote: {
+            select: {
+              id: true,
+              content: true,
+              userId: true,
+              user: { select: { username: true, avatar: true } },
+            },
+          },
+          parent: {
+            select: {
+              id: true,
+              user: { select: { username: true } },
+            },
+          },
+          _count: {
+            select: { likes: true, replies: { where: { deletedAt: null } } },
+          },
+        },
+        orderBy: { createdAt: 'asc' },
+      });
+
+      if (batch.length === 0) {
+        break;
+      }
+
+      const nextFrontier: number[] = [];
+      for (const child of batch) {
+        const parentId = child.parentId as number;
+        const rootId = parentRootMap.get(parentId);
+        const parentUser = child.parent?.user?.username ?? null;
+        delete (child as any).parent;
+        (child as any).parentUser = parentUser;
+
+        if (rootId !== undefined && byRoot[rootId]) {
+          byRoot[rootId].push(child);
+          parentRootMap.set(child.id, rootId);
+          nextFrontier.push(child.id);
+        }
+      }
+      frontier = nextFrontier;
+    }
+
+    for (const rootId of Object.keys(byRoot)) {
+      byRoot[rootId].sort((a: any, b: any) => {
+        const timeDiff =
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        return timeDiff !== 0 ? timeDiff : a.id - b.id;
+      });
+    }
+
+    const newReplies = replies.map((reply: any) => ({
+      ...reply,
+      subReplies: byRoot[reply.id] || [],
+    }));
+
+    return { ...comment, replies: newReplies };
+  }
+
   async toggleLike(commentId: number, userId: number) {
+    await this.assertCommentExists(commentId);
     const already = await this.prisma.commentLike.findUnique({
       where: { commentId_userId: { commentId, userId } },
     });
@@ -184,7 +273,7 @@ export class CommentService {
     return { liked: true };
   }
 
-  private buildCommentInclude(includeDeleted: boolean): Prisma.CommentInclude {
+  private buildReplyInclude(): Prisma.CommentInclude {
     return {
       user: {
         select: {
@@ -220,53 +309,19 @@ export class CommentService {
       _count: {
         select: {
           likes: true,
-          replies: true,
+          replies: { where: { deletedAt: null } },
         },
       },
+    };
+  }
+
+  private buildCommentInclude(includeDeleted: boolean): Prisma.CommentInclude {
+    return {
+      ...this.buildReplyInclude(),
       replies: {
         where: includeDeleted ? {} : { deletedAt: null },
-        include: {
-          user: {
-            select: {
-              userId: true,
-              username: true,
-              avatar: true,
-              role: true,
-              badge: true,
-              score: true,
-            },
-          },
-          likes: {
-            select: {
-              id: true,
-              commentId: true,
-              userId: true,
-              createdAt: true,
-            },
-          },
-          _count: {
-            select: {
-              likes: true,
-              replies: true,
-            },
-          },
-          quote: {
-            select: {
-              id: true,
-              content: true,
-              userId: true,
-              user: {
-                select: {
-                  username: true,
-                  avatar: true,
-                },
-              },
-            },
-          },
-        },
-        orderBy: {
-          createdAt: 'asc',
-        },
+        include: this.buildReplyInclude(),
+        orderBy: { createdAt: 'asc' },
       },
     };
   }
@@ -274,6 +329,10 @@ export class CommentService {
   private formatComment(comment: any): any {
     const replies = Array.isArray(comment.replies)
       ? comment.replies.map((reply: any) => this.formatComment(reply))
+      : [];
+
+    const subReplies = Array.isArray(comment.subReplies)
+      ? comment.subReplies.map((reply: any) => this.formatComment(reply))
       : [];
 
     return {
@@ -297,12 +356,15 @@ export class CommentService {
         : comment.quote,
       isDeleted: Boolean(comment.deletedAt),
       likeCount: comment._count?.likes ?? comment.likes?.length ?? 0,
-      replyCount: comment._count?.replies ?? replies.length,
+      replyCount: Array.isArray(comment.subReplies)
+        ? subReplies.length
+        : (comment._count?.replies ?? (replies.length + subReplies.length)),
       category: comment.category || DEFAULT_CATEGORY,
       tags: this.parseTags(comment.tags),
       isPinned: Boolean(comment.isPinned),
       isFeatured: Boolean(comment.isFeatured),
       replies,
+      subReplies,
     };
   }
 
@@ -365,6 +427,21 @@ export class CommentService {
     });
     if (!comment || comment.deletedAt) {
       throw new NotFoundException('引用的评论不存在或已删除');
+    }
+  }
+
+  private async softDeleteTree(rootId: number) {
+    let frontier = [rootId];
+    while (frontier.length > 0) {
+      await this.prisma.comment.updateMany({
+        where: { id: { in: frontier } },
+        data: { deletedAt: new Date() },
+      });
+      const children = await this.prisma.comment.findMany({
+        where: { parentId: { in: frontier }, deletedAt: null },
+        select: { id: true },
+      });
+      frontier = children.map((child) => child.id);
     }
   }
 }

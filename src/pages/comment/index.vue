@@ -153,10 +153,10 @@ import CommentSection from './CommentSection.vue';
 const showCommentForm = ref(false);
 const listAnchor = ref<HTMLElement | null>(null);
 const commentStore = useCommentStore();
-const { comments } = storeToRefs(commentStore);
+const { comments, meta } = storeToRefs(commentStore);
 
 const summary = computed(() => {
-  const topicCount = comments.value.length;
+  const topicCount = meta.value.total || comments.value.length;
   const replyCount = comments.value.reduce((sum, comment) => sum + (comment.replyCount || 0), 0);
   const memberIds = new Set<number>();
   comments.value.forEach((comment) => {

@@ -1,8 +1,8 @@
 <template>
   <article class="floor-card" :class="{ 'is-reply': isReplyComment, 'is-thread': !isReplyComment }">
-    <div v-if="!showReplyForm" class="floor-layout">
+    <div class="floor-layout">
       <aside class="floor-aside">
-        <div class="floor-mark">{{ floorMark }}</div>
+        <div v-if="floorMark" class="floor-mark">{{ floorMark }}</div>
         <img :src="avatarUrl" class="avatar" :alt="comment.user?.username || '未知用户'">
         <span class="author-role" :class="{ admin: isAdmin, author: isThreadAuthor }">
           {{ roleLabel }}
@@ -50,6 +50,10 @@
           <p>{{ quoteExcerpt }}</p>
         </div>
 
+        <div v-if="replyTo && isReplyComment" class="reply-to-tag">
+          回复 @{{ replyTo }}
+        </div>
+
         <div
           class="comment-content"
           :class="{ teaser: !props.fullContent }"
@@ -66,6 +70,9 @@
           <button class="action-btn reply-btn" @click="showReplyForm = true">
             {{ isReplyComment ? '引用回复' : '回复主题' }}
           </button>
+          <button v-if="canEdit" class="action-btn" @click="showEditForm = true">
+            编辑
+          </button>
           <button v-if="!isReplyComment && !props.fullContent" class="action-btn" @click="goToDetail">
             查看全文
           </button>
@@ -74,34 +81,26 @@
           </button>
         </div>
 
-        <div v-if="props.showReplies && comment.replies && comment.replies.length > 0" class="reply-stack">
-          <CommentItem
-            v-for="(reply, index) in comment.replies"
-            :key="reply.id"
-            :comment="reply"
-            :current-user-id="currentUserId"
-            :current-user-role="currentUserRole"
-            :thread-author-id="resolvedThreadAuthorId"
-            :floor-label="`#${index + 2}`"
-            :show-replies="true"
-            @delete="emit('delete', $event)"
-            @like="emit('like', $event)"
-            @update="emit('update', $event)"
-          />
-        </div>
       </div>
     </div>
 
-    <div v-else class="reply-composer">
-      <CommentForm
-        :parent-id="comment.id"
-        :quote-id="comment.id"
-        :reply-to-user="comment.user?.username || '开发者'"
-        :quote-preview="plainContent"
-        @submitted="handleReplySubmitted"
-        @cancelled="handleReplyCancelled"
-      />
-    </div>
+    <CommentForm
+      v-if="showReplyForm"
+      :is-modal="true"
+      :parent-id="comment.id"
+      :quote-id="comment.id"
+      :reply-to-user="comment.user?.username || '开发者'"
+      :quote-preview="plainContent"
+      @submitted="handleReplySubmitted"
+      @cancelled="handleReplyCancelled"
+    />
+    <CommentForm
+      v-if="showEditForm"
+      :is-modal="true"
+      :edit-comment="comment"
+      @submitted="handleEditSubmitted"
+      @cancelled="handleEditCancelled"
+    />
   </article>
 </template>
 
@@ -121,6 +120,8 @@ const props = defineProps<{
   floorLabel?: string;
   showReplies?: boolean;
   fullContent?: boolean;
+  depth?: number;
+  replyTo?: string;
 }>();
 
 const emit = defineEmits<{
@@ -132,8 +133,13 @@ const emit = defineEmits<{
 const router = useRouter();
 const route = useRoute();
 const showReplyForm = ref(false);
+const showEditForm = ref(false);
 
-const safeContent = computed(() => DOMPurify.sanitize(props.comment.content));
+const safeContent = computed(() => DOMPurify.sanitize(props.comment.content, {
+  // 统一正文样式：移除内联字体、字号、对齐等，避免外部粘贴的杂格式破坏排版
+  FORBID_TAGS: ['font'],
+  FORBID_ATTR: ['style', 'align'],
+}));
 const plainContent = computed(() => props.comment.content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
 const quoteExcerpt = computed(() => {
   const text = (props.comment.quote?.content || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
@@ -143,11 +149,12 @@ const isReplyComment = computed(() => props.comment.parentId !== null && props.c
 const isAuthor = computed(() => props.comment.userId === props.currentUserId);
 const isAdmin = computed(() => (props.currentUserRole || '').toUpperCase() === 'ADMIN');
 const canDelete = computed(() => isAuthor.value || isAdmin.value);
+const canEdit = computed(() => isAuthor.value || isAdmin.value);
 const isLiked = computed(() => props.comment.likes?.some(like => like.userId === props.currentUserId));
 const avatarUrl = computed(() => props.comment.user?.avatar || defaultAvatar);
 const resolvedThreadAuthorId = computed(() => props.threadAuthorId || props.comment.userId);
 const isThreadAuthor = computed(() => props.comment.userId === resolvedThreadAuthorId.value);
-const floorMark = computed(() => props.floorLabel || '题主');
+const floorMark = computed(() => props.floorLabel ?? '题主');
 const floorIdentity = computed(() => {
   if (isAdmin.value)
     return '管理员';
@@ -217,6 +224,15 @@ function handleReplySubmitted() {
 function handleReplyCancelled() {
   showReplyForm.value = false;
 }
+
+function handleEditSubmitted() {
+  showEditForm.value = false;
+  emit('update', props.comment);
+}
+
+function handleEditCancelled() {
+  showEditForm.value = false;
+}
 </script>
 
 <style scoped>
@@ -273,18 +289,18 @@ function handleReplyCancelled() {
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.08em;
-  color: rgba(211, 221, 245, 0.66);
-  background: rgba(255, 255, 255, 0.05);
+  color: #475569;
+  background: rgba(100, 116, 139, 0.12);
 }
 
 .author-role.admin {
-  color: #ffe1b1;
-  background: rgba(249, 115, 22, 0.18);
+  color: #c2410c;
+  background: rgba(249, 115, 22, 0.14);
 }
 
 .author-role.author {
-  color: #dbe7ff;
-  background: rgba(59, 130, 246, 0.18);
+  color: #1d4ed8;
+  background: rgba(59, 130, 246, 0.14);
 }
 
 .floor-body {
@@ -417,6 +433,7 @@ function handleReplyCancelled() {
   font-size: 15px;
   line-height: 1.6;
   color: #334155;
+  text-align: left;
   word-wrap: break-word;
   word-break: break-word;
 }
@@ -542,13 +559,16 @@ function handleReplyCancelled() {
 .reply-stack {
   display: grid;
   gap: 12px;
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(129, 150, 198, 0.12);
+  margin-top: 16px;
+  padding-left: 20px;
+  border-left: 2px solid rgba(148, 163, 184, 0.28);
 }
 
-.reply-composer {
-  padding: 18px;
+.reply-to-tag {
+  margin-top: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #3b82f6;
 }
 
 @media (max-width: 768px) {
@@ -756,6 +776,29 @@ html.dark .modal-footer,
 html.dark .form-header,
 html.dark .modal-body {
   background: transparent;
+}
+
+html.dark .author-role {
+  color: rgba(211, 221, 245, 0.66);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+html.dark .author-role.admin {
+  color: #ffe1b1;
+  background: rgba(249, 115, 22, 0.18);
+}
+
+html.dark .author-role.author {
+  color: #dbe7ff;
+  background: rgba(59, 130, 246, 0.18);
+}
+
+html.dark .reply-stack {
+  border-color: #334155;
+}
+
+html.dark .reply-to-tag {
+  color: #60a5fa;
 }
 
 </style>

@@ -34,8 +34,8 @@ const SEO_BY_PATH: Record<string, { title: string; description: string }> = {
     description: '查看创智工作室学科竞赛、荣誉奖学金与综合荣誉，了解团队积累与成员成就表现。',
   },
   '/comment': {
-    title: '蓝桥讨论区 | 创智工作室',
-    description: '进入创智工作室蓝桥讨论区，交流题解、经验与技术思考。',
+    title: '创智讨论区 | 创智工作室',
+    description: '进入创智工作室的创智讨论区，交流题解、经验与技术思考。',
   },
   '/login': {
     title: '账号登录 | 创智工作室',

@@ -5,8 +5,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <div class="heading-group">
-            <span class="eyebrow">{{ isReply ? 'Reply' : 'New Topic' }}</span>
-            <h3>{{ isReply ? '添加回复' : '发起技术讨论' }}</h3>
+            <span class="eyebrow">{{ formEyebrow }}</span>
+            <h3>{{ formTitle }}</h3>
           </div>
           <button class="close-btn" @click="cancelReply">
             <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"></path></svg>
@@ -60,7 +60,7 @@
         <div class="modal-footer">
           <button class="cancel-btn" @click="cancelReply">取消</button>
           <button class="submit-btn" :disabled="isSubmitting" @click="submitComment">
-            {{ isSubmitting ? '提交中...' : '提交' }}
+            {{ isSubmitting ? '提交中...' : submitLabel }}
           </button>
         </div>
       </div>
@@ -68,8 +68,8 @@
     <div v-else class="comment-form">
       <div class="form-header">
         <div class="heading-group">
-          <span class="eyebrow">{{ isReply ? 'Reply' : 'New Topic' }}</span>
-          <h3>{{ isReply ? '添加回复' : '发起技术讨论' }}</h3>
+          <span class="eyebrow">{{ formEyebrow }}</span>
+          <h3>{{ formTitle }}</h3>
         </div>
         <button @click="cancelReply" class="cancel-btn">取消</button>
       </div>
@@ -122,7 +122,7 @@
       <div class="form-footer">
         <button class="cancel-btn" @click="cancelReply">取消</button>
         <button class="submit-btn" :disabled="isSubmitting" @click="submitComment">
-          {{ isSubmitting ? '提交中...' : '提交' }}
+          {{ isSubmitting ? '提交中...' : submitLabel }}
         </button>
       </div>
     </div>
@@ -130,10 +130,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { message } from 'ant-design-vue'
 import { useCommentStore } from '~/store/commentStore'
 import { useUserStore } from '~/store/user'
+import type { MainComment } from '~/types/comment'
 import TextEditor from '~/views/TextEditor.vue'
 
 const commentStore = useCommentStore()
@@ -145,6 +146,7 @@ const props = defineProps<{
   replyToUser?: string
   quotePreview?: string
   isModal?: boolean
+  editComment?: MainComment
 }>()
 
 const emit = defineEmits<{
@@ -165,7 +167,19 @@ const placeholder = computed(() => isReply.value
   : '展开描述背景、问题细节和你的观点，方便大家高效参与讨论')
 const showModal = computed(() => !!props.isModal)
 
-const isReply = computed(() => !!props.parentId)
+const isEdit = computed(() => !!props.editComment?.id)
+const isReply = computed(() => !!props.parentId || (!!props.editComment && props.editComment.parentId != null))
+const formTitle = computed(() => {
+  if (isEdit.value)
+    return isReply.value ? '编辑回复' : '编辑主题'
+  return isReply.value ? '添加回复' : '发起技术讨论'
+})
+const formEyebrow = computed(() => {
+  if (isEdit.value)
+    return 'Edit'
+  return isReply.value ? 'Reply' : 'New Topic'
+})
+const submitLabel = computed(() => isEdit.value ? '保存修改' : '提交')
 const isAdmin = computed(() => (userStore.getUserInfo && 'role' in userStore.getUserInfo)
   ? String(userStore.getUserInfo.role).toUpperCase() === 'ADMIN'
   : false)
@@ -175,12 +189,27 @@ const quotePreviewText = computed(() => {
   return text.length > 60 ? `${text.slice(0, 60)}...` : text
 })
 
+onMounted(() => {
+  if (!props.editComment) return
+  discussionTitle.value = props.editComment.title || ''
+  discussionCategory.value = props.editComment.category || '综合讨论'
+  tagInput.value = (props.editComment.tags || []).join(', ')
+  commentContent.value = props.editComment.content || ''
+  isPinned.value = !!props.editComment.isPinned
+  isFeatured.value = !!props.editComment.isFeatured
+})
+
 const submitComment = async () => {
   if (!isReply.value && !discussionTitle.value.trim()) {
     message.warning('请先填写讨论标题')
     return
   }
-  if (!commentContent.value.trim()) {
+  const contentText = commentContent.value
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+  if (!contentText) {
     message.warning(isReply.value ? '回复内容不能为空' : '讨论内容不能为空')
     return
   }
@@ -199,16 +228,33 @@ const submitComment = async () => {
       .map(tag => tag.trim())
       .filter(Boolean)
       .slice(0, 5)
-    const newComment = await commentStore.submitComment({
-      title: discussionTitle.value,
-      category: isReply.value ? undefined : discussionCategory.value,
-      tags: isReply.value ? undefined : tags,
-      content: commentContent.value,
-      parent_id: props.parentId,
-      quote_id: props.quoteId,
-      isPinned: isReply.value ? undefined : isPinned.value,
-      isFeatured: isReply.value ? undefined : isFeatured.value,
-    })
+
+    let newComment: any
+    if (isEdit.value && props.editComment) {
+      await commentStore.updateComment({
+        id: props.editComment.id,
+        title: isReply.value ? undefined : discussionTitle.value,
+        category: isReply.value ? undefined : discussionCategory.value,
+        tags: isReply.value ? undefined : tags,
+        content: commentContent.value,
+        isPinned: isReply.value ? undefined : isPinned.value,
+        isFeatured: isReply.value ? undefined : isFeatured.value,
+      })
+      newComment = props.editComment
+      message.success('修改已保存')
+    } else {
+      newComment = await commentStore.submitComment({
+        title: discussionTitle.value,
+        category: isReply.value ? undefined : discussionCategory.value,
+        tags: isReply.value ? undefined : tags,
+        content: commentContent.value,
+        parent_id: props.parentId,
+        quote_id: props.quoteId,
+        isPinned: isReply.value ? undefined : isPinned.value,
+        isFeatured: isReply.value ? undefined : isFeatured.value,
+      })
+    }
+
     discussionTitle.value = ''
     discussionCategory.value = '综合讨论'
     tagInput.value = ''
@@ -217,7 +263,7 @@ const submitComment = async () => {
     isFeatured.value = false
     emit('submitted', newComment)
   } catch (error) {
-    message.error('提交失败，请重试')
+    message.error(isEdit.value ? '保存失败，请重试' : '提交失败，请重试')
   } finally {
     isSubmitting.value = false
   }

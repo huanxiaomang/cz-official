@@ -14,7 +14,7 @@
           <router-link to="/achievement" class="item" :class="{ 'active': route.path === '/achievement' }"
             cursor-pointer>成就</router-link>
           <router-link to="/comment" class="item" :class="{ 'active': route.path === '/comment' }"
-            cursor-pointer>蓝桥讨论区</router-link>
+            cursor-pointer>创智讨论区</router-link>
 
           <a class="item" :href="`${envConfig.VITE_GLOB_DOCS_URL}/docs/`" target="_blank" rel="noopener noreferrer" flex items-center>文档
             <ExportOutlined class="ml-1 text-4" />
@@ -80,7 +80,7 @@
         <router-link to="/achievement" class="phone-link dark:border-gray-800" border-b :class="{ 'active': route.path === '/achievement' }"
           cursor-pointer h-12 flex items-center pl-8 @click="closeMenu">成就</router-link>
         <router-link to="/comment" class="phone-link dark:border-gray-800" border-b :class="{ 'active': route.path === '/comment' }"
-          cursor-pointer h-12 flex items-center pl-8 @click="closeMenu">蓝桥讨论区</router-link>
+          cursor-pointer h-12 flex items-center pl-8 @click="closeMenu">创智讨论区</router-link>
         <div class="phone-link dark:border-gray-800" border-b cursor-pointer h-12 flex items-center pl-8 @click="showMobileCalendar">
           活动日历
           <CarryOutOutlined class="ml-2" />
