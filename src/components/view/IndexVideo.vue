@@ -21,10 +21,10 @@
   <div w-full relative class="mainContent-container">
     <div class="mainContent">
       <RandomWord class="mainContent-title" :TextContent="mainContentTitle" :randomWordCount="3" :IsInterval="false"
-        :relWordTime="50" randomWordColor="#666" :startY="700" font-300 sm:text-xl tracking-wide>
-      </RandomWord>
+          :relWordTime="50" randomWordColor="#666" :startY="deviceType === 'mobile' ? 0 : 700" font-300 sm:text-xl tracking-wide>
+        </RandomWord>
       <RandomWord class="mainContent-text" v-for="item, i in mainContent" :TextContent="item" :textColor="textColor"
-        :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" :startY="1600" font-300
+        :randomWordCount="3" :IsInterval="false" :relWordTime="50" randomWordColor="#666" :startY="deviceType === 'mobile' ? 0 : 1600" font-300
         sm:text-xl tracking-wide>
       </RandomWord>
     </div>
@@ -159,7 +159,7 @@ onMounted(async () => {
     if (p) p.catch(() => { /* 等待用户交互后再尝试播放 */ });
   }
 
-  // 中段滚动动画仅在桌面端执行（移动端已隐藏中段视频与文字）
+  // 中段滚动动画（桌面端与移动端参数不同，但都执行）
   if (screenWidth >= 640) {
     gsap.fromTo(".mainContent-title",
       { fontSize: '40rem', letterSpacing: "500px", paddingBottom: "50rem", paddingTop: "50rem" },
@@ -181,6 +181,28 @@ onMounted(async () => {
       .from(".mainContent-text:nth-child(6)", { x: -500, opacity: 0 })
       .from(".mainContent-text:nth-child(7)", { x: 500, opacity: 0 })
       .from(".mainContent-text:nth-child(8)", { x: -500, opacity: 0 })
+  } else {
+    // 移动端：整块 pin 固定在视口，视频居中做背景，标题收缩 + 正文自下而上浮现（上下跟随）
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: ".mainContent-container",
+        start: "top top",
+        end: "+=150%",
+        scrub: true,
+        pin: true,
+        anticipatePin: 1,
+      }
+    })
+      .fromTo(".mainContent-title",
+        { fontSize: '2.5rem', letterSpacing: '6px', opacity: 0, y: 60 },
+        { fontSize: '0.85rem', letterSpacing: '0px', opacity: 1, y: 0, duration: 0.5 }, 0)
+      .from(".mainContent-text:nth-child(2)", { y: 80, opacity: 0 }, 0.35)
+      .from(".mainContent-text:nth-child(3)", { y: 80, opacity: 0 }, 0.45)
+      .from(".mainContent-text:nth-child(4)", { y: 80, opacity: 0 }, 0.55)
+      .from(".mainContent-text:nth-child(5)", { y: 80, opacity: 0 }, 0.65)
+      .from(".mainContent-text:nth-child(6)", { y: 80, opacity: 0 }, 0.75)
+      .from(".mainContent-text:nth-child(7)", { y: 80, opacity: 0 }, 0.85)
+      .from(".mainContent-text:nth-child(8)", { y: 80, opacity: 0 }, 0.95)
   }
 
   if (!canvasRef.value) return;
@@ -288,7 +310,6 @@ const videoURL = resolveUploadUrl('introduction.mp4');
       text-align: center;
       margin-top: 10px;
       margin-bottom: 10px;
-      text-align: left;
       font-weight: 540;
     }
   }
@@ -321,7 +342,42 @@ const videoURL = resolveUploadUrl('introduction.mp4');
   }
 
   .mainContent-container {
-    display: none;
+    height: 100vh;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .mainContent {
+    position: relative;
+    height: 100vh;
+    align-items: center;
+    padding: 0 1.25rem;
+    overflow: hidden;
+  }
+
+  .mainContent-title {
+    white-space: normal;
+    word-break: break-word;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .mainContent-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .mainVideo {
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 100%;
   }
 
   .SecContent-container {
